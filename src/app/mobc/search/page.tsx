@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
+import { SmallAlbumPlayer } from "../album/SmallAlbumPlayer";
 
 export default function SearchAlbumsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -82,7 +83,7 @@ const AlbumResultCard = ({ album }: { album: AlbumResult}) => {
     <div
       className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl"
     >
-      <AlbumResultPlayer albumId={album.id} />
+      <SmallAlbumPlayer albumId={album.id} />
       <div className="p-4">
         <h3 className="truncate font-semibold text-gray-900">
           {album.title}
@@ -93,20 +94,6 @@ const AlbumResultCard = ({ album }: { album: AlbumResult}) => {
         <SaveAlbumResultBtn album={album} />
       </div>
     </div>
-  );
-}
-
-const AlbumResultPlayer = ({albumId}: {albumId: string}) => {
-  return (
-    <iframe 
-      style={{ border: 0, width: '100%', height: 'auto', aspectRatio: '1' }} 
-      src={`https://bandcamp.com/EmbeddedPlayer/album=${albumId}/size=large/bgcol=ffffff/linkcol=0687f5/minimal=true/transparent=true/`} 
-      seamless
-    >
-      <a href={`https://frailbodyil.bandcamp.com/album/${albumId}`}>
-        Album Player
-      </a>
-    </iframe>
   );
 }
 

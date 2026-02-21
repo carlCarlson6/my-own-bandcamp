@@ -1,8 +1,8 @@
 import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
-import { redirect, } from "next/navigation";
-import SearchBtnNavigation from "./search/SearchBtnNavigation";
-import PendingBtnNavigation from "./pending/PendingBtnNavigation";
+import { redirect } from "next/navigation";
+
+import NavLink from "./NavLink";
 
 export default async function MainUserLayout({
   children,
@@ -22,17 +22,11 @@ export default async function MainUserLayout({
       <div className="mx-auto flex min-h-screen w-full max-w-6xl pt-16">
         <aside className="sticky top-16 h-[calc(100vh-4rem)] w-64 border-r p-6">
           <nav className="flex flex-col gap-2">
-            <SearchBtnNavigation />
-            <PendingBtnNavigation />
-            <button className="rounded-md px-3 py-2 text-left hover:bg-black/5">
-              Favorites albums
-            </button>
-            <button className="rounded-md px-3 py-2 text-left hover:bg-black/5">
-              Listened albums
-            </button>
-            <button className="rounded-md px-3 py-2 text-left hover:bg-black/5">
-              My lists
-            </button>
+            <NavLink href="/mobc/search" text="Search albums" />
+            <NavLink href="/mobc/pending" text="Pending albums" />
+            <NavLink href="/mobc/favorites" text="Favorite albums" />
+            <NavLink href="/mobc/listened" text="Listened albums" />
+            <NavLink href="/mobc/lists" text="My lists" />
           </nav>
         </aside>
 
@@ -41,4 +35,3 @@ export default async function MainUserLayout({
     </>
   );
 }
-

@@ -1,4 +1,5 @@
 import { api } from "~/utils/trpc/server";
+import PendingAlbumsList from "./PendingAlbumsList";
 
 export default async function PendingAlbumsPage() {
   const albums = await api.getPendingAlbums();
@@ -12,47 +13,9 @@ export default async function PendingAlbumsPage() {
           No pending albums yet. Start adding albums from the search page!
         </div>
       ) : (
-        <div>
-          <p className="mb-6 text-sm font-medium text-gray-600">
-            {albums.length} album{albums.length !== 1 ? "s" : ""}
-          </p>
-          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-            {albums.map((album) => (
-              <PendingAlbumCard key={album.id} album={album} />
-            ))}
-          </div>
-        </div>
+        <PendingAlbumsList albums={albums} />
       )}
     </div>
   );
 }
 
-type PendingAlbum = {
-  id: string;
-  userId: string;
-  title: string;
-  artist: string;
-  imageUrl: string;
-};
-
-const PendingAlbumCard = ({ album }: { album: PendingAlbum }) => {
-  return (
-    <div className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl">
-      {album.imageUrl && (
-        <img
-          src={album.imageUrl}
-          alt={album.title}
-          className="h-80 w-full object-cover"
-        />
-      )}
-      <div className="p-4">
-        <h3 className="truncate font-semibold text-gray-900">
-          {album.title}
-        </h3>
-        <p className="truncate text-sm text-gray-600">
-          {album.artist}
-        </p>
-      </div>
-    </div>
-  );
-}

@@ -26,11 +26,8 @@ import { db } from "~/server/infrastructure/db";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const { userId } = await auth();
-  
   return {
     db,
-    userId,
     ...opts,
   };
 };
@@ -93,7 +90,8 @@ export const publicProcedure = t.procedure;
  * If authenticated, adds the userId to the context for use in the procedure.
  */
 export const protectedProcedure = publicProcedure.use(async ({ ctx, next }) => {
-  if (!ctx.userId) {
+  const { userId } = await auth();
+  if (!userId) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "You must be authenticated to access this procedure",
@@ -103,7 +101,7 @@ export const protectedProcedure = publicProcedure.use(async ({ ctx, next }) => {
   return next({
     ctx: {
       ...ctx,
-      userId: ctx.userId,
+      userId: userId,
     },
   });
 });

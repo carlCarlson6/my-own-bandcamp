@@ -2,6 +2,7 @@ import { searchAlbumsQuery } from "~/server/search/search-albums-query";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 import { saveToPendingMutation } from "~/server/pending/save-to-pending-mutation";
 import { getPendingAlbumsQuery } from "~/server/pending/get-pending-albums-query";
+import { removeAlbumFromPendingMutation } from "~/server/pending/remove-from-pending-mutatin";
 
 
 /**
@@ -12,6 +13,7 @@ import { getPendingAlbumsQuery } from "~/server/pending/get-pending-albums-query
 export const appRouter = createTRPCRouter({
   searchAlbums: searchAlbumsQuery,
   saveAlbumToPending: saveToPendingMutation,
+  removeAlbumFromPending: removeAlbumFromPendingMutation,
   getPendingAlbums: getPendingAlbumsQuery,
 });
 
