@@ -26,7 +26,6 @@ export default async function MainUserLayout({
             <NavLink href="/mobc/pending" text="Pending albums" />
             <NavLink href="/mobc/favorites" text="Favorite albums" />
             <NavLink href="/mobc/listened" text="Listened albums" />
-            <NavLink href="/mobc/lists" text="My lists" />
           </nav>
         </aside>
 
