@@ -1,8 +1,8 @@
 import { index } from "drizzle-orm/pg-core";
 import { createTable } from "../infrastructure/db/schema";
 
-export const pendingAlbumsTable = createTable(
-  "pending_albums", 
+export const favoritesAlbumsTable = createTable(
+  "favorites_albums", 
   (t) => ({
     id:       t.text().primaryKey(),
     userId:   t.text().notNull(),
@@ -11,6 +11,6 @@ export const pendingAlbumsTable = createTable(
     addedAt:  t.timestamp().defaultNow().notNull(),
   }), 
   (t) => ([
-    index("idx_pending_albums_user_id").on(t.userId)
+    index("idx_favorites_albums_user_id").on(t.userId)
   ]
 ));

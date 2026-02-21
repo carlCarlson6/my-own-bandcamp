@@ -1,6 +1,7 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc/trpc";
-import { pendingAlbums } from "./pendingAlbums.schema";
+import { pendingAlbumsTable } from "./pendingAlbums.schema";
+import { and, eq } from "drizzle-orm";
 
 export const saveToPendingMutation = protectedProcedure
   .input(z.object({
@@ -11,7 +12,19 @@ export const saveToPendingMutation = protectedProcedure
       imageUrl: z.string().url(),
   })}))
   .mutation(async ({ ctx: { userId, db }, input: { album } }) => {
-    return await db.insert(pendingAlbums).values({
+    const existing = await db.select()
+      .from(pendingAlbumsTable)
+      .where(
+        and(
+          eq(pendingAlbumsTable.userId, userId),
+          eq(pendingAlbumsTable.id, album.id)
+        )
+      );
+    if (existing.length > 0) {
+      return;
+    }
+
+    await db.insert(pendingAlbumsTable).values({
       ...album,
       userId: userId
     });

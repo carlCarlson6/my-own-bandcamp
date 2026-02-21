@@ -39,7 +39,7 @@ const PendingAlbumCard = ({ album }: { album: PendingAlbum }) => {
         </div>
       
         <div className="flex items-center justify-between">
-          <a href={`/album/${album.id}`} className="rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">
+          <a href={`/mobc/album/${album.id}`} className="rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">
             go to album
           </a>
          <DeletePendingAlbumButton albumId={album.id} />

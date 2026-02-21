@@ -3,6 +3,9 @@ import { createCallerFactory, createTRPCRouter } from "./trpc";
 import { saveToPendingMutation } from "~/server/pending/save-to-pending-mutation";
 import { getPendingAlbumsQuery } from "~/server/pending/get-pending-albums-query";
 import { removeAlbumFromPendingMutation } from "~/server/pending/remove-from-pending-mutatin";
+import { get } from "http";
+import { getAlbumListsQuery } from "~/server/albums/get-album-lists-query";
+import { removeAlbumFromFavoritesMutation } from "~/server/favorites/remove-from-favorites-mutation";
 
 
 /**
@@ -14,7 +17,9 @@ export const appRouter = createTRPCRouter({
   searchAlbums: searchAlbumsQuery,
   saveAlbumToPending: saveToPendingMutation,
   removeAlbumFromPending: removeAlbumFromPendingMutation,
+  removeAlbumFromFavorites: removeAlbumFromFavoritesMutation,
   getPendingAlbums: getPendingAlbumsQuery,
+  getAlbumLists: getAlbumListsQuery,
 });
 
 // export type definition of API
