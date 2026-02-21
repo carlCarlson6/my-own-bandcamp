@@ -25,7 +25,7 @@ const parseAlbumsFromHTML = (html: string) => {
   $('ul.result-items li.searchresult').each((_, element) => {
     const $item = $(element);
     const searchData =  z.object({
-      id: z.string().min(1),
+      id: z.number().min(1),
     }).parse(JSON.parse($item.attr('data-search') ?? '{}'));
     
     const id = searchData.id;
