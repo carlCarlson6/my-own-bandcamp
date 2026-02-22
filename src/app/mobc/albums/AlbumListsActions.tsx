@@ -116,9 +116,7 @@ const AlbumListsActions = ({
               Pending list
             </label>
           )}
-          <span className="text-xs text-gray-500">
-            {savePending.isPending || removePending.isPending ? "Updating..." : ""}
-          </span>
+          
         </div>
 
         <div className="flex items-center justify-between">
@@ -147,11 +145,6 @@ const AlbumListsActions = ({
               Favorites
             </label>
           )}
-          <span className="text-xs text-gray-500">
-            {saveFavorites.isPending || removeFavorites.isPending
-              ? "Updating..."
-              : ""}
-          </span>
         </div>
 
         <div className="flex items-center justify-between">
@@ -180,11 +173,6 @@ const AlbumListsActions = ({
               Listened
             </label>
           )}
-          <span className="text-xs text-gray-500">
-            {saveListened.isPending || removeListened.isPending
-              ? "Updating..."
-              : ""}
-          </span>
         </div>
       </div>
     </aside>
