@@ -1,11 +1,11 @@
 import "~/utils/styles/globals.css";
 import "@radix-ui/themes/styles.css";
-
 import { ClerkProvider } from "@clerk/nextjs";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Theme } from "@radix-ui/themes";
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { TRPCReactProvider } from "~/utils/trpc/react";
 
 export const metadata: Metadata = {
@@ -31,6 +31,7 @@ export default function RootLayout({
           </Theme>
         </ClerkProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
