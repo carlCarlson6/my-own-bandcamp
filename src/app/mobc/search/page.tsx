@@ -53,10 +53,7 @@ export default function SearchAlbumsPage() {
             {results.map((album, idx) => (
                 <AlbumResultCard 
                   key={idx}
-                  album={{
-                    ...album,
-                    imageUrl: album.image
-                  }} 
+                  albumId={album.id}
                 />
             ))}
           </div>
@@ -71,33 +68,23 @@ export default function SearchAlbumsPage() {
   );
 }
 
-type AlbumResult = {
-  id: string;
-  artist: string;
-  title: string;
-  imageUrl: string;
-};
-
-const AlbumResultCard = ({ album }: { album: AlbumResult}) => { 
+const AlbumResultCard = ({ albumId }: { albumId: string}) => { 
   return (
     <div
       className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl"
     >
-      <SmallAlbumPlayer albumId={album.id} />
+      <SmallAlbumPlayer albumId={albumId} />
       <div className="p-4">
-        <h3 className="truncate font-semibold text-gray-900">
-          {album.title}
-        </h3>
-        <p className="truncate text-sm text-gray-600">
-          {album.artist}
-        </p>
-        <SaveAlbumResultBtn album={album} />
+        <SaveAlbumResultBtn albumId={albumId} />
+        <a href={`/mobc/album/${albumId}`} className="mt-3 inline-block rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">
+          Go to album
+        </a>
       </div>
     </div>
   );
 }
 
-const SaveAlbumResultBtn = ({ album }: { album: AlbumResult }) => {
+const SaveAlbumResultBtn = ({ albumId }: { albumId : string }) => {
   const [isSaved, setIsSaved] = useState(false);
   const { mutate, isPending } = api.saveAlbumToPending.useMutation({
     onSuccess() {
@@ -110,10 +97,7 @@ const SaveAlbumResultBtn = ({ album }: { album: AlbumResult }) => {
   const execute = () =>
     mutate({
       album: {
-        id: album.id,
-        title: album.title,
-        artist: album.artist,
-        imageUrl: album.imageUrl,
+        id: albumId
       },
     });
   

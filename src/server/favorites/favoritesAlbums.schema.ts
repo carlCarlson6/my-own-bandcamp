@@ -6,11 +6,12 @@ export const favoritesAlbumsTable = createTable(
   (t) => ({
     id:       t.text().primaryKey(),
     userId:   t.text().notNull(),
-    title:    t.text().notNull(),
-    artist:   t.text().notNull(),
+    albumId:  t.text().notNull(),
     addedAt:  t.timestamp().defaultNow().notNull(),
   }), 
   (t) => ([
     index("idx_favorites_albums_user_id").on(t.userId)
   ]
 ));
+
+export const buildFavoriteAlbumId = (albumId: string, userId: string) => `${albumId}-${userId}`;

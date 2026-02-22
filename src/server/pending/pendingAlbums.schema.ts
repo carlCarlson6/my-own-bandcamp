@@ -5,12 +5,14 @@ export const pendingAlbumsTable = createTable(
   "pending_albums", 
   (t) => ({
     id:       t.text().primaryKey(),
+    albumId:  t.text().notNull(),
     userId:   t.text().notNull(),
-    title:    t.text().notNull(),
-    artist:   t.text().notNull(),
     addedAt:  t.timestamp().defaultNow().notNull(),
-  }), 
-  (t) => ([
+  }),
+    (t) => ([
     index("idx_pending_albums_user_id").on(t.userId)
-  ]
-));
+  ])
+);
+
+export const buildPendingAlbumId = (albumId: string, userId: string) => `${albumId}-${userId}`;
+

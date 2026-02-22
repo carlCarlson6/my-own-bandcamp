@@ -17,9 +17,6 @@ const parseAlbumsFromHTML = (html: string) => {
 
   const searchResults: Array<{
     id: string;
-    title: string;
-    artist: string;
-    image: string;
   }> = [];
 
   $('ul.result-items li.searchresult').each((_, element) => {
@@ -29,15 +26,12 @@ const parseAlbumsFromHTML = (html: string) => {
     }).parse(JSON.parse($item.attr('data-search') ?? '{}'));
     
     const id = searchData.id;
-    const title = $item.find('.heading a').text().trim();
-    const artist = $item.find('.subhead').text().replace('by ', '').trim();
-    const image = $item.find('.art img').attr('src');
     
-    if (!id || !image) {
+    if (!id) {
       return;
     }
 
-    searchResults.push({ id: `${id}`, title, artist, image });
+    searchResults.push({ id: `${id}`});
   });
   
   return searchResults;
