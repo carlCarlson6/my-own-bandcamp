@@ -1,11 +1,10 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { api } from "~/utils/trpc/react";
 
 const DeletePendingAlbumButton = ({ albumId }: { albumId: string }) => {
   const router = useRouter();
-  const mutation = api.removeAlbumFromPending.useMutation({
+  const mutation = api.pending.remove.useMutation({
     onSuccess() {
       router.refresh();
     },

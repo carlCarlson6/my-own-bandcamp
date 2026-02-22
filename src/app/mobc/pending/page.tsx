@@ -2,7 +2,7 @@ import { api } from "~/utils/trpc/server";
 import PendingAlbumsList from "./PendingAlbumsList";
 
 export default async function PendingAlbumsPage() {
-  const albums = await api.getPendingAlbums();
+  const albums = await api.pending.getAll();
 
   return (
     <div className="space-y-6">

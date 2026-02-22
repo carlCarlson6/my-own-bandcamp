@@ -17,13 +17,13 @@ const AlbumListActions = ({
   const [onPending, setOnPending] = useState(initialOnPending);
   const [onFavorites, setOnFavorites] = useState(initialOnFavorites);
 
-  const removePending = api.removeAlbumFromPending.useMutation({
+  const removePending = api.pending.remove.useMutation({
     onSuccess() {
       setOnPending(false);
     },
   });
 
-  const removeFavorites = api.removeAlbumFromFavorites.useMutation({
+  const removeFavorites = api.favorites.remove.useMutation({
     onSuccess() {
       setOnFavorites(false);
     },

@@ -8,19 +8,11 @@ export default async function AlbumPage({
   params: Promise<{ albumId: string }>
 }) {
   const { albumId } = await params;
-  const albumLists = await api.getAlbumLists({ albumId });
-
-  console.log("Album lists containing this album:", albumLists);
+  const albumLists = await api.albums.getLists({ albumId });
 
   return (
-    <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+    <div className="flex flex-row gap-8 lg:flex-row lg:items-start">
       <BigAlbumPlayer albumId={albumId} />
-
-      <AlbumListActions
-        albumId={albumId}
-        initialOnPending={albumLists.onPending}
-        initialOnFavorites={albumLists.onFavorites}
-      />
     </div>
   );
 }

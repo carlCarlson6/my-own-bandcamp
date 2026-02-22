@@ -1,0 +1,10 @@
+import { createTRPCRouter } from "../infrastructure/trpc/trpc";
+import { getPendingAlbumsQuery } from "./get-pending-albums-query";
+import { removeAlbumFromPendingMutation } from "./remove-from-pending-mutatin";
+import { saveToPendingMutation } from "./save-to-pending-mutation";
+
+export const pendingRouter = createTRPCRouter({
+  save: saveToPendingMutation,
+  remove: removeAlbumFromPendingMutation,
+  getAll: getPendingAlbumsQuery,
+});

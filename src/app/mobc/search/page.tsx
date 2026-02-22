@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 import { SmallAlbumPlayer } from "../album/SmallAlbumPlayer";
@@ -11,7 +10,7 @@ export default function SearchAlbumsPage() {
     data: results,
     isLoading,
     error,
-  } = api.searchAlbums.useQuery(
+  } = api.search.useQuery(
     { searchTerm },
     {
       enabled: searchTerm.length > 0,
@@ -86,7 +85,7 @@ const AlbumResultCard = ({ albumId }: { albumId: string}) => {
 
 const SaveAlbumResultBtn = ({ albumId }: { albumId : string }) => {
   const [isSaved, setIsSaved] = useState(false);
-  const { mutate, isPending } = api.saveAlbumToPending.useMutation({
+  const { mutate, isPending } = api.pending.save.useMutation({
     onSuccess() {
       setIsSaved(true);
     },
