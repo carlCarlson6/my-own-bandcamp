@@ -11,7 +11,7 @@ export default function SearchAlbumsPage() {
     data: results,
     isLoading,
     error,
-  } = api.search.useQuery(
+  } = api.albums.search.useQuery(
     { searchTerm },
     {
       enabled: searchTerm.length > 0,
@@ -53,7 +53,7 @@ export default function SearchAlbumsPage() {
             {results.map((album, idx) => (
                 <AlbumResultCard 
                   key={idx}
-                  albumId={album.id}
+                  album={album}
                 />
             ))}
           </div>
@@ -68,15 +68,20 @@ export default function SearchAlbumsPage() {
   );
 }
 
-const AlbumResultCard = ({ albumId }: { albumId: string}) => { 
+type AlbumSearchResult = {
+  id: string;
+  url: string;
+}
+
+const AlbumResultCard = ({ album: { id, url } }: { album: AlbumSearchResult  }) => { 
   return (
     <div
       className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl"
     >
-      <SmallAlbumPlayer albumId={albumId} />
+      <SmallAlbumPlayer albumId={id} />
       <div className="p-4">
-        <SaveAlbumResultBtn albumId={albumId} />
-        <GoToAlbumBtn albumId={albumId} />
+        <SaveAlbumResultBtn albumId={id} />
+        <GoToAlbumBtn albumId={id} url={url} />
       </div>
     </div>
   );

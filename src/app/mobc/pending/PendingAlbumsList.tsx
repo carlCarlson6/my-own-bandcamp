@@ -25,7 +25,7 @@ const PendingAlbumCard = ({ albumId }: { albumId: string }) => {
 
       <div className="p-4 flex flex-col gap-2">      
         <div className="flex items-center justify-between">
-          <GoToAlbumBtn albumId={albumId} />
+          <GoToAlbumBtn albumId={albumId} url={undefined} />
           <DeletePendingAlbumButton albumId={albumId} />
         </div>
 

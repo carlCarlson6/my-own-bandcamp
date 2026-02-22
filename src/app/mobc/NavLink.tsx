@@ -3,12 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type NavLinkProps = {
-  href: string;
-  text: string;
-};
-
-export default function NavLink({ href, text }: NavLinkProps) {
+export default function NavLink(
+  { href, text }: { href: string; text: string }
+) {
   const pathname = usePathname();
   const isActive = pathname === href;
 

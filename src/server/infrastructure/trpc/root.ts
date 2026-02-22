@@ -1,4 +1,3 @@
-import { searchAlbumsQuery } from "~/server/search/search-albums-query";
 import { createCallerFactory, createTRPCRouter } from "./trpc";
 import { pendingRouter } from "~/server/pending/router";
 import { favoritesRouter } from "~/server/favorites/router";
@@ -12,7 +11,6 @@ import { listenedRouter } from "~/server/listened/router";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  search:     searchAlbumsQuery,
   pending:    pendingRouter,
   favorites:  favoritesRouter,
   albums:     albumsRouter,

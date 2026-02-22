@@ -13,25 +13,29 @@ export const searchAlbumsQuery = publicProcedure
   });
 
 const parseAlbumsFromHTML = (html: string) => {
+  console.log('============== Parsing albums from HTML ==============');
   const $ = cheerio.load(html);
 
-  const searchResults: Array<{
-    id: string;
-  }> = [];
+  const searchResults: { id: string; url: string }[] = [];
 
   $('ul.result-items li.searchresult').each((_, element) => {
     const $item = $(element);
-    const searchData =  z.object({
+    const searchData = z.object({
       id: z.number().min(1),
     }).parse(JSON.parse($item.attr('data-search') ?? '{}'));
-    
     const id = searchData.id;
-    
-    if (!id) {
+
+    const albumUrl = z
+      .string()
+      .url()
+      .nullable()
+      .parse($item.find('a.artcont').attr('href'))?.split('?').at(0);
+  
+    if (!id || !albumUrl) {
       return;
     }
 
-    searchResults.push({ id: `${id}`});
+    searchResults.push({ id: `${id}`, url: albumUrl });
   });
   
   return searchResults;
