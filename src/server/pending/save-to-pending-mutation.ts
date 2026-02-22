@@ -1,7 +1,7 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc/trpc";
 import { buildPendingAlbumId, pendingAlbumsTable } from "./pendingAlbums.schema";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const saveToPendingMutation = protectedProcedure
   .input(z.object({
@@ -12,11 +12,7 @@ export const saveToPendingMutation = protectedProcedure
     const existing = await db.select()
       .from(pendingAlbumsTable)
       .where(
-        and(
-          eq(pendingAlbumsTable.userId, userId),
-          eq(pendingAlbumsTable.albumId, album.id)
-        )
-      );
+        eq(pendingAlbumsTable.id, buildPendingAlbumId(album.id, userId)));
     if (existing.length > 0) return;
 
     await db
