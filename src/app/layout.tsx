@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Theme } from "@radix-ui/themes";
-
+import { Analytics } from '@vercel/analytics/next';
 import { TRPCReactProvider } from "~/utils/trpc/react";
 
 export const metadata: Metadata = {
@@ -30,6 +30,7 @@ export default function RootLayout({
             <TRPCReactProvider>{children}</TRPCReactProvider>
           </Theme>
         </ClerkProvider>
+        <Analytics />
       </body>
     </html>
   );
