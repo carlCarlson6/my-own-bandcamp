@@ -5,7 +5,10 @@ import { pendingAlbumsTable } from "./pendingAlbums.schema";
 export const pickRandomPendingAlbumQuery = protectedProcedure
   .query(async ({ ctx: { userId, db } }) => {
     const result = await db
-      .select({ id: pendingAlbumsTable.albumId })
+      .select({ 
+        id: pendingAlbumsTable.albumId,
+        url: pendingAlbumsTable.albumUrl,
+      })
       .from(pendingAlbumsTable)
       .where(eq(pendingAlbumsTable.userId, userId))
       .orderBy(sql`random()`)

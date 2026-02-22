@@ -21,7 +21,7 @@ const PickRandomPendingAlbumBtn = () => {
       setNoAlbum(true);
     } else {
       setIsNavigating(true);
-      router.push(`/mobc/albums/${result.data.id}`);
+      router.push(`/mobc/albums/${result.data.id}?albumUrl=${encodeURIComponent(result.data.url)}`);
     }
   };
 
