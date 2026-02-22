@@ -1,9 +1,9 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc/trpc";
 import { buildPendingAlbumId, pendingAlbumsTable } from "../pending/pendingAlbums.schema";
-import { and, eq } from "drizzle-orm";
-import { favoritesAlbumsTable } from "../favorites/favoritesAlbums.schema";
-import build from "next/dist/build";
+import { eq } from "drizzle-orm";
+import { buildFavoriteAlbumId, favoritesAlbumsTable } from "../favorites/favoritesAlbums.schema";
+import { buildListenedAlbumId, listenedAlbumsTable } from "../listened/listenedAlbums.schema";
 
 export const getAlbumListsQuery = protectedProcedure
   .input(z.object({
@@ -20,12 +20,19 @@ export const getAlbumListsQuery = protectedProcedure
       .select()
       .from(favoritesAlbumsTable)
       .where(
-        eq(favoritesAlbumsTable.id, buildPendingAlbumId(albumId, userId)))
+        eq(favoritesAlbumsTable.id, buildFavoriteAlbumId(albumId, userId)))
+      .limit(1)).at(0);
+    const albumOnListened = (await db
+      .select()
+      .from(listenedAlbumsTable)
+      .where(
+        eq(listenedAlbumsTable.id, buildListenedAlbumId(albumId, userId)))
       .limit(1)).at(0);
     
     return {
       id:           albumId,
       onPending:    Boolean(albumOnPending),
       onFavorites:  Boolean(albumOnFavorites),
+      onListened:   Boolean(albumOnListened),
     }
   });

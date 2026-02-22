@@ -19,6 +19,7 @@ export default async function AlbumPage({
         albumId={albumId}
         initialOnPending={albumLists.onPending}
         initialOnFavorites={albumLists.onFavorites}
+        initialOnListened={albumLists.onListened}
       />
     </div>
   );

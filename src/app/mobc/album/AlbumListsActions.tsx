@@ -7,15 +7,18 @@ type AlbumListsActionsProps = {
   albumId: string;
   initialOnPending: boolean;
   initialOnFavorites: boolean;
+  initialOnListened: boolean;
 };
 
 const AlbumListsActions = ({
   albumId,
   initialOnPending,
   initialOnFavorites,
+  initialOnListened,
 }: AlbumListsActionsProps) => {
   const [onPending, setOnPending] = useState(initialOnPending);
   const [onFavorites, setOnFavorites] = useState(initialOnFavorites);
+  const [onListened, setOnListened] = useState(initialOnListened);
 
   const savePending = api.pending.save.useMutation({
     onSuccess() {
@@ -36,6 +39,17 @@ const AlbumListsActions = ({
   const removeFavorites = api.favorites.remove.useMutation({
     onSuccess() {
       setOnFavorites(false);
+    },
+  });
+
+  const saveListened = api.listened.save.useMutation({
+    onSuccess() {
+      setOnListened(true);
+    },
+  });
+  const removeListened = api.listened.remove.useMutation({
+    onSuccess() {
+      setOnListened(false);
     },
   });
 
@@ -60,6 +74,16 @@ const AlbumListsActions = ({
     }
     setOnFavorites(false);
     removeFavorites.mutate({ albumId }, { onError: () => setOnFavorites(true) });
+  };
+
+  const handleListenedChange = (checked: boolean) => {
+    if (checked) {
+      setOnListened(true);
+      saveListened.mutate({ albumId }, { onError: () => setOnListened(false) });
+      return;
+    }
+    setOnListened(false);
+    removeListened.mutate({ albumId }, { onError: () => setOnListened(true) });
   };
 
   return (
@@ -125,6 +149,39 @@ const AlbumListsActions = ({
           )}
           <span className="text-xs text-gray-500">
             {saveFavorites.isPending || removeFavorites.isPending
+              ? "Updating..."
+              : ""}
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between">
+          {saveListened.isPending || removeListened.isPending ? (
+            <div className="flex items-center gap-2 text-sm text-gray-700">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="h-4 w-4 animate-spin"
+              >
+                <circle cx="12" cy="12" r="9" opacity="0.25" />
+                <path d="M21 12a9 9 0 0 0-9-9" />
+              </svg>
+              Listened
+            </div>
+          ) : (
+            <label className="flex items-center gap-2 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                checked={onListened}
+                onChange={(event) => handleListenedChange(event.target.checked)}
+              />
+              Listened
+            </label>
+          )}
+          <span className="text-xs text-gray-500">
+            {saveListened.isPending || removeListened.isPending
               ? "Updating..."
               : ""}
           </span>
