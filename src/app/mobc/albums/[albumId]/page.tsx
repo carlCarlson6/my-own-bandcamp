@@ -10,8 +10,6 @@ export default async function AlbumPage({
   const { albumId } = await params;
   const albumLists = await api.albums.getLists({ albumId });
 
-  console.log("albumLists", albumLists);
-
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
       <BigAlbumPlayer albumId={albumId} />
