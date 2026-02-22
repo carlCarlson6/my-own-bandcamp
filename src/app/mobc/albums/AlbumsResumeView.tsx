@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { api } from "~/utils/trpc/server";
 import { SmallAlbumPlayer } from "./SmallAlbumPlayer";
+import PickRandomPendingAlbumBtn from "../pending/PickRandomAlbumBtn";
 
 const AlumbsResumeView = (
   { resume }: { resume: Awaited<ReturnType<typeof api.albums.getResume>> }
@@ -26,11 +27,14 @@ const AlumbsResumeView = (
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold mb-1">Your albums</h2>
-        <p className="text-sm text-gray-600">
-          Quick view of your lists. Click a section to open it.
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold mb-1">Your albums</h2>
+          <p className="text-sm text-gray-600">
+            Quick view of your lists. Click a section to open it.
+          </p>
+        </div>
+        <PickRandomPendingAlbumBtn />
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">

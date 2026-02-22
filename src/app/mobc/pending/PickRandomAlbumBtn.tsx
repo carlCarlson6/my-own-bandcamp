@@ -50,7 +50,7 @@ const PickRandomPendingAlbumBtn = () => {
         Pick random album
       </button>
       {noAlbum ? (
-        <p className="text-xs text-red-600">No album on pending.</p>
+        <p className="text-xs text-red-600">No albums on pending.</p>
       ) : null}
     </div>
   );
