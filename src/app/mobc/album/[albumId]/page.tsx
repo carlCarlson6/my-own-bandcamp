@@ -1,6 +1,6 @@
 import { api } from "~/utils/trpc/server";
 import BigAlbumPlayer from "../BigAlbumPlayer";
-import AlbumListActions from "../AlbumListActions";
+import AlbumListsActions from "../AlbumListsActions";
 
 export default async function AlbumPage({
   params,
@@ -10,9 +10,16 @@ export default async function AlbumPage({
   const { albumId } = await params;
   const albumLists = await api.albums.getLists({ albumId });
 
+  console.log("albumLists", albumLists);
+
   return (
-    <div className="flex flex-row gap-8 lg:flex-row lg:items-start">
+    <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
       <BigAlbumPlayer albumId={albumId} />
+      <AlbumListsActions
+        albumId={albumId}
+        initialOnPending={albumLists.onPending}
+        initialOnFavorites={albumLists.onFavorites}
+      />
     </div>
   );
 }

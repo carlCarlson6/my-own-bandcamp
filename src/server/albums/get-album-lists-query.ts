@@ -1,8 +1,9 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc/trpc";
-import { pendingAlbumsTable } from "../pending/pendingAlbums.schema";
+import { buildPendingAlbumId, pendingAlbumsTable } from "../pending/pendingAlbums.schema";
 import { and, eq } from "drizzle-orm";
 import { favoritesAlbumsTable } from "../favorites/favoritesAlbums.schema";
+import build from "next/dist/build";
 
 export const getAlbumListsQuery = protectedProcedure
   .input(z.object({
@@ -13,17 +14,13 @@ export const getAlbumListsQuery = protectedProcedure
       .select()
       .from(pendingAlbumsTable)
       .where(
-        and(
-          eq(pendingAlbumsTable.userId, userId),
-          eq(pendingAlbumsTable.id, albumId)))
+        eq(pendingAlbumsTable.id, buildPendingAlbumId(albumId, userId)))
       .limit(1)).at(0);
     const albumOnFavorites = (await db
       .select()
       .from(favoritesAlbumsTable)
       .where(
-        and(
-          eq(favoritesAlbumsTable.userId, userId),
-          eq(favoritesAlbumsTable.id, albumId)))
+        eq(favoritesAlbumsTable.id, buildPendingAlbumId(albumId, userId)))
       .limit(1)).at(0);
     
     return {
