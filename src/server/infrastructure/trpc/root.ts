@@ -3,6 +3,7 @@ import { createCallerFactory, createTRPCRouter } from "./trpc";
 import { pendingRouter } from "~/server/pending/router";
 import { favoritesRouter } from "~/server/favorites/router";
 import { albumsRouter } from "~/server/albums/router";
+import { listenedRouter } from "~/server/listened/router";
 
 
 /**
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   pending:    pendingRouter,
   favorites:  favoritesRouter,
   albums:     albumsRouter,
+  listened:   listenedRouter,
 });
 
 // export type definition of API

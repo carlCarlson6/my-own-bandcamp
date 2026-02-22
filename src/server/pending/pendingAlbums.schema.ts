@@ -9,7 +9,7 @@ export const pendingAlbumsTable = createTable(
     userId:   t.text().notNull(),
     addedAt:  t.timestamp().defaultNow().notNull(),
   }),
-    (t) => ([
+  (t) => ([
     index("idx_pending_albums_user_id").on(t.userId)
   ])
 );
