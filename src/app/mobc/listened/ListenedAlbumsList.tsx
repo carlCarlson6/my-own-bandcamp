@@ -15,22 +15,22 @@ const ListenedAlbumsList = ({
       </p>
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
         {albums.map((album) => (
-          <ListenedAlbumCard key={album.id} albumId={album.id} />
+          <ListenedAlbumCard key={album.id} id={album.id} url={album.url} />
         ))}
       </div>
     </div>
   );
 };
 
-const ListenedAlbumCard = ({ albumId }: { albumId: string }) => {
+const ListenedAlbumCard = ({ id, url }: { id: string, url: string }) => {
   return (
     <div className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl">
-      <SmallAlbumPlayer albumId={albumId} />
+      <SmallAlbumPlayer albumId={id} />
 
       <div className="p-4 flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <GoToAlbumBtn albumId={albumId} />
-          <DeleteListenedAlbumButton albumId={albumId} />
+          <GoToAlbumBtn albumId={id} url={url} />
+          <DeleteListenedAlbumButton albumId={id} />
         </div>
       </div>
     </div>

@@ -6,7 +6,8 @@ import { eq } from "drizzle-orm";
 export const saveToPendingMutation = protectedProcedure
   .input(z.object({
     album: z.object({
-      id: z.string().min(1),
+      id:   z.string().min(1),
+      url: z.string().min(1).url()
   })}))
   .mutation(async ({ ctx: { userId, db }, input: { album } }) => {
     const existing = await db.select()
@@ -20,6 +21,7 @@ export const saveToPendingMutation = protectedProcedure
       .values({
         id:       buildPendingAlbumId(album.id, userId),
         albumId:  album.id,
+        albumUrl: album.url,
         userId:   userId
       });
   });

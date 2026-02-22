@@ -7,7 +7,8 @@ export const getFavoriteAlbumsQuery = protectedProcedure
     ({ ctx: { db, userId } }
   ) => db
     .select({
-      id: favoritesAlbumsTable.albumId 
+      id:   favoritesAlbumsTable.albumId,
+      url:  favoritesAlbumsTable.albumUrl
     })
     .from(favoritesAlbumsTable)
     .where(eq(favoritesAlbumsTable.userId, userId))

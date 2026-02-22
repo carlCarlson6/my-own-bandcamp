@@ -11,22 +11,22 @@ const PendingAlbumsList = ({ albums }: { albums: Awaited<ReturnType<typeof api.p
       </p>
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
         {albums.map((album) => (
-          <PendingAlbumCard key={album.id} albumId={album.id} />
+          <PendingAlbumCard key={album.id} id={album.id} url={album.url} />
         ))}
       </div>
     </div>
   );
 }
 
-const PendingAlbumCard = ({ albumId }: { albumId: string }) => {
+const PendingAlbumCard = ({ id, url }: { id: string, url: string }) => {
   return (
     <div className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl">
-      <SmallAlbumPlayer albumId={albumId} />
+      <SmallAlbumPlayer albumId={id} />
 
       <div className="p-4 flex flex-col gap-2">      
         <div className="flex items-center justify-between">
-          <GoToAlbumBtn albumId={albumId} url={undefined} />
-          <DeletePendingAlbumButton albumId={albumId} />
+          <GoToAlbumBtn albumId={id} url={url} />
+          <DeletePendingAlbumButton albumId={id} />
         </div>
 
       </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { api } from "~/utils/trpc/server";
+import type { api } from "~/utils/trpc/server";
 import { SmallAlbumPlayer } from "./SmallAlbumPlayer";
 import PickRandomPendingAlbumBtn from "../pending/PickRandomAlbumBtn";
 

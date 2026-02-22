@@ -1,7 +1,6 @@
 import { sql, eq } from "drizzle-orm";
 import { protectedProcedure } from "../infrastructure/trpc/trpc";
 import { pendingAlbumsTable } from "./pendingAlbums.schema";
-import { redirect } from "next/navigation";
 
 export const pickRandomPendingAlbumQuery = protectedProcedure
   .query(async ({ ctx: { userId, db } }) => {

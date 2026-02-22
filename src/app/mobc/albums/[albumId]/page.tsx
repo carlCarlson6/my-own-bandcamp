@@ -7,7 +7,7 @@ export default async function AlbumPage({
   params, searchParams
 }: {
   params: Promise<{ albumId: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const albumUrl = (await searchParams).albumUrl as string;
   const inspectResult =  await api.albums.inspect(albumUrl);
@@ -20,7 +20,8 @@ export default async function AlbumPage({
       <BigAlbumPlayer albumId={albumId} />
       <div className="flex flex-col gap-6 w-full lg:w-auto">
         <AlbumListsActions
-          albumId={albumId}
+          id={albumId}
+          url={albumUrl}
           initialOnPending={albumLists.onPending}
           initialOnFavorites={albumLists.onFavorites}
           initialOnListened={albumLists.onListened}

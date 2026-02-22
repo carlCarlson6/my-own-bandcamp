@@ -73,21 +73,21 @@ type AlbumSearchResult = {
   url: string;
 }
 
-const AlbumResultCard = ({ album: { id, url } }: { album: AlbumSearchResult  }) => { 
+const AlbumResultCard = ({ album }: { album: AlbumSearchResult  }) => { 
   return (
     <div
       className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl"
     >
-      <SmallAlbumPlayer albumId={id} />
+      <SmallAlbumPlayer albumId={album.id} />
       <div className="p-4">
-        <SaveAlbumResultBtn albumId={id} />
-        <GoToAlbumBtn albumId={id} url={url} />
+        <SaveAlbumResultBtn album={album} />
+        <GoToAlbumBtn albumId={album.id} url={album.url} />
       </div>
     </div>
   );
 }
 
-const SaveAlbumResultBtn = ({ albumId }: { albumId : string }) => {
+const SaveAlbumResultBtn = ({ album: { id, url } }: { album: AlbumSearchResult  }) => {
   const [isSaved, setIsSaved] = useState(false);
   const { mutate, isPending } = api.pending.save.useMutation({
     onSuccess() {
@@ -99,9 +99,7 @@ const SaveAlbumResultBtn = ({ albumId }: { albumId : string }) => {
   });
   const execute = () =>
     mutate({
-      album: {
-        id: albumId
-      },
+      album: { id, url },
     });
   
   return (

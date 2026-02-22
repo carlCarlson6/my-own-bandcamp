@@ -4,20 +4,24 @@ import { buildListenedAlbumId, listenedAlbumsTable } from "./listenedAlbums.sche
 import { eq } from "drizzle-orm";
 
 export const saveToListenedMutation = protectedProcedure
-  .input(z.object({ albumId: z.string() }))
-  .mutation(async ({ input: { albumId }, ctx: { db, userId } }) => {
+  .input(z.object({ 
+    id: z.string().min(1),
+    url: z.string().min(1).url()
+  }))
+  .mutation(async ({ input: { id, url }, ctx: { db, userId } }) => {
     const existing = await db.select()
       .from(listenedAlbumsTable)
       .where(
-        eq(listenedAlbumsTable.id, buildListenedAlbumId(albumId, userId))
+        eq(listenedAlbumsTable.id, buildListenedAlbumId(id, userId))
       );
     if (existing.length > 0) return;
 
     await db
       .insert(listenedAlbumsTable)
       .values({
-        id:       buildListenedAlbumId(albumId, userId),
-        albumId:  albumId,
+        id:       buildListenedAlbumId(id, userId),
+        albumId:  id,
+        albumUrl: url,
         userId:   userId
       });
   });

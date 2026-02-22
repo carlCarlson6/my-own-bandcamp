@@ -5,8 +5,9 @@ export const listenedAlbumsTable = createTable(
   "listened_albums", 
   (t) => ({
     id:       t.text().primaryKey(),
-    userId:   t.text().notNull(),
     albumId:  t.text().notNull(),
+    albumUrl: t.text().notNull(),
+    userId:   t.text().notNull(),
     addedAt:  t.timestamp().defaultNow().notNull(),
   }), 
   (t) => ([

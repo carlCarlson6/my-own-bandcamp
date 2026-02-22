@@ -4,17 +4,15 @@ import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 
 type AlbumListsActionsProps = {
-  albumId: string;
+  id: string;
+  url: string;
   initialOnPending: boolean;
   initialOnFavorites: boolean;
   initialOnListened: boolean;
 };
 
 const AlbumListsActions = ({
-  albumId,
-  initialOnPending,
-  initialOnFavorites,
-  initialOnListened,
+  id, url, initialOnPending, initialOnFavorites,initialOnListened,
 }: AlbumListsActionsProps) => {
   const [onPending, setOnPending] = useState(initialOnPending);
   const [onFavorites, setOnFavorites] = useState(initialOnFavorites);
@@ -57,33 +55,33 @@ const AlbumListsActions = ({
     if (checked) {
       setOnPending(true);
       savePending.mutate(
-        { album: { id: albumId } },
+        { album: { id, url } },
         { onError: () => setOnPending(false) },
       );
       return;
     }
     setOnPending(false);
-    removePending.mutate({ albumId }, { onError: () => setOnPending(true) });
+    removePending.mutate({ albumId: id }, { onError: () => setOnPending(true) });
   };
 
   const handleFavoritesChange = (checked: boolean) => {
     if (checked) {
       setOnFavorites(true);
-      saveFavorites.mutate({ albumId }, { onError: () => setOnFavorites(false) });
+      saveFavorites.mutate({ id, url }, { onError: () => setOnFavorites(false) });
       return;
     }
     setOnFavorites(false);
-    removeFavorites.mutate({ albumId }, { onError: () => setOnFavorites(true) });
+    removeFavorites.mutate({ albumId: id }, { onError: () => setOnFavorites(true) });
   };
 
   const handleListenedChange = (checked: boolean) => {
     if (checked) {
       setOnListened(true);
-      saveListened.mutate({ albumId }, { onError: () => setOnListened(false) });
+      saveListened.mutate({ id, url }, { onError: () => setOnListened(false) });
       return;
     }
     setOnListened(false);
-    removeListened.mutate({ albumId }, { onError: () => setOnListened(true) });
+    removeListened.mutate({ albumId: id }, { onError: () => setOnListened(true) });
   };
 
   return (

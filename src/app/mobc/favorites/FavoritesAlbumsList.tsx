@@ -15,22 +15,22 @@ const FavoritesAlbumsList = ({
       </p>
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
         {albums.map((album) => (
-          <FavoritesAlbumCard key={album.id} albumId={album.id} />
+          <FavoritesAlbumCard key={album.id} id={album.id} url={album.url} />
         ))}
       </div>
     </div>
   );
 };
 
-const FavoritesAlbumCard = ({ albumId }: { albumId: string }) => {
+const FavoritesAlbumCard = ({ id, url }: { id: string, url: string }) => {
   return (
     <div className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl">
-      <SmallAlbumPlayer albumId={albumId} />
+      <SmallAlbumPlayer albumId={id} />
 
       <div className="p-4 flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <GoToAlbumBtn albumId={albumId} />
-          <DeleteFavoriteAlbumButton albumId={albumId} />
+          <GoToAlbumBtn albumId={id} url={url} />
+          <DeleteFavoriteAlbumButton albumId={id} />
         </div>
       </div>
     </div>

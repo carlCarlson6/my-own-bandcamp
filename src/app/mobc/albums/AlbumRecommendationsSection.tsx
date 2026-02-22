@@ -47,7 +47,7 @@ const RecommendationCard = ({
     <div className="overflow-hidden rounded-lg border transition-shadow hover:shadow-lg">
       <SmallAlbumPlayer albumId={albumId} />
       <div className="p-2 flex flex-col items-center gap-1">
-        <SaveRecommendationBtn albumId={albumId} />
+        <SaveRecommendationBtn albumId={albumId} url={url} />
         <a
           href={`/mobc/albums/${albumId}?albumUrl=${encodeURIComponent(url ?? "")}`}
           className="rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700"
@@ -59,7 +59,7 @@ const RecommendationCard = ({
   );
 };
 
-const SaveRecommendationBtn = ({ albumId }: { albumId: string }) => {
+const SaveRecommendationBtn = ({ albumId, url }: { albumId: string, url: string }) => {
   const [isSaved, setIsSaved] = useState(false);
   const { mutate, isPending } = api.pending.save.useMutation({
     onSuccess() {
@@ -74,6 +74,7 @@ const SaveRecommendationBtn = ({ albumId }: { albumId: string }) => {
     mutate({
       album: {
         id: albumId,
+        url: url,
       },
     });
 

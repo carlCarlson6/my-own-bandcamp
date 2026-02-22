@@ -6,6 +6,7 @@ export const pendingAlbumsTable = createTable(
   (t) => ({
     id:       t.text().primaryKey(),
     albumId:  t.text().notNull(),
+    albumUrl: t.text().notNull(),
     userId:   t.text().notNull(),
     addedAt:  t.timestamp().defaultNow().notNull(),
   }),
