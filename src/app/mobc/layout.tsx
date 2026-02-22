@@ -14,7 +14,9 @@ export default async function MainUserLayout({
     <>
       <header className="fixed top-0 right-0 left-0 z-50 border-b bg-white/70 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-          <h1 className="text-2xl font-bold">My Own Bandcamp</h1>
+          <a href="/mobc">
+            <h1 className="text-2xl font-bold">My Own Bandcamp</h1>
+          </a>
           <UserButton />
         </div>
       </header>

@@ -1,6 +1,7 @@
 import type { api } from "~/utils/trpc/server";
-import { SmallAlbumPlayer } from "../album/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "../albums/SmallAlbumPlayer";
 import DeleteListenedAlbumButton from "./DeleteListenedAlbumButton";
+import GoToAlbumBtn from "../albums/GoToAlbumBtn";
 
 const ListenedAlbumsList = ({
   albums,
@@ -28,12 +29,7 @@ const ListenedAlbumCard = ({ albumId }: { albumId: string }) => {
 
       <div className="p-4 flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <a
-            href={`/mobc/album/${albumId}`}
-            className="rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700"
-          >
-            go to album
-          </a>
+          <GoToAlbumBtn albumId={albumId} />
           <DeleteListenedAlbumButton albumId={albumId} />
         </div>
       </div>

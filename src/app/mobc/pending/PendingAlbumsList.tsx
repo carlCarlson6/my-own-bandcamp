@@ -1,6 +1,7 @@
 import type { api } from "~/utils/trpc/server";
-import { SmallAlbumPlayer } from "../album/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "../albums/SmallAlbumPlayer";
 import DeletePendingAlbumButton from "./DeletePedingAlbumButton";
+import GoToAlbumBtn from "../albums/GoToAlbumBtn";
 
 const PendingAlbumsList = ({ albums }: { albums: Awaited<ReturnType<typeof api.pending.getAll>> }) => {
   return (
@@ -24,10 +25,8 @@ const PendingAlbumCard = ({ albumId }: { albumId: string }) => {
 
       <div className="p-4 flex flex-col gap-2">      
         <div className="flex items-center justify-between">
-          <a href={`/mobc/album/${albumId}`} className="rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">
-            go to album
-          </a>
-         <DeletePendingAlbumButton albumId={albumId} />
+          <GoToAlbumBtn albumId={albumId} />
+          <DeletePendingAlbumButton albumId={albumId} />
         </div>
 
       </div>

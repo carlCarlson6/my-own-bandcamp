@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
-import { SmallAlbumPlayer } from "../album/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "../albums/SmallAlbumPlayer";
+import GoToAlbumBtn from "../albums/GoToAlbumBtn";
 
 export default function SearchAlbumsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -75,9 +76,7 @@ const AlbumResultCard = ({ albumId }: { albumId: string}) => {
       <SmallAlbumPlayer albumId={albumId} />
       <div className="p-4">
         <SaveAlbumResultBtn albumId={albumId} />
-        <a href={`/mobc/album/${albumId}`} className="mt-3 inline-block rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">
-          Go to album
-        </a>
+        <GoToAlbumBtn albumId={albumId} />
       </div>
     </div>
   );
