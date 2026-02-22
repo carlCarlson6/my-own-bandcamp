@@ -24,6 +24,7 @@ export default async function MainUserLayout({
       <div className="mx-auto flex min-h-screen w-full max-w-6xl pt-16">
         <aside className="sticky top-16 h-[calc(100vh-4rem)] w-64 border-r p-6">
           <nav className="flex flex-col gap-2">
+            <NavLink href="/mobc" text="Your albums" />
             <NavLink href="/mobc/search" text="Search albums" />
             <NavLink href="/mobc/pending" text="Pending albums" />
             <NavLink href="/mobc/favorites" text="Favorite albums" />
