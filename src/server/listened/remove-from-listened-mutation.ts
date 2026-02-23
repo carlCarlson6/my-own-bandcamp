@@ -4,7 +4,7 @@ import { buildListenedAlbumId, listenedAlbumsTable } from "./listenedAlbums.sche
 import z from "zod";
 
 export const removeAlbumFromListenedMutation = protectedProcedure
-  .input(z.object({ albumId: z.string() }))
+  .input(z.object({ albumId: z.string().min(1) }))
   .mutation(async (
     { input: { albumId }, ctx: { db, userId } }
   ) => {

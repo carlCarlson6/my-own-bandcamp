@@ -20,7 +20,7 @@ export const saveToFavoritesMutation = protectedProcedure
       .values({
         id:       buildFavoriteAlbumId(id, userId),
         albumId:  id,
-        albumUrl:      url,
+        albumUrl: url,
         userId:   userId
       });
   });
