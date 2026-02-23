@@ -3,8 +3,10 @@ import { publicProcedure } from "../infrastructure/trpc/trpc";
 import * as cheerio from 'cheerio';
 
 export const inspectAlbumQuery = publicProcedure
-  .input(z.string().min(1).url())
-  .query(async ({ input: albumUrl }) => {
+  .input(z.object({
+      albumUrl: z.string().min(1).url()
+  }))
+  .query(async ({ input: { albumUrl } }) => {
     const response = await fetch(albumUrl);
     const data = await response.text();
     return inspectAlbum(data);

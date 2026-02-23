@@ -2,17 +2,20 @@ import { api } from "~/utils/trpc/server";
 import BigAlbumPlayer from "../BigAlbumPlayer";
 import AlbumListsActions from "../AlbumListsActions";
 import AlbumRecommendationsSection from "../AlbumRecommendationsSection";
+import z from "zod";
 
 export default async function AlbumPage({
-  params, searchParams
+  params
 }: {
-  params: Promise<{ albumId: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  params: Promise<{ albumData: string }>;
 }) {
-  const albumUrl = (await searchParams).albumUrl as string;
-  const inspectResult =  await api.albums.inspect(albumUrl);
-  
-  const { albumId } = await params;
+  const { albumData } = await params;
+  const { albumId, albumUrl } = z.object({
+    albumId: z.string(),
+    albumUrl: z.string()
+  }).parse(JSON.parse(Buffer.from(decodeURIComponent(albumData), 'base64').toString('utf-8')));
+
+  const inspectResult =  await api.albums.inspect({ albumUrl });
   const albumLists = await api.albums.getLists({ albumId });
 
   return (

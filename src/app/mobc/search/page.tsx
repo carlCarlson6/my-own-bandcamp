@@ -81,7 +81,7 @@ const AlbumResultCard = ({ album }: { album: AlbumSearchResult  }) => {
       <SmallAlbumPlayer albumId={album.id} />
       <div className="p-4">
         <SaveAlbumResultBtn album={album} />
-        <GoToAlbumBtn albumId={album.id} url={album.url} />
+        <GoToAlbumBtn albumId={album.id} albumUrl={album.url} />
       </div>
     </div>
   );
