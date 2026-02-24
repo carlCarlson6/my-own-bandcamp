@@ -1,5 +1,5 @@
 const GoToAlbumBtn = (album: { albumId: string, albumUrl: string }) => {
-  const encodedData = Buffer.from(JSON.stringify(album), 'utf-8').toString('base64');
+  const encodedData = encodeAlbumData(album);
   return (
     <a
       href={`/mobc/albums/${encodedData}`}
@@ -9,5 +9,9 @@ const GoToAlbumBtn = (album: { albumId: string, albumUrl: string }) => {
     </a>
   );
 };
+
+export const encodeAlbumData = (album: { albumId: string, albumUrl: string }) => {
+  return Buffer.from(JSON.stringify(album), 'utf-8').toString('base64');
+}
 
 export default GoToAlbumBtn;

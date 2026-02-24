@@ -2,10 +2,12 @@
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 import { SmallAlbumPlayer } from "../albums/SmallAlbumPlayer";
-import GoToAlbumBtn from "../albums/GoToAlbumBtn";
+import GoToAlbumBtn, { encodeAlbumData } from "../albums/GoToAlbumBtn";
+import { redirect, useRouter } from "next/navigation";
 
 export default function SearchAlbumsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
   const {
     data: results,
@@ -18,6 +20,11 @@ export default function SearchAlbumsPage() {
     }
   );
 
+  if (results && results.dataOrigin === "from-url") { 
+    const data = encodeAlbumData({ albumId: results.album.id, albumUrl: results.album.url });
+    redirect(`/mobc/albums/${data}`);
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -27,7 +34,7 @@ export default function SearchAlbumsPage() {
         <input
           id="search"
           type="text"
-          placeholder="Enter album name or artist..."
+          placeholder="Enter album name, artist or paste a bandcamp album URL..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="mt-2 w-full rounded-md border px-4 py-2 outline-none focus:border-blue-500"
@@ -44,13 +51,13 @@ export default function SearchAlbumsPage() {
         <div className="text-center text-gray-500">Loading...</div>
       )}
 
-      {results && results.length > 0 ? (
+      {results && results.dataOrigin === "from-search" && results.albums.length > 0 ? (
         <div>
           <p className="mb-6 text-sm font-medium text-gray-600">
-            Found {results.length} result{results.length !== 1 ? "s" : ""}
+            Found {results.albums.length} result{results.albums.length !== 1 ? "s" : ""}
           </p>
           <div className="grid gap-6 grid-cols-2 lg:grid-cols-3">
-            {results.map((album, idx) => (
+            {results.albums.map((album, idx) => (
                 <AlbumResultCard 
                   key={idx}
                   album={album}

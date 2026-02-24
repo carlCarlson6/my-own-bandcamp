@@ -12,9 +12,13 @@ export const inspectAlbumQuery = publicProcedure
     return inspectAlbum(data);
   });
 
-const inspectAlbum = (html: string) => {
+export const inspectAlbum = (html: string) => {
   const $ = cheerio.load(html);
 
+  const pcPageProperties = z.object({
+    item_id: z.number().min(1),
+  }).parse(JSON.parse($('meta[name="bc-page-properties"]').attr('content') ?? '{}'));
+  
   const recomendations: { 
     id: string;
     url: string;
@@ -33,7 +37,8 @@ const inspectAlbum = (html: string) => {
 
   console.log(recomendations);
 
-  return { 
+  return {
+    albumId: `${pcPageProperties.item_id}`,
     recomendations
   };
 }
