@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 import { SmallAlbumPlayer } from "./SmallAlbumPlayer";
+import GoToAlbumBtn from "./GoToAlbumBtn";
 
 type Recommendation = {
   id: string;
@@ -48,12 +49,7 @@ const RecommendationCard = ({
       <SmallAlbumPlayer albumId={albumId} />
       <div className="p-2 flex flex-col items-center gap-1">
         <SaveRecommendationBtn albumId={albumId} url={url} />
-        <a
-          href={`/mobc/albums/${albumId}?albumUrl=${encodeURIComponent(url ?? "")}`}
-          className="rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700"
-        >
-          Go to album
-        </a>
+        <GoToAlbumBtn albumId={albumId} albumUrl={url} />
       </div>
     </div>
   );

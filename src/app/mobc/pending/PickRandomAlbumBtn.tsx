@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
+import { encodeAlbumData } from "../albums/GoToAlbumBtn";
 
 const PickRandomPendingAlbumBtn = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const PickRandomPendingAlbumBtn = () => {
       setNoAlbum(true);
     } else {
       setIsNavigating(true);
-      router.push(`/mobc/albums/${result.data.id}?albumUrl=${encodeURIComponent(result.data.url)}`);
+      router.push(`/mobc/albums/${encodeAlbumData({ albumId: result.data.id, albumUrl: result.data.url })}`);
     }
   };
 
