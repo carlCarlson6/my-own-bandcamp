@@ -3,11 +3,10 @@ import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 import { SmallAlbumPlayer } from "../albums/SmallAlbumPlayer";
 import GoToAlbumBtn, { encodeAlbumData } from "../albums/GoToAlbumBtn";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default function SearchAlbumsPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const router = useRouter();
 
   const {
     data: results,
@@ -20,7 +19,7 @@ export default function SearchAlbumsPage() {
     }
   );
 
-  if (results && results.dataOrigin === "from-url") { 
+  if (results?.dataOrigin === "from-url") { 
     const data = encodeAlbumData({ albumId: results.album.id, albumUrl: results.album.url });
     redirect(`/mobc/albums/${data}`);
   }
@@ -51,7 +50,7 @@ export default function SearchAlbumsPage() {
         <div className="text-center text-gray-500">Loading...</div>
       )}
 
-      {results && results.dataOrigin === "from-search" && results.albums.length > 0 ? (
+      {results?.dataOrigin === "from-search" && results.albums.length > 0 ? (
         <div>
           <p className="mb-6 text-sm font-medium text-gray-600">
             Found {results.albums.length} result{results.albums.length !== 1 ? "s" : ""}

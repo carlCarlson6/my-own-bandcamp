@@ -2,7 +2,6 @@ import z from "zod";
 import { publicProcedure } from "../infrastructure/trpc/trpc";
 import * as cheerio from 'cheerio';
 import { inspectAlbum } from "./inspect-album-query";
-import { read } from "fs";
 
 export const searchAlbumsQuery = publicProcedure
   .input(z.object({
