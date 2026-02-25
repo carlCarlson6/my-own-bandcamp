@@ -59,7 +59,7 @@ const AlumbsResumeView = (
               <p className="text-sm text-gray-500">No albums yet.</p>
             ) : (
               <div className="grid grid-cols-3 gap-2">
-                {section.items.slice(0, 3).map((album) => (
+                {section.items.map((album) => (
                   <div key={album.id} className="overflow-hidden rounded-md border">
                     <SmallAlbumPlayer albumId={album.id} />
                   </div>
