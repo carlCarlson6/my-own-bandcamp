@@ -5,23 +5,26 @@ import { SmallAlbumPlayer } from "./SmallAlbumPlayer";
 import PickRandomPendingAlbumBtn from "../pending/PickRandomAlbumBtn";
 
 const AlumbsResumeView = (
-  { resume }: { resume: Awaited<ReturnType<typeof api.albums.getResume>> }
+  { resume: { pending, favorites, listened } }: { resume: Awaited<ReturnType<typeof api.albums.getResume>> }
 ) => {
   const sections = [
     {
       title: "Pending",
       href: "/mobc/pending",
-      items: resume.pending,
+      items: pending.albums,
+      count: pending.count
     },
     {
       title: "Favorites",
       href: "/mobc/favorites",
-      items: resume.favorites,
+      items: favorites.albums,
+      count: favorites.count
     },
     {
       title: "Listened",
       href: "/mobc/listened",
-      items: resume.listened,
+      items: listened.albums,
+      count: listened.count
     },
   ];
 
@@ -48,7 +51,7 @@ const AlumbsResumeView = (
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-lg font-semibold">{section.title}</h3>
               <span className="text-sm text-gray-600">
-                {section.items.length}
+                {section.count} {section.count === 1 ? "album" : "albums"}
               </span>
             </div>
 
