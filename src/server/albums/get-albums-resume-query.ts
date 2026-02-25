@@ -1,4 +1,4 @@
-import { eq, count } from "drizzle-orm";
+import { eq, count, sql } from "drizzle-orm";
 import { favoritesAlbumsTable } from "../favorites/favoritesAlbums.schema";
 import { protectedProcedure } from "../infrastructure/trpc/trpc";
 import { listenedAlbumsTable } from "../listened/listenedAlbums.schema";
@@ -20,6 +20,7 @@ export const getPendingAlbums = async (db: Db, userId: string) => {
     })
     .from(pendingAlbumsTable)
     .where(eq(pendingAlbumsTable.userId, userId))
+    .orderBy(sql`random()`)
     .limit(15);
   const pendinAlbumsCount = await db
     .select({
@@ -41,6 +42,7 @@ export const getFavoritesAlbums = async (db: Db, userId: string) => {
     })
     .from(favoritesAlbumsTable)
     .where(eq(favoritesAlbumsTable.userId, userId))
+    .orderBy(sql`random()`)
     .limit(15);
   const favoritesAlbumsCount = await db
     .select({
@@ -62,6 +64,7 @@ export const getListenedAlbums = async (db: Db, userId: string) => {
     })
     .from(listenedAlbumsTable)
     .where(eq(listenedAlbumsTable.userId, userId))
+    .orderBy(sql`random()`)
     .limit(15);
   const listenedAlbumsCount = await db
     .select({
