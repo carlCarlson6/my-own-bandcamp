@@ -14,12 +14,14 @@ export const userPlaylistsTable = createTable(
   ])
 );
 
+// TODO - add posibility to set the albums order in the playlist, for now we will order by addedAt
 export const playlistAlbumsTable = createTable(
   "playlist_albums",
   (t) => ({
     id:         t.text().primaryKey(),
     playlistId: t.text().notNull(),
     albumId:    t.text().notNull(),
+    albumUrl:   t.text().notNull(),
     addedAt:    t.timestamp().defaultNow().notNull(),
   }),
   (t) => ([
