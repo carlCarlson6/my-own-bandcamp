@@ -1,6 +1,6 @@
 import { eq, count, sql } from "drizzle-orm";
 import { favoritesAlbumsTable } from "../favorites/favoritesAlbums.schema";
-import { protectedProcedure } from "../infrastructure/trpc/trpc";
+import { protectedProcedure } from "../infrastructure/trpc";
 import { listenedAlbumsTable } from "../listened/listenedAlbums.schema";
 import { pendingAlbumsTable } from "../pending/pendingAlbums.schema";
 import type { Db } from "../infrastructure/db";

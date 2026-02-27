@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { protectedProcedure } from "../infrastructure/trpc/trpc";
+import { protectedProcedure } from "../infrastructure/trpc";
 import { pendingAlbumsTable } from "./pendingAlbums.schema";
 
 export const getPendingAlbumsQuery = protectedProcedure

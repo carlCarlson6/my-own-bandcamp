@@ -1,4 +1,4 @@
-import { createTRPCRouter } from "../infrastructure/trpc/trpc";
+import { createTRPCRouter } from "../infrastructure/trpc";
 import { getAlbumListsQuery } from "./get-album-lists-query";
 import { getAlumbsResumeQuery } from "./get-albums-resume-query";
 import { searchAlbumsQuery } from "./search-albums-query";

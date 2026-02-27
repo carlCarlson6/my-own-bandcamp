@@ -1,5 +1,5 @@
 import z from "zod";
-import { protectedProcedure } from "../infrastructure/trpc/trpc";
+import { protectedProcedure } from "../infrastructure/trpc";
 import { buildPendingAlbumId, pendingAlbumsTable } from "./pendingAlbums.schema";
 import { eq } from "drizzle-orm";
 
