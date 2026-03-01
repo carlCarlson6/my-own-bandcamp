@@ -29,3 +29,7 @@ export const playlistAlbumsTable = createTable(
     index("idx_playlist_albums_playlist_id").on(t.playlistId)
   ])
 );
+
+export const buildPlaylistItemId = (
+  { playlistId, albumId, userId }: { playlistId: string, albumId: string, userId: string }
+) => `${playlistId}__${albumId}__${userId}`;

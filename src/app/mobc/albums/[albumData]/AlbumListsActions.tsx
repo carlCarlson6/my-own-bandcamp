@@ -1,6 +1,5 @@
 "use client";
 
-import { is } from "drizzle-orm";
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 
@@ -124,7 +123,7 @@ const useAlbumListsActions = ({
       return;
     }
     removeUserList.mutate(
-      { playlistId, listItemId: id },
+      { playlistId, albumId: id },
       {
         onError: () => {
           const list = onUserLists.find((list) => list.playlistId === playlistId);

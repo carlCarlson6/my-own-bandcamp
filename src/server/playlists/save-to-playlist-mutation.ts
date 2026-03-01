@@ -1,6 +1,6 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc";
-import { playlistAlbumsTable } from "./playlists.schema";
+import { buildPlaylistItemId, playlistAlbumsTable } from "./playlists.schema";
 import { randomUUID } from "crypto";
 
 export const saveToPlaylistMutation = protectedProcedure
@@ -13,7 +13,11 @@ export const saveToPlaylistMutation = protectedProcedure
   }))
   .mutation(async ({ input: { album, playlistId }, ctx: { userId, db } }) => {
     await db.insert(playlistAlbumsTable).values({
-      id: randomUUID(),
+      id: buildPlaylistItemId({
+        playlistId,
+        albumId: album.id,
+        userId
+      }),
       playlistId,
       albumId: album.id,
       albumUrl: album.url,

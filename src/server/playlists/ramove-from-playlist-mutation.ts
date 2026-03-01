@@ -1,23 +1,21 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc";
-import { playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
-import { and, eq } from "drizzle-orm";
+import { buildPlaylistItemId, playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
+import { eq } from "drizzle-orm";
 
 export const ramoveFromPlaylistMutation = protectedProcedure
   .input(z.object({
     playlistId: z.string(),
-    listItemId:    z.string(),
+    albumId: z.string(),
   }))
-  .mutation(async ({ ctx: { userId, db }, input: { playlistId, listItemId } }) => {
+  .mutation(async ({ ctx: { userId, db }, input: { playlistId, albumId } }) => {
     const toDeleteItem = (await db
       .select()
       .from(playlistAlbumsTable)
       .where(
-        and(
-          eq(playlistAlbumsTable.playlistId, playlistId),
-          eq(playlistAlbumsTable.id, listItemId),
-          eq(playlistAlbumsTable.userId, userId)
-        )
+        eq(
+          playlistAlbumsTable.id, 
+          buildPlaylistItemId({ playlistId, albumId, userId }))
       )
       .limit(1))
       .at(0);
@@ -25,7 +23,7 @@ export const ramoveFromPlaylistMutation = protectedProcedure
 
     const result = await db      
       .delete(playlistAlbumsTable)
-      .where(eq(playlistAlbumsTable.id, listItemId));
+      .where(eq(playlistAlbumsTable.id, toDeleteItem.id));
 
     if (result.count !== 1) {
       throw new Error("Failed to remove album from playlist");
