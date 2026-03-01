@@ -12,16 +12,16 @@ export const saveToPlaylistMutation = protectedProcedure
     playlistId: z.string()
   }))
   .mutation(async ({ input: { album, playlistId }, ctx: { userId, db } }) => {
-    const playlist = await db
-      .select({ id: userPlaylistsTable.id })
+    const rows = await db
+      .select()
       .from(userPlaylistsTable)
       .where(and(
         eq(userPlaylistsTable.id, playlistId),
         eq(userPlaylistsTable.userId, userId)
       ))
-      .limit(1)
-      .then(rows => rows.at(0));
+      .limit(1);
 
+    const playlist = rows.at(0);
     if (!playlist) throw new Error("Playlist not found or access denied");
 
     await db.insert(playlistAlbumsTable).values({
