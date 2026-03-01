@@ -1,4 +1,5 @@
 import z from "zod";
+import { TRPCError } from "@trpc/server";
 import { eq, and } from "drizzle-orm";
 import { protectedProcedure } from "../infrastructure/trpc";
 import { buildPlaylistItemId, playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
@@ -22,7 +23,7 @@ export const saveToPlaylistMutation = protectedProcedure
       .limit(1);
 
     const playlist = rows.at(0);
-    if (!playlist) throw new Error("Playlist not found or access denied");
+    if (!playlist) throw new TRPCError({ code: "NOT_FOUND", message: "Playlist not found or access denied" });
 
     await db.insert(playlistAlbumsTable).values({
       id: buildPlaylistItemId({
