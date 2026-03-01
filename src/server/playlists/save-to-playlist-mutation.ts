@@ -13,17 +13,15 @@ export const saveToPlaylistMutation = protectedProcedure
     playlistId: z.string()
   }))
   .mutation(async ({ input: { album, playlistId }, ctx: { userId, db } }) => {
-    const rows = await db
+    const playlist = (await db
       .select()
       .from(userPlaylistsTable)
-      .where(and(
-        eq(userPlaylistsTable.id, playlistId),
-        eq(userPlaylistsTable.userId, userId)
-      ))
-      .limit(1);
-
-    const playlist = rows.at(0);
-    if (!playlist) throw new TRPCError({ code: "NOT_FOUND", message: "Playlist not found or access denied" });
+      .where(and(eq(userPlaylistsTable.id, playlistId), eq(userPlaylistsTable.userId, userId)))
+      .limit(1))
+      .at(0);
+    if (!playlist) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "Playlist not found" });
+    }
 
     await db.insert(playlistAlbumsTable).values({
       id: buildPlaylistItemId({
