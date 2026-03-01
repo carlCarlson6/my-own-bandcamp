@@ -1,5 +1,6 @@
 "use client";
 
+import { is } from "drizzle-orm";
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 
@@ -22,7 +23,7 @@ const useAlbumListsActions = ({
   const [onPending, setOnPending] = useState(initialOnPending);
   const [onFavorites, setOnFavorites] = useState(initialOnFavorites);
   const [onListened, setOnListened] = useState(initialOnListened);
-  const [onUserLists, setOnUserLists] = useState(initialOnUserLists);
+  const [onUserLists, setOnUserLists] = useState(initialOnUserLists.map(x => ({ ...x, isChanging: false })));
 
   const savePending = api.pending.save.useMutation({
     onSuccess() {
@@ -102,25 +103,37 @@ const useAlbumListsActions = ({
   };
 
   const handleUserListChange = (playlistId: string) => (checked: boolean) => {
-    const userList = initialOnUserLists.find((list) => list.playlistId === playlistId);
+    const userList = onUserLists.find((list) => list.playlistId === playlistId);
     if (!userList) return;
+
+      setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isChanging: true } : list));
 
     if (checked) {
       saveUserList.mutate(
         { playlistId, album: { id, url } },
-        { onError: () => {
-          const list = initialOnUserLists.find((list) => list.playlistId === playlistId);
-          if (list) list.isOn = false;
-        } },
+        { 
+          onError: () => {
+            const list = onUserLists.find((list) => list.playlistId === playlistId);
+            if (list) list.isOn = false;
+          },
+          onSettled: () => {            
+            setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isChanging: false } : list));
+          } 
+        },
       );
       return;
     }
     removeUserList.mutate(
       { playlistId, id },
-      { onError: () => {
-        const list = initialOnUserLists.find((list) => list.playlistId === playlistId);
-        if (list) list.isOn = true;
-      } },
+      {
+        onError: () => {
+          const list = onUserLists.find((list) => list.playlistId === playlistId);
+          if (list) list.isOn = true;
+        },
+        onSettled: () => {            
+          setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isChanging: false } : list));
+        } 
+      },
     );
   }
 
@@ -144,6 +157,7 @@ const useAlbumListsActions = ({
       playlistId: x.playlistId,
       name: x.name,
       isOn: x.isOn,
+      isChaging: x.isChanging,
       change: handleUserListChange(x.playlistId),
     })),
   }
@@ -166,7 +180,7 @@ const AlbumListsActions = (props: AlbumListsActionsProps) => {
           isOn={pending.isOn}
           isChanging={pending.isChanging}
           change={pending.change}
-          label="Pending list"
+          label="Pending"
         />
         <AlbumActionCheckbox
           isOn={favorites.isOn}
@@ -185,7 +199,7 @@ const AlbumListsActions = (props: AlbumListsActionsProps) => {
           <AlbumActionCheckbox
             key={userList.playlistId}
             isOn={userList.isOn}
-            isChanging={false} // You can implement a loading state for user lists if needed
+            isChanging={userList.isChaging}
             change={userList.change}
             label={userList.name}
           />
