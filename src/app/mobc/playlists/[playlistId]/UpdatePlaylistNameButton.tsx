@@ -66,8 +66,18 @@ const UpdatePlaylistNameButton = ({
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-md">
-          <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-            <h2 className="mb-4 text-xl font-semibold">Update Playlist Name</h2>
+          <div
+            className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="update-playlist-name-title"
+          >
+            <h2
+              id="update-playlist-name-title"
+              className="mb-4 text-xl font-semibold"
+            >
+              Update Playlist Name
+            </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
