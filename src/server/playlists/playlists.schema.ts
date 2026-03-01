@@ -19,9 +19,10 @@ export const playlistAlbumsTable = createTable(
   "playlist_albums",
   (t) => ({
     id:         t.text().primaryKey(),
-    playlistId: t.text().notNull(),
+    playlistId: t.text().notNull().references(() => userPlaylistsTable.id, { onDelete: "cascade" }),
     albumId:    t.text().notNull(),
     albumUrl:   t.text().notNull(),
+    userId:     t.text().notNull(),
     addedAt:    t.timestamp().defaultNow().notNull(),
   }),
   (t) => ([

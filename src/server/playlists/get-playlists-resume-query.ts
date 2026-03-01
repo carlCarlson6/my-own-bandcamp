@@ -3,7 +3,6 @@ import { protectedProcedure } from "../infrastructure/trpc";
 import { playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
 import type { Db } from "../infrastructure/db";
 
-
 export const getPlaylistsResumeQuery = protectedProcedure
   .query(async ({ ctx: { db, userId } }) => {
     const userPlayLists = await db
