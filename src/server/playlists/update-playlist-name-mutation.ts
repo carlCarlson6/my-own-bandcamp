@@ -28,7 +28,12 @@ export const updatePlaylistNameMutation = protectedProcedure
     const result = await db
       .update(userPlaylistsTable)
       .set({ name: newName })
-      .where(eq(userPlaylistsTable.id, playlistId));
+      .where(
+        and(
+          eq(userPlaylistsTable.id, playlistId),
+          eq(userPlaylistsTable.userId, userId)
+        )
+      );
     if (result.count !== 1) {
       throw new Error("Failed to update playlist name");
     }
