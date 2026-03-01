@@ -1,7 +1,8 @@
 import z from "zod";
+import { TRPCError } from "@trpc/server";
+import { and, eq } from "drizzle-orm";
 import { protectedProcedure } from "../infrastructure/trpc";
-import { buildPlaylistItemId, playlistAlbumsTable } from "./playlists.schema";
-import { randomUUID } from "crypto";
+import { buildPlaylistItemId, playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
 
 export const saveToPlaylistMutation = protectedProcedure
   .input(z.object({
@@ -12,6 +13,16 @@ export const saveToPlaylistMutation = protectedProcedure
     playlistId: z.string()
   }))
   .mutation(async ({ input: { album, playlistId }, ctx: { userId, db } }) => {
+    const playlist = (await db
+      .select()
+      .from(userPlaylistsTable)
+      .where(and(eq(userPlaylistsTable.id, playlistId), eq(userPlaylistsTable.userId, userId)))
+      .limit(1))
+      .at(0);
+    if (!playlist) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "Playlist not found" });
+    }
+
     await db.insert(playlistAlbumsTable).values({
       id: buildPlaylistItemId({
         playlistId,
