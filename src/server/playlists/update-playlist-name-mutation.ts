@@ -19,7 +19,8 @@ export const updatePlaylistNameMutation = protectedProcedure
           eq(userPlaylistsTable.id, playlistId),
           eq(userPlaylistsTable.userId, userId)
         )
-      ))
+      )
+      .limit(1))
       .at(0);
     if (!playlist) {
       throw new Error("Playlist not found");
