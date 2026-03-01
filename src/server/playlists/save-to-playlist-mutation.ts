@@ -13,7 +13,7 @@ export const saveToPlaylistMutation = protectedProcedure
   }))
   .mutation(async ({ input: { album, playlistId }, ctx: { userId, db } }) => {
     const playlist = await db
-      .select()
+      .select({ id: userPlaylistsTable.id })
       .from(userPlaylistsTable)
       .where(and(
         eq(userPlaylistsTable.id, playlistId),
