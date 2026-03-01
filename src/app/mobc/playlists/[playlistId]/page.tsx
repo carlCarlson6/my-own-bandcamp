@@ -1,6 +1,7 @@
 import { api } from "~/utils/trpc/server";
 import { SmallAlbumPlayer } from "../../albums/(player)/SmallAlbumPlayer";
 import GoToAlbumBtn from "../../albums/GoToAlbumBtn";
+import UpdatePlaylistNameButton from "./UpdatePlaylistNameButton";
 
 export default async function PlaylistPage({
   params
@@ -12,7 +13,10 @@ export default async function PlaylistPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">{playlist.name}</h1>
+      <div className="flex items-start justify-between gap-4">
+        <h1 className="text-2xl font-bold">{playlist.name}</h1>
+        <UpdatePlaylistNameButton playlistId={playlist.id} currentName={playlist.name} />
+      </div>
 
       {playlist.items.length === 0 ? (
         <div className="rounded-md bg-gray-50 p-8 text-center text-gray-600">
