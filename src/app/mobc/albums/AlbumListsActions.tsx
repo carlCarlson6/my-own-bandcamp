@@ -1,6 +1,5 @@
 "use client";
 
-import { on } from "events";
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 

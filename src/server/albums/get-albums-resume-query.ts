@@ -10,6 +10,9 @@ export const getAlumbsResumeQuery = protectedProcedure
     const pending = await getPendingAlbums(db, userId);
     const favorites = await getFavoritesAlbums(db, userId);
     const listened = await getListenedAlbums(db, userId);
+
+    // TODO - add user playlists resume
+
     return { pending, favorites, listened };
   });
 
