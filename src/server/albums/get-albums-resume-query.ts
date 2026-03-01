@@ -11,9 +11,23 @@ export const getAlumbsResumeQuery = protectedProcedure
     const favorites = await getFavoritesAlbums(db, userId);
     const listened = await getListenedAlbums(db, userId);
 
-    // TODO - add user playlists resume
-
-    return { pending, favorites, listened };
+    return [
+      {
+        title: "Pending",
+        href: "/mobc/pending",
+        ...pending
+      },
+      {
+        title: "Favorites",
+        href: "/mobc/favorites",
+        ...favorites
+      },
+      {
+        title: "Listened",
+        href: "/mobc/listened",
+        ...listened
+      },
+    ];
   });
 
 export const getPendingAlbums = async (db: Db, userId: string) => {
