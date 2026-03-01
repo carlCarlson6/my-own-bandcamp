@@ -20,7 +20,8 @@ export const updatePlaylistNameMutation = protectedProcedure
           eq(userPlaylistsTable.id, playlistId),
           eq(userPlaylistsTable.userId, userId)
         )
-      ))
+      )
+      .limit(1))
       .at(0);
     if (!playlist) {
       throw new TRPCError({ code: "NOT_FOUND", message: "Playlist not found" });
