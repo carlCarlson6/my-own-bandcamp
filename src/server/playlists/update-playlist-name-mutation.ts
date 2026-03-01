@@ -1,4 +1,5 @@
 import z from "zod";
+import { TRPCError } from "@trpc/server";
 import { protectedProcedure } from "../infrastructure/trpc";
 import { userPlaylistsTable } from "./playlists.schema";
 import { and, eq } from "drizzle-orm";
@@ -22,7 +23,7 @@ export const updatePlaylistNameMutation = protectedProcedure
       ))
       .at(0);
     if (!playlist) {
-      throw new Error("Playlist not found");
+      throw new TRPCError({ code: "NOT_FOUND", message: "Playlist not found" });
     }
 
     const result = await db
