@@ -1,7 +1,7 @@
 import z from "zod";
+import { eq, and } from "drizzle-orm";
 import { protectedProcedure } from "../infrastructure/trpc";
-import { buildPlaylistItemId, playlistAlbumsTable } from "./playlists.schema";
-import { randomUUID } from "crypto";
+import { buildPlaylistItemId, playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
 
 export const saveToPlaylistMutation = protectedProcedure
   .input(z.object({
@@ -12,6 +12,18 @@ export const saveToPlaylistMutation = protectedProcedure
     playlistId: z.string()
   }))
   .mutation(async ({ input: { album, playlistId }, ctx: { userId, db } }) => {
+    const playlist = await db
+      .select()
+      .from(userPlaylistsTable)
+      .where(and(
+        eq(userPlaylistsTable.id, playlistId),
+        eq(userPlaylistsTable.userId, userId)
+      ))
+      .limit(1)
+      .then(rows => rows.at(0));
+
+    if (!playlist) throw new Error("Playlist not found or access denied");
+
     await db.insert(playlistAlbumsTable).values({
       id: buildPlaylistItemId({
         playlistId,
@@ -22,5 +34,5 @@ export const saveToPlaylistMutation = protectedProcedure
       albumId: album.id,
       albumUrl: album.url,
       userId
-    });
+    }).onConflictDoNothing();
   });
