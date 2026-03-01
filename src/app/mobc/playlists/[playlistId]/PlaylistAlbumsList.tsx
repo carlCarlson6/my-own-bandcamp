@@ -1,5 +1,5 @@
 import type { api } from "~/utils/trpc/server";
-import { SmallAlbumPlayer } from "../../albums/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "../../albums/player/SmallAlbumPlayer";
 import GoToAlbumBtn from "../../albums/GoToAlbumBtn";
 
 const PlaylistAlbumsList = ({
