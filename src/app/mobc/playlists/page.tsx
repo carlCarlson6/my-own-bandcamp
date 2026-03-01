@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { api } from "~/utils/trpc/server";
-import { SmallAlbumPlayer } from "../albums/player/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "../albums/(player)/SmallAlbumPlayer";
 import CreatePlaylistButton from "./CreatePlaylistButton";
 
 export default async function PlaylistsPage() {

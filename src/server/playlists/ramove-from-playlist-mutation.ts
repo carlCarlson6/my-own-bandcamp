@@ -6,4 +6,6 @@ export const ramoveFromPlaylistMutation = protectedProcedure
     playlistId: z.string(),
     id:         z.string(),
   }))
-  .mutation(async ({ ctx }) => {});
+  .mutation(async () => {
+    throw new Error("Not implemented yet");
+  });
