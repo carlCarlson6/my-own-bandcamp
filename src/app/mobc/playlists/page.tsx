@@ -42,7 +42,7 @@ export default async function PlaylistsPage() {
                 <div className="grid grid-cols-3 gap-2">
                   {playlist.albums.map((album) => (
                     <div key={album.id} className="overflow-hidden rounded-md border">
-                      <SmallAlbumPlayer albumId={album.id} />
+                      <SmallAlbumPlayer albumId={album.albumId} />
                     </div>
                   ))}
                 </div>
