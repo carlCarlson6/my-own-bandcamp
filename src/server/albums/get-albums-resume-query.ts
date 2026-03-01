@@ -1,6 +1,6 @@
 import { eq, count, sql } from "drizzle-orm";
 import { favoritesAlbumsTable } from "../favorites/favoritesAlbums.schema";
-import { protectedProcedure } from "../infrastructure/trpc/trpc";
+import { protectedProcedure } from "../infrastructure/trpc";
 import { listenedAlbumsTable } from "../listened/listenedAlbums.schema";
 import { pendingAlbumsTable } from "../pending/pendingAlbums.schema";
 import type { Db } from "../infrastructure/db";
@@ -10,7 +10,24 @@ export const getAlumbsResumeQuery = protectedProcedure
     const pending = await getPendingAlbums(db, userId);
     const favorites = await getFavoritesAlbums(db, userId);
     const listened = await getListenedAlbums(db, userId);
-    return { pending, favorites, listened };
+
+    return [
+      {
+        title: "Pending",
+        href: "/mobc/pending",
+        ...pending
+      },
+      {
+        title: "Favorites",
+        href: "/mobc/favorites",
+        ...favorites
+      },
+      {
+        title: "Listened",
+        href: "/mobc/listened",
+        ...listened
+      },
+    ];
   });
 
 export const getPendingAlbums = async (db: Db, userId: string) => {

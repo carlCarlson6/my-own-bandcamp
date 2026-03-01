@@ -1,5 +1,5 @@
 import z from "zod";
-import { publicProcedure } from "../infrastructure/trpc/trpc";
+import { publicProcedure } from "../infrastructure/trpc";
 import * as cheerio from 'cheerio';
 
 export const inspectAlbumQuery = publicProcedure

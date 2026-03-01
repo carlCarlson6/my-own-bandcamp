@@ -1,5 +1,5 @@
 import z from "zod";
-import { protectedProcedure } from "../infrastructure/trpc/trpc";
+import { protectedProcedure } from "../infrastructure/trpc";
 import { buildListenedAlbumId, listenedAlbumsTable } from "./listenedAlbums.schema";
 import { eq } from "drizzle-orm";
 

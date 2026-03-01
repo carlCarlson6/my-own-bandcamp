@@ -1,8 +1,8 @@
 import { api } from "~/utils/trpc/server";
-import BigAlbumPlayer from "../BigAlbumPlayer";
-import AlbumListsActions from "../AlbumListsActions";
-import AlbumRecommendationsSection from "../AlbumRecommendationsSection";
+import BigAlbumPlayer from "../(player)/BigAlbumPlayer";
+import AlbumListsActions from "./AlbumListsActions";
 import z from "zod";
+import AlbumRecommendationsSection from "./AlbumRecommendationsSection";
 
 export default async function AlbumPage({
   params
@@ -28,6 +28,11 @@ export default async function AlbumPage({
           initialOnPending={albumLists.onPending}
           initialOnFavorites={albumLists.onFavorites}
           initialOnListened={albumLists.onListened}
+          initialOnUserLists={albumLists.onUserLists.map(x => ({
+            playlistId: x.id,
+            name: x.name,
+            isOn: Boolean(x.isOn)
+          }))}
         />
         {inspectResult.recomendations && inspectResult.recomendations.length > 0 && (
           <AlbumRecommendationsSection recommendations={inspectResult.recomendations} />

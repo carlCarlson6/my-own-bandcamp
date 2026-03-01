@@ -1,4 +1,4 @@
-import { createTRPCRouter } from "../infrastructure/trpc/trpc";
+import { createTRPCRouter } from "../infrastructure/trpc";
 import { getPendingAlbumsQuery } from "./get-pending-albums-query";
 import { pickRandomPendingAlbumQuery } from "./pick-random-pending-album-query";
 import { removeAlbumFromPendingMutation } from "./remove-from-pending-mutation";

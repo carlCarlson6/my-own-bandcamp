@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
-import { SmallAlbumPlayer } from "../albums/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "../albums/(player)/SmallAlbumPlayer";
 import GoToAlbumBtn, { encodeAlbumData } from "../albums/GoToAlbumBtn";
 import { redirect } from "next/navigation";
 
