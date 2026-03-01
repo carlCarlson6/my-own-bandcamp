@@ -1,6 +1,6 @@
 import z from "zod";
 import { TRPCError } from "@trpc/server";
-import { and, eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { protectedProcedure } from "../infrastructure/trpc";
 import { buildPlaylistItemId, playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
 
@@ -33,5 +33,5 @@ export const saveToPlaylistMutation = protectedProcedure
       albumId: album.id,
       albumUrl: album.url,
       userId
-    });
+    }).onConflictDoNothing();
   });
