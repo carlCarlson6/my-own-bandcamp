@@ -3,21 +3,21 @@ import { SmallAlbumPlayer } from "../../albums/(player)/SmallAlbumPlayer";
 import GoToAlbumBtn from "../../albums/GoToAlbumBtn";
 
 const PlaylistAlbumsList = ({
-  albums,
+  playlist,
 }: {
-  albums: Awaited<ReturnType<typeof api.playlists.get>>["albums"];
+  playlist: Awaited<ReturnType<typeof api.playlists.get>>;
 }) => {
   return (
     <div>
       <p className="mb-6 text-sm font-medium text-gray-600">
-        {albums.length} album{albums.length !== 1 ? "s" : ""}
+        {playlist.items.length} album{playlist.items.length !== 1 ? "s" : ""}
       </p>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {albums.map((album) => (
+        {playlist.items.map((item) => (
           <PlaylistAlbumCard
-            key={album.id}
-            albumId={album.albumId}
-            albumUrl={album.albumUrl}
+            key={item.id}
+            albumId={item.albumId}
+            albumUrl={item.albumUrl}
           />
         ))}
       </div>

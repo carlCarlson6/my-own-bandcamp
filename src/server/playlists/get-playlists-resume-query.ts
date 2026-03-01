@@ -31,7 +31,8 @@ const readPlaylistInfo = async (db: Db, playlist: { id: string, name: string }) 
     .where(eq(playlistAlbumsTable.playlistId, playlist.id));
   const randomAlbums = await db
       .select({
-        id: playlistAlbumsTable.albumId,
+        id:     playlistAlbumsTable.id,
+        albumId: playlistAlbumsTable.albumId,
       })
       .from(playlistAlbumsTable)
       .where(eq(playlistAlbumsTable.playlistId, playlist.id))

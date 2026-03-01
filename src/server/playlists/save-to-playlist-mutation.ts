@@ -13,7 +13,7 @@ export const saveToPlaylistMutation = protectedProcedure
   }))
   .mutation(async ({ input: { album, playlistId }, ctx: { userId, db } }) => {
     await db.insert(playlistAlbumsTable).values({
-      id:         randomUUID(),
+      id: randomUUID(),
       playlistId,
       albumId: album.id,
       albumUrl: album.url,

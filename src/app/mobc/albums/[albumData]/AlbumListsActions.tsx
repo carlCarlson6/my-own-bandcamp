@@ -124,7 +124,7 @@ const useAlbumListsActions = ({
       return;
     }
     removeUserList.mutate(
-      { playlistId, id },
+      { playlistId, listItemId: id },
       {
         onError: () => {
           const list = onUserLists.find((list) => list.playlistId === playlistId);

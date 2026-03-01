@@ -21,13 +21,14 @@ export const getPlaylistQuery = protectedProcedure
     const maybePlaylist = result.at(0);
     if (!maybePlaylist) throw new Error("Playlist not found or access denied");
 
-    const almbus = await db.select()
+    const items = await db.select()
       .from(playlistAlbumsTable)
       .where(eq(playlistAlbumsTable.playlistId, id))
       .orderBy(playlistAlbumsTable.addedAt);
 
     return {
+      id,
       name: maybePlaylist.name,
-      albums: almbus
+      items
     };
   });
