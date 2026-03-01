@@ -108,12 +108,12 @@ const useAlbumListsActions = ({
       setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isChanging: true } : list));
 
     if (checked) {
+      setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isOn: true } : list));
       saveUserList.mutate(
         { playlistId, album: { id, url } },
         { 
           onError: () => {
-            const list = onUserLists.find((list) => list.playlistId === playlistId);
-            if (list) list.isOn = false;
+            setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isOn: false } : list));
           },
           onSettled: () => {            
             setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isChanging: false } : list));
@@ -122,12 +122,12 @@ const useAlbumListsActions = ({
       );
       return;
     }
+    setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isOn: false } : list));
     removeUserList.mutate(
       { playlistId, albumId: id },
       {
         onError: () => {
-          const list = onUserLists.find((list) => list.playlistId === playlistId);
-          if (list) list.isOn = true;
+          setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isOn: true } : list));
         },
         onSettled: () => {            
           setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isChanging: false } : list));
