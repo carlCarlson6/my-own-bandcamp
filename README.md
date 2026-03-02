@@ -1,29 +1,77 @@
-# Create T3 App
+# My Own Bandcamp
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A personal music album management web app inspired by Bandcamp — built to add the features Bandcamp lacks.
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- **Dashboard** — Overview of all your album lists with album counts and cover previews.
+- **Search** — Search for albums by name or artist, or paste a Bandcamp album URL directly to import it.
+- **Pending** — Queue albums you want to listen to. Use the "Pick Random Album" button to let the app choose one for you.
+- **Favorites** — Save and browse your favorite albums in a dedicated list.
+- **Listened** — Keep track of albums you have already listened to.
+- **Playlists** — Create and manage custom playlists, add or remove albums, and rename them at any time.
+- **Album Player** — Embedded Bandcamp player available in both small (card) and full-size (detail) variants.
+- **Authentication** — Secure sign-in via Clerk; all routes are protected and scoped to the authenticated user.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Architecture
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+The application is a full-stack Next.js app using the **App Router**:
 
-## Learn More
+```
+src/
+├── app/                     # Next.js App Router pages and layouts
+│   ├── page.tsx             # Public landing / sign-in page
+│   └── mobc/                # Protected area (requires authentication)
+│       ├── layout.tsx       # Shared sidebar navigation + header
+│       ├── page.tsx         # Dashboard (albums resume)
+│       ├── search/          # Album search page
+│       ├── pending/         # Pending albums list
+│       ├── favorites/       # Favorite albums list
+│       ├── listened/        # Listened albums list
+│       ├── playlists/       # Playlists management
+│       └── albums/          # Album detail + embedded player
+└── server/                  # Backend logic (tRPC routers + DB access)
+    ├── albums/              # Album queries (search, inspect, resume, lists)
+    ├── favorites/           # Favorites mutations & queries
+    ├── listened/            # Listened mutations & queries
+    ├── pending/             # Pending mutations & queries
+    ├── playlists/           # Playlist mutations & queries
+    └── infrastructure/
+        ├── db/              # Drizzle ORM client & schema
+        └── trpc/            # tRPC initialisation & context
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+**Data flow**: React Server Components fetch data directly through tRPC server helpers. Client components use tRPC + TanStack Query for mutations and reactive queries. All database access goes through Drizzle ORM against a PostgreSQL database.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Technologies
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+| Layer | Technology |
+|---|---|
+| Framework | [Next.js 15](https://nextjs.org) (App Router, React 19) |
+| Language | [TypeScript](https://www.typescriptlang.org) |
+| Authentication | [Clerk](https://clerk.com) |
+| API | [tRPC v11](https://trpc.io) |
+| Database | [PostgreSQL](https://www.postgresql.org) + [Drizzle ORM](https://orm.drizzle.team) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com) + [Radix UI Themes](https://www.radix-ui.com/themes) |
+| Data fetching | [TanStack React Query](https://tanstack.com/query) (via tRPC) |
+| Validation | [Zod](https://zod.dev) |
+| Analytics | [Vercel Analytics](https://vercel.com/analytics) + [Speed Insights](https://vercel.com/docs/speed-insights) |
+| Deployment | [Vercel](https://vercel.com) |
 
-## How do I deploy this?
+## Getting Started
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+1. Copy `.env.example` to `.env` and fill in the required environment variables (Clerk keys, database URL).
+2. Start a local PostgreSQL instance:
+   ```bash
+   ./start-database.sh
+   ```
+3. Run database migrations:
+   ```bash
+   npm run db:migrate
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
