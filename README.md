@@ -52,7 +52,7 @@ src/
 | Authentication | [Clerk](https://clerk.com) |
 | API | [tRPC v11](https://trpc.io) |
 | Database | [PostgreSQL](https://www.postgresql.org) + [Drizzle ORM](https://orm.drizzle.team) |
-| Styling | [Tailwind CSS v4](https://tailwindcss.com) + [Radix UI Themes](https://www.radix-ui.com/themes) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com) |
 | Data fetching | [TanStack React Query](https://tanstack.com/query) (via tRPC) |
 | Validation | [Zod](https://zod.dev) |
 | Analytics | [Vercel Analytics](https://vercel.com/analytics) + [Speed Insights](https://vercel.com/docs/speed-insights) |
