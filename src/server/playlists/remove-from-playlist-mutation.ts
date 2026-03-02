@@ -4,7 +4,7 @@ import { protectedProcedure } from "../infrastructure/trpc";
 import { playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
 import { and, eq } from "drizzle-orm";
 
-export const ramoveFromPlaylistMutation = protectedProcedure
+export const removeFromPlaylistMutation = protectedProcedure
   .input(z.object({
     playlistId: z.string(),
     albumId: z.string(),
