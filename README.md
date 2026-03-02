@@ -67,7 +67,7 @@ src/
    ```
 3. Run database migrations:
    ```bash
-   npm run db:migrate
+   npm run db:push
    ```
 4. Start the development server:
    ```bash
