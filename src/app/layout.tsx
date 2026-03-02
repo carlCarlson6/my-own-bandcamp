@@ -1,9 +1,7 @@
 import "~/utils/styles/globals.css";
-import "@radix-ui/themes/styles.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
-import { Theme } from "@radix-ui/themes";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { TRPCReactProvider } from "~/utils/trpc/react";
@@ -26,9 +24,9 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body>
         <ClerkProvider>
-          <Theme>
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-          </Theme>
+          <TRPCReactProvider>
+            {children}
+          </TRPCReactProvider>
         </ClerkProvider>
         <Analytics />
         <SpeedInsights />
