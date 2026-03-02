@@ -23,7 +23,7 @@ src/
 │   ├── page.tsx             # Public landing / sign-in page
 │   └── mobc/                # Protected area (requires authentication)
 │       ├── layout.tsx       # Shared sidebar navigation + header
-│       ├── page.tsx         # Dashboard (albums resume)
+│       ├── page.tsx         # Dashboard (album summary)
 │       ├── search/          # Album search page
 │       ├── pending/         # Pending albums list
 │       ├── favorites/       # Favorite albums list
