@@ -35,7 +35,7 @@ export default async function AlbumPage({
           }))}
         />
         {inspectResult.recomendations && inspectResult.recomendations.length > 0 && (
-          <AlbumRecommendationsSection recommendations={inspectResult.recomendations} />
+          <AlbumRecommendationsSection recommendations={inspectResult.recomendations} /> // TODO - create a section with other releases form the artist
         )}
       </div>
     </div>
