@@ -1,9 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import GoToAlbumBtn from "../../GoToAlbumBtn";
 import { SmallAlbumPlayer } from "../player/SmallAlbumPlayer";
 import { api } from "~/utils/trpc/react";
+import { match } from "ts-pattern";
 
 export type Album = {
   id: string;
@@ -47,14 +48,29 @@ const AlbumCard = (
 );
 
 const DeleteAlbumBtn = (
-  { id }: { id: string }
+  { id }: { id: string}
 ) => {
   const router = useRouter();
-  const { isPending, mutate } = api.favorites.remove.useMutation({
-    onSuccess() {
-      router.refresh();
-    },
-  });
+  const pathName = usePathname();
+  const onSuccess = () => {
+    router.refresh();
+  };
+
+  const { isPending, execute } = match(pathName)
+    .with("/mobc/favorites", () => {
+      const { isPending, mutate } = api.favorites.remove.useMutation({ onSuccess });
+      return { isPending, execute: () => mutate({ id }) };
+    })
+    .with("/mobc/pending", () => {
+      const { isPending, mutate } = api.pending.remove.useMutation({ onSuccess });
+      return { isPending, execute: () => mutate({ id }) };
+    })
+    .with("/mobc/listened", () => {
+      const { isPending, mutate } = api.listened.remove.useMutation({ onSuccess });
+      return { isPending, execute: () => mutate({ id }) };
+    })
+    .otherwise(() => { throw new Error("Unknown path"); });
+
 
   return (
     <button
@@ -62,7 +78,7 @@ const DeleteAlbumBtn = (
       className="rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-60"
       aria-label="Delete album"
       aria-busy={isPending}
-      onClick={() => mutate({ id })}
+      onClick={execute}
       disabled={isPending}
     >
       {isPending ? (
