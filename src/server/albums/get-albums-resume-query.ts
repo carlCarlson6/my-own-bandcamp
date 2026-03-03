@@ -12,7 +12,6 @@ export const getAlumbsResumeQuery = protectedProcedure
     const favorites = await getFavoritesAlbums(db, userId);
     const listened = await getListenedAlbums(db, userId);
     const playlists = await getPlaylists(db, userId);
-
     return [
       {
         title: "Pending",
