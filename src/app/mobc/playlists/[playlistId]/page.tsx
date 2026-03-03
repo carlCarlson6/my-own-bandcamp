@@ -1,6 +1,7 @@
 import { api } from "~/utils/trpc/server";
 import { SmallAlbumPlayer } from "../../albums/_components/player/SmallAlbumPlayer";
 import GoToAlbumBtn from "../../albums/GoToAlbumBtn";
+import RemoveFromPlaylistButton from "./RemoveFromPlaylistButton";
 import UpdatePlaylistNameButton from "./UpdatePlaylistNameButton";
 
 export default async function PlaylistPage({
@@ -43,6 +44,7 @@ const PlaylistAlbumsList = ({
         {playlist.items.map((item) => (
           <PlaylistAlbumCard
             key={item.id}
+            playlistId={playlist.id}
             albumId={item.albumId}
             albumUrl={item.albumUrl}
           />
@@ -53,9 +55,11 @@ const PlaylistAlbumsList = ({
 };
 
 const PlaylistAlbumCard = ({
+  playlistId,
   albumId,
   albumUrl,
 }: {
+  playlistId: string;
   albumId: string;
   albumUrl: string;
 }) => {
@@ -65,6 +69,7 @@ const PlaylistAlbumCard = ({
       <div className="flex flex-col gap-2 p-4">
         <div className="flex items-center justify-between">
           <GoToAlbumBtn albumId={albumId} albumUrl={albumUrl} />
+          <RemoveFromPlaylistButton playlistId={playlistId} albumId={albumId} />
         </div>
       </div>
     </div>
