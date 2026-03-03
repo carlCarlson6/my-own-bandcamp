@@ -29,13 +29,14 @@ export const DeleteListBtn = ({ href }: { href: string }) => {
       execute: () => clearListened.mutate(),
     }))
     .with(P.string.startsWith("/mobc/playlists/"), () => {
-      const playlistId = href.split("/mobc/playlists/")[1]!;
+      const playlistId = href.split("/mobc/playlists/")[1];
+      if (!playlistId) throw new Error(`Invalid playlist href: ${href}`);
       return {
         isPending: deletePlaylist.isPending,
         execute: () => deletePlaylist.mutate({ playlistId }),
       };
     })
-    .otherwise(() => { throw new Error("Unknown list href"); });
+    .otherwise(() => { throw new Error(`Unknown list href: ${href}`); });
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
