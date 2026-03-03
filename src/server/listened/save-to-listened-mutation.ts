@@ -14,14 +14,19 @@ export const saveToListenedMutation = protectedProcedure
       .where(
         eq(listenedAlbumsTable.id, buildListenedAlbumId(id, userId))
       );
-    if (existing.length > 0) return;
+    if (existing.length > 0){
+      console.log(`Album ${id} is already on listened for user ${userId}`);
+      return existing.at(0)?.id;
+    }
 
-    await db
+    const result = await db
       .insert(listenedAlbumsTable)
       .values({
         id:       buildListenedAlbumId(id, userId),
         albumId:  id,
         albumUrl: url,
         userId:   userId
-      });
+      }).returning();
+
+    return result.at(0)?.id;
   });
