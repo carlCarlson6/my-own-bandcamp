@@ -7,7 +7,8 @@ export const getPendingAlbumsQuery = protectedProcedure
     { ctx: { db, userId } }
   ) => db
     .select({
-      id:   pendingAlbumsTable.albumId,
+      id:   pendingAlbumsTable.id,
+      bcId: pendingAlbumsTable.albumId,
       url:  pendingAlbumsTable.albumUrl,
     })
     .from(pendingAlbumsTable)
