@@ -112,12 +112,56 @@ export const importFromBandcampMutation = protectedProcedure
   });
 
 export const scrapeCollectionPage = async (url: string) => {
-  const response = await fetch(url);
-  if (!response.ok) {
+  // Bandcamp loads collection items client-side; the initial HTML doesn't contain
+  // `.collection-item-container` elements. Use the public JSON API instead.
+  try {
+    // Try to extract the username from the provided URL, e.g. "https://bandcamp.com/<username>"
+    const match = url.match(/bandcamp\.com\/([^/?#]+)/);
+    const username = match?.[1];
+
+    if (!username) {
+      return [];
+    }
+
+    const apiResponse = await fetch("https://bandcamp.com/api/fancollection/1/collection_items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // The exact API contract is determined by Bandcamp; here we use the username
+      // as the fan identifier and request a reasonable number of items.
+      body: JSON.stringify({
+        fan_id: username,
+        older_than_token: null,
+        count: 500,
+        sort_by: "date",
+      }),
+    });
+
+    if (!apiResponse.ok) {
+      return [];
+    }
+
+    const data: any = await apiResponse.json();
+    const items: any[] = Array.isArray(data.items) ? data.items : [];
+
+    return items
+      .filter((item) => item && (item.tralbum_type === "a" || item.item_type === "a"))
+      .map((item) => {
+        // Prefer `tralbum_url` if present; fall back to any URL field that exists.
+        const rawUrl: string | undefined =
+          item.tralbum_url ?? item.item_url ?? item.url ?? item.item_url_path;
+        const cleanUrl = typeof rawUrl === "string" ? rawUrl.split("?")[0] : undefined;
+
+        return {
+          id: String(item.item_id ?? item.tralbum_id ?? item.id),
+          url: cleanUrl ?? "",
+        };
+      })
+      .filter((album) => album.id && album.url);
+  } catch {
     return [];
   }
-  const html = await response.text();
-  return parseCollectionAlbums(html);
 };
 
 export const parseCollectionAlbums = (html: string) => {
