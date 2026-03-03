@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
-import { SmallAlbumPlayer } from "../(player)/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "../_components/player/SmallAlbumPlayer";
 import GoToAlbumBtn from "../GoToAlbumBtn";
 
 type Recommendation = {

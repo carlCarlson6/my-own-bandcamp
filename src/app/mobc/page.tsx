@@ -1,7 +1,7 @@
 import { api } from "~/utils/trpc/server";
 import Link from "next/link";
 import PickRandomPendingAlbumBtn from "./pending/PickRandomAlbumBtn";
-import { SmallAlbumPlayer } from "./albums/(player)/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "./albums/_components/player/SmallAlbumPlayer";
 
 const DisplayUserLists = async () => {
   const resume = await api.albums.getResume();
