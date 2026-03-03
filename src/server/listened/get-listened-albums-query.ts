@@ -7,7 +7,8 @@ export const getListenedAlbumsQuery = protectedProcedure
     { ctx: { db, userId } }
   ) => db
     .select({
-      id:   listenedAlbumsTable.albumId,
+      id:   listenedAlbumsTable.id,
+      bcId: listenedAlbumsTable.albumId,
       url:  listenedAlbumsTable.albumUrl,
     })
     .from(listenedAlbumsTable)

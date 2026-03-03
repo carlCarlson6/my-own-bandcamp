@@ -1,5 +1,5 @@
 import { api } from "~/utils/trpc/server";
-import ListenedAlbumsList from "./ListenedAlbumsList";
+import { AlbumsListDisplay } from "../albums/_components/display/AlbumsDisplay";
 
 export default async function ListenedPage() {
   const albums = await api.listened.getAll();
@@ -13,7 +13,7 @@ export default async function ListenedPage() {
           No listened albums yet. Start adding albums from the search page!
         </div>
       ) : (
-        <ListenedAlbumsList albums={albums} />
+        <AlbumsListDisplay albums={albums} />
       )}
     </div>
   );
