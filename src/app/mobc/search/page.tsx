@@ -95,13 +95,10 @@ const AlbumResultCard = ({ album }: { album: AlbumSearchResult  }) => {
 
 const SaveAlbumResultBtn = ({ album: { id, url } }: { album: AlbumSearchResult  }) => {
   const [isSaved, setIsSaved] = useState(false);
-  const { mutate, isPending } = api.pending.save.useMutation({
+  const { mutate, isPending, isError } = api.pending.save.useMutation({
     onSuccess() {
       setIsSaved(true);
     },
-    onError() {
-      alert("Failed to save album. Please try again.");
-    }
   });
   const execute = () =>
     mutate({
@@ -109,6 +106,7 @@ const SaveAlbumResultBtn = ({ album: { id, url } }: { album: AlbumSearchResult  
     });
   
   return (
+    <>
     <button
       className="mt-3 flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
       aria-label={isSaved ? "Album saved" : "Add album to pending list"}
@@ -144,5 +142,11 @@ const SaveAlbumResultBtn = ({ album: { id, url } }: { album: AlbumSearchResult  
       )}
       {isSaved ? "Saved" : "Add to pending"}
     </button>
+    {isError && (
+      <p className="mt-1 text-sm text-red-600" role="alert">
+        Failed to save album. Please try again.
+      </p>
+    )}
+    </>
   );
 }
