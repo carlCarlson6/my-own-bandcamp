@@ -13,8 +13,8 @@ export const removeAlbumFromListenedMutation = protectedProcedure
       .from(listenedAlbumsTable)
       .where(
         and(  
-        eq(listenedAlbumsTable.id, id),
-        eq(listenedAlbumsTable.userId, userId)));
+          eq(listenedAlbumsTable.id, id),
+          eq(listenedAlbumsTable.userId, userId)));
     if (existing.length === 0) {
       console.log(`Album with id ${id} not found in listened list for user ${userId}`);
       return;
