@@ -17,7 +17,7 @@ export const AlbumsListDisplay = ({
         <AlbumCard 
           key={album.id} 
           id={album.id} 
-          url={album.url} 
+          url={album.bcUrl} 
         />
       ))}
     </div>
