@@ -43,42 +43,8 @@ const useAlbumListsActions = ({
       setOnPending({ isOn: false, id: undefined });
     },
   });
-
-  const saveFavorites = api.favorites.save.useMutation({
-    onSuccess(data) {
-      setOnFavorites({ isOn: Boolean(data), id: data });
-    },
-  });
-  const removeFavorites = api.favorites.remove.useMutation({
-    onSuccess() {
-      setOnFavorites({ isOn: false, id: undefined });
-    },
-  });
-
-  const saveListened = api.listened.save.useMutation({
-    onSuccess(data) {
-      setOnListened({ isOn: Boolean(data), id: data });
-    },
-  });
-  const removeListened = api.listened.remove.useMutation({
-    onSuccess() {
-      setOnListened({ isOn: false, id: undefined });
-    },
-  });
-
-  const saveUserList = api.playlists.save.useMutation({
-    onSuccess(_, variables) {
-      setOnUserLists((prev) => prev.map((list) => list.playlistId === variables.playlistId ? { ...list, isOn: true } : list));
-    },
-  });
-  const removeUserList = api.playlists.remove.useMutation({
-    onSuccess(_, variables) {
-      setOnUserLists((prev) => prev.map((list) => list.playlistId === variables.playlistId ? { ...list, isOn: false } : list));
-    },
-  });
-
   const handlePendingChange = (checked: boolean) => {
-    if (checked) {
+    if (!checked) {
       setOnPending({ isOn: true, id: undefined });
       savePending.mutate(
         { album: { id: albumId, url } },
@@ -90,6 +56,16 @@ const useAlbumListsActions = ({
     removePending.mutate({ id: albumId }, { onError: () => setOnPending({ isOn: true, id: albumId }) });
   };
 
+  const saveFavorites = api.favorites.save.useMutation({
+    onSuccess(data) {
+      setOnFavorites({ isOn: Boolean(data), id: data });
+    },
+  });
+  const removeFavorites = api.favorites.remove.useMutation({
+    onSuccess() {
+      setOnFavorites({ isOn: false, id: undefined });
+    },
+  });
   const handleFavoritesChange = (checked: boolean) => {
     if (checked) {
       setOnFavorites({ isOn: true, id: undefined });
@@ -100,6 +76,16 @@ const useAlbumListsActions = ({
     removeFavorites.mutate({ id: albumId }, { onError: () => setOnFavorites({ isOn: true, id: albumId }) });
   };
 
+  const saveListened = api.listened.save.useMutation({
+    onSuccess(data) {
+      setOnListened({ isOn: Boolean(data), id: data });
+    },
+  });
+  const removeListened = api.listened.remove.useMutation({
+    onSuccess() {
+      setOnListened({ isOn: false, id: undefined });
+    },
+  });
   const handleListenedChange = (checked: boolean) => {
     if (checked) {
       setOnListened({ isOn: true, id: undefined });
@@ -110,6 +96,16 @@ const useAlbumListsActions = ({
     removeListened.mutate({ id: albumId }, { onError: () => setOnListened({ isOn: true, id: albumId }) });
   };
 
+  const saveUserList = api.playlists.save.useMutation({
+    onSuccess(_, variables) {
+      setOnUserLists((prev) => prev.map((list) => list.playlistId === variables.playlistId ? { ...list, isOn: true } : list));
+    },
+  });
+  const removeUserList = api.playlists.remove.useMutation({
+    onSuccess(_, variables) {
+      setOnUserLists((prev) => prev.map((list) => list.playlistId === variables.playlistId ? { ...list, isOn: false } : list));
+    },
+  });
   const handleUserListChange = (playlistId: string) => (checked: boolean) => {
     const userList = onUserLists.find((list) => list.playlistId === playlistId);
     if (!userList) return;
