@@ -1,23 +1,16 @@
 "use client";
 
+import { on } from "events";
+import { set } from "node_modules/ts-pattern/dist/patterns";
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 
 type AlbumListsActionsProps = {
   albumId: string;
   url: string;
-  initialOnPending: {
-    isOn: boolean;
-    id?: string;
-  };
-  initialOnFavorites: {
-    isOn: boolean;
-    id?: string;
-  };
-  initialOnListened: {
-    isOn: boolean;
-    id?: string;
-  };
+  initialOnPending?: string;
+  initialOnFavorites?: string;
+  initialOnListened?: string;
   initialOnUserLists: {
     playlistId: string;
     name: string;
@@ -34,66 +27,53 @@ const useAlbumListsActions = ({
   const [onUserLists, setOnUserLists] = useState(initialOnUserLists.map(x => ({ ...x, isChanging: false })));
 
   const savePending = api.pending.save.useMutation({
-    onSuccess(data) {
-      setOnPending({ isOn: Boolean(data), id: data });
-    },
+    onSuccess: (data) => setOnPending(data),
   });
   const removePending = api.pending.remove.useMutation({
-    onSuccess() {
-      setOnPending({ isOn: false, id: undefined });
-    },
+    onSuccess: () => setOnPending(undefined),
   });
-  const handlePendingChange = (checked: boolean) => {
-    if (!checked) {
-      setOnPending({ isOn: true, id: undefined });
-      savePending.mutate(
-        { album: { id: albumId, url } },
-        { onError: () => setOnPending({ isOn: false, id: undefined }) },
-      );
+  const handlePendingChange = () => {
+    if (onPending) {
+      setOnPending(undefined);
+      removePending.mutate({ id: onPending }, { onError: () => setOnPending(onPending) });
       return;
     }
-    setOnPending({ isOn: false, id: undefined });
-    removePending.mutate({ id: albumId }, { onError: () => setOnPending({ isOn: true, id: albumId }) });
+    setOnPending("pending");
+    savePending.mutate({ album: { id: albumId, url } }, { onError: () => setOnPending(undefined) });
   };
 
   const saveFavorites = api.favorites.save.useMutation({
-    onSuccess(data) {
-      setOnFavorites({ isOn: Boolean(data), id: data });
-    },
+    onSuccess: (data) => setOnFavorites(data),
   });
   const removeFavorites = api.favorites.remove.useMutation({
-    onSuccess() {
-      setOnFavorites({ isOn: false, id: undefined });
-    },
+    onSuccess: () => setOnFavorites(undefined),
   });
   const handleFavoritesChange = (checked: boolean) => {
-    if (checked) {
-      setOnFavorites({ isOn: true, id: undefined });
-      saveFavorites.mutate({ id: albumId, url }, { onError: () => setOnFavorites({ isOn: false, id: undefined }) });
+    if (onFavorites) {
+      setOnFavorites(undefined);
+      removeFavorites.mutate({ id: onFavorites }, { onError: () => setOnFavorites(onFavorites) });
       return;
     }
-    setOnFavorites({ isOn: false, id: undefined });
-    removeFavorites.mutate({ id: albumId }, { onError: () => setOnFavorites({ isOn: true, id: albumId }) });
+
+    setOnFavorites("favorites");
+    saveFavorites.mutate({ id: albumId, url }, { onError: () => setOnFavorites(undefined) });
   };
 
   const saveListened = api.listened.save.useMutation({
-    onSuccess(data) {
-      setOnListened({ isOn: Boolean(data), id: data });
-    },
+    onSuccess: (data) => setOnListened(data),
   });
   const removeListened = api.listened.remove.useMutation({
-    onSuccess() {
-      setOnListened({ isOn: false, id: undefined });
-    },
+    onSuccess: () => setOnListened(undefined),
   });
-  const handleListenedChange = (checked: boolean) => {
-    if (checked) {
-      setOnListened({ isOn: true, id: undefined });
-      saveListened.mutate({ id: albumId, url }, { onError: () => setOnListened({ isOn: false, id: undefined }) });
+  const handleListenedChange = () => {
+    if (onListened) {
+      setOnListened(undefined);
+      removeListened.mutate({ id: onListened }, { onError: () => setOnListened(onListened) });
       return;
     }
-    setOnListened({ isOn: false, id: undefined });
-    removeListened.mutate({ id: albumId }, { onError: () => setOnListened({ isOn: true, id: albumId }) });
+
+    setOnListened("listened");
+    saveListened.mutate({ id: albumId, url }, { onError: () => setOnListened(undefined) });
   };
 
   const saveUserList = api.playlists.save.useMutation({
@@ -143,17 +123,17 @@ const useAlbumListsActions = ({
 
   return {
     pending: {
-      isOn: onPending,
+      id: onPending,
       isChanging: savePending.isPending || removePending.isPending,
       change: handlePendingChange,
     },
     favorites: {
-      isOn: onFavorites,
+      id: onFavorites,
       isChanging: saveFavorites.isPending || removeFavorites.isPending,
       change: handleFavoritesChange,
     },
     listened: {
-      isOn: onListened,
+      id: onListened,
       isChanging: saveListened.isPending || removeListened.isPending,
       change: handleListenedChange,
     },
@@ -181,19 +161,19 @@ const AlbumListsActions = (props: AlbumListsActionsProps) => {
       <div className="space-y-3">
 
         <AlbumActionCheckbox
-          isOn={pending.isOn.isOn}
+          isOn={Boolean(pending.id)}
           isChanging={pending.isChanging}
           change={pending.change}
           label="Pending"
         />
         <AlbumActionCheckbox
-          isOn={favorites.isOn.isOn}
+          isOn={Boolean(favorites.id)}
           isChanging={favorites.isChanging}
           change={favorites.change}
           label="Favorites"
         />
         <AlbumActionCheckbox
-          isOn={listened.isOn.isOn}
+          isOn={Boolean(listened.id)}
           isChanging={listened.isChanging}
           change={listened.change}
           label="Listened"
