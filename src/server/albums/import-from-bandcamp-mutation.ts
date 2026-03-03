@@ -113,6 +113,9 @@ export const importFromBandcampMutation = protectedProcedure
 
 export const scrapeCollectionPage = async (url: string) => {
   const response = await fetch(url);
+  if (!response.ok) {
+    return [];
+  }
   const html = await response.text();
   return parseCollectionAlbums(html);
 };

@@ -12,6 +12,9 @@ export const getArtistReleasesQuery = publicProcedure
     const artistBaseUrl = new URL(albumUrl).origin;
     const musicPageUrl = `${artistBaseUrl}/music`;
     const response = await fetch(musicPageUrl);
+    if (!response.ok) {
+      return [];
+    }
     const html = await response.text();
     return parseArtistReleases(html, albumUrl);
   });
