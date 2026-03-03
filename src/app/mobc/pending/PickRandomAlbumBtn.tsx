@@ -48,7 +48,7 @@ const PickRandomPendingAlbumBtn = () => {
             <path d="M21 12a9 9 0 0 0-9-9" />
           </svg>
         ) : null}
-        Pick random album
+        Pick random pending album
       </button>
       {noAlbum ? (
         <p className="text-xs text-red-600">No albums on pending.</p>
