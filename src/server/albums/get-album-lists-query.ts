@@ -1,7 +1,7 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc";
 import { buildPendingAlbumId, pendingAlbumsTable } from "../pending/pendingAlbums.schema";
-import { and, eq, is } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { buildFavoriteAlbumId, favoritesAlbumsTable } from "../favorites/favoritesAlbums.schema";
 import { buildListenedAlbumId, listenedAlbumsTable } from "../listened/listenedAlbums.schema";
 import { playlistAlbumsTable, userPlaylistsTable } from "../playlists/playlists.schema";

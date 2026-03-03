@@ -56,19 +56,23 @@ const DeleteAlbumBtn = (
     router.refresh();
   };
 
+  const removeFavorites = api.favorites.remove.useMutation({ onSuccess });
+  const removePending = api.pending.remove.useMutation({ onSuccess });
+  const removeListened = api.listened.remove.useMutation({ onSuccess });
+
   const { isPending, execute } = match(pathName)
-    .with("/mobc/favorites", () => {
-      const { isPending, mutate } = api.favorites.remove.useMutation({ onSuccess });
-      return { isPending, execute: () => mutate({ id }) };
-    })
-    .with("/mobc/pending", () => {
-      const { isPending, mutate } = api.pending.remove.useMutation({ onSuccess });
-      return { isPending, execute: () => mutate({ id }) };
-    })
-    .with("/mobc/listened", () => {
-      const { isPending, mutate } = api.listened.remove.useMutation({ onSuccess });
-      return { isPending, execute: () => mutate({ id }) };
-    })
+    .with("/mobc/favorites", () => ({
+      isPending: removeFavorites.isPending,
+      execute: () => removeFavorites.mutate({ id }),
+    }))
+    .with("/mobc/pending", () => ({
+      isPending: removePending.isPending,
+      execute: () => removePending.mutate({ id }),
+    }))
+    .with("/mobc/listened", () => ({
+      isPending: removeListened.isPending,
+      execute: () => removeListened.mutate({ id }),
+    }))
     .otherwise(() => { throw new Error("Unknown path"); });
 
 
