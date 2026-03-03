@@ -6,8 +6,8 @@ A personal music album management web app inspired by Bandcamp — built to add 
 Planned improvements and work in progress:
 
 - ~~On a custom list, add delete album button~~
-- Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.
-- On the album detail page, show additional releases from the same artist.
+- ~~Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.~~
+- ~~On the album detail page, show additional releases from the same artist.~~
 
 ## Features
 
