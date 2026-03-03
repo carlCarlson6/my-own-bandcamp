@@ -1,6 +1,6 @@
 import { api } from "~/utils/trpc/server";
-import PendingAlbumsList from "./PendingAlbumsList";
 import PickRandomPendingAlbumBtn from "./PickRandomAlbumBtn";
+import { AlbumsListDisplay } from "../albums/_components/display/AlbumsDisplay";
 
 export default async function PendingAlbumsPage() {
   const albums = await api.pending.getAll();
@@ -17,7 +17,7 @@ export default async function PendingAlbumsPage() {
           No pending albums yet. Start adding albums from the search page!
         </div>
       ) : (
-        <PendingAlbumsList albums={albums} />
+        <AlbumsListDisplay albums={albums} />
       )}
     </div>
   );

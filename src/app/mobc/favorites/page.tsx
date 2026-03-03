@@ -1,5 +1,5 @@
 import { api } from "~/utils/trpc/server";
-import FavoritesAlbumsList from "./FavoritesAlbumsList";
+import { AlbumsListDisplay } from "../albums/_components/display/AlbumsDisplay";
 
 export default async function FavoritesPage() {
   const albums = await api.favorites.getAll();
@@ -13,7 +13,7 @@ export default async function FavoritesPage() {
           No favorite albums yet. Start adding albums from the search page!
         </div>
       ) : (
-        <FavoritesAlbumsList albums={albums} />
+        <AlbumsListDisplay albums={albums} />
       )}
     </div>
   );
