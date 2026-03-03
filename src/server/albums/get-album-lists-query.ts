@@ -52,18 +52,9 @@ const getAlbumsLists = async (albumId: string, userId: string, db: Db) => {
       
   return {
     id:           albumId,
-    onPending:    {
-      isOn: Boolean(albumOnPending),
-      id:   albumOnPending?.id
-    },
-    onFavorites:  {
-      isOn: Boolean(albumOnFavorites),
-      id:   albumOnFavorites?.id
-    },
-    onListened:   {
-      isOn: Boolean(albumOnListened),
-      id:   albumOnListened?.id
-    },
+    onPending:    albumOnPending?.id,
+    onFavorites:  albumOnFavorites?.id,
+    onListened:   albumOnListened?.id,
     onUserLists
   };
 }
