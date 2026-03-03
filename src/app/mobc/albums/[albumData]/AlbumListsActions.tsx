@@ -78,7 +78,7 @@ const useAlbumListsActions = ({
       return;
     }
     setOnPending(false);
-    removePending.mutate({ albumId: id }, { onError: () => setOnPending(true) });
+    removePending.mutate({ id }, { onError: () => setOnPending(true) });
   };
 
   const handleFavoritesChange = (checked: boolean) => {
@@ -88,7 +88,7 @@ const useAlbumListsActions = ({
       return;
     }
     setOnFavorites(false);
-    removeFavorites.mutate({ albumId: id }, { onError: () => setOnFavorites(true) });
+    removeFavorites.mutate({ id }, { onError: () => setOnFavorites(true) });
   };
 
   const handleListenedChange = (checked: boolean) => {
@@ -98,7 +98,7 @@ const useAlbumListsActions = ({
       return;
     }
     setOnListened(false);
-    removeListened.mutate({ albumId: id }, { onError: () => setOnListened(true) });
+    removeListened.mutate({ id }, { onError: () => setOnListened(true) });
   };
 
   const handleUserListChange = (playlistId: string) => (checked: boolean) => {
