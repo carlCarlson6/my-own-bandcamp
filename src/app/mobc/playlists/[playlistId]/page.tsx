@@ -1,5 +1,5 @@
 import { api } from "~/utils/trpc/server";
-import { SmallAlbumPlayer } from "../../albums/(player)/SmallAlbumPlayer";
+import { SmallAlbumPlayer } from "../../albums/_components/player/SmallAlbumPlayer";
 import GoToAlbumBtn from "../../albums/GoToAlbumBtn";
 import UpdatePlaylistNameButton from "./UpdatePlaylistNameButton";
 

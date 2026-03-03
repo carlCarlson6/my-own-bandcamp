@@ -1,5 +1,5 @@
 import { api } from "~/utils/trpc/server";
-import BigAlbumPlayer from "../(player)/BigAlbumPlayer";
+import BigAlbumPlayer from "../_components/player/BigAlbumPlayer";
 import AlbumListsActions from "./AlbumListsActions";
 import z from "zod";
 import AlbumRecommendationsSection from "./AlbumRecommendationsSection";
