@@ -11,7 +11,7 @@ export const DeletePlaylistBtn = ({ playlistId }: { playlistId: string }) => {
   const deletePlaylist = api.playlists.delete.useMutation({
     onSuccess: () => {
       setOpen(false);
-      router.refresh();
+      router.push("/mobc/playlists");
     },
   });
 
@@ -71,6 +71,12 @@ export const DeletePlaylistBtn = ({ playlistId }: { playlistId: string }) => {
             <p className="mb-4 text-sm text-gray-600">
               Are you sure you want to delete this playlist and all its content? This action cannot be undone.
             </p>
+
+            {deletePlaylist.isError && (
+              <p className="mb-4 text-sm text-red-600" role="alert">
+                {deletePlaylist.error?.message ?? "Failed to delete playlist. Please try again."}
+              </p>
+            )}
 
             <div className="flex gap-2">
               <button
