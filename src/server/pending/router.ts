@@ -1,4 +1,5 @@
 import { createTRPCRouter } from "../infrastructure/trpc";
+import { clearPendingMutation } from "./clear-pending-mutation";
 import { getPendingAlbumsQuery } from "./get-pending-albums-query";
 import { pickRandomPendingAlbumQuery } from "./pick-random-pending-album-query";
 import { removeAlbumFromPendingMutation } from "./remove-from-pending-mutation";
@@ -8,5 +9,6 @@ export const pendingRouter = createTRPCRouter({
   save:       saveToPendingMutation,
   remove:     removeAlbumFromPendingMutation,
   getAll:     getPendingAlbumsQuery,
-  pickRandom: pickRandomPendingAlbumQuery
+  pickRandom: pickRandomPendingAlbumQuery,
+  clearAll:   clearPendingMutation,
 });
