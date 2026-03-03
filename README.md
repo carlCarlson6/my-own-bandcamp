@@ -8,6 +8,11 @@ Planned improvements and work in progress:
 - ~~On a custom list, add delete album button~~
 - ~~Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.~~
 - ~~On the album detail page, show additional releases from the same artist.~~
+- Review and validate the Bandcamp collection/wishlist import API approach — the `scrapeCollectionPage` function uses the `fancollection` API with the username as `fan_id`, but Bandcamp may expect a numeric fan ID instead. Needs testing against real Bandcamp profiles.
+- Review and validate the artist releases scraping — the `getArtistReleasesQuery` scrapes the artist's `/music` page using `#music-grid` and `data-item-id` selectors. Verify these selectors match actual Bandcamp page structure.
+- Fix Vercel build errors on the import & artist-releases branch.
+- Import count shows albums *found*, not albums *actually inserted* — on re-import, the UI reports "X albums imported" even when zero new records were created (because of `onConflictDoNothing`). Either return actual inserted row count or change the label to "found".
+- Extract a shared `SaveAlbumBtn` component — `SaveReleaseBtn` (in `ArtistReleasesSection`) and `SaveRecommendationBtn` (in `AlbumRecommendationsSection`) are nearly identical. Deduplicate into a reusable component under `_components/`.
 
 ## Features
 
