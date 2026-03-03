@@ -1,7 +1,5 @@
 "use client";
 
-import { on } from "events";
-import { set } from "node_modules/ts-pattern/dist/patterns";
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 
@@ -48,7 +46,7 @@ const useAlbumListsActions = ({
   const removeFavorites = api.favorites.remove.useMutation({
     onSuccess: () => setOnFavorites(undefined),
   });
-  const handleFavoritesChange = (checked: boolean) => {
+  const handleFavoritesChange = (_checked: boolean) => {
     if (onFavorites) {
       setOnFavorites(undefined);
       removeFavorites.mutate({ id: onFavorites }, { onError: () => setOnFavorites(onFavorites) });
@@ -141,7 +139,7 @@ const useAlbumListsActions = ({
       playlistId: x.playlistId,
       name: x.name,
       isOn: x.isOn,
-      isChaging: x.isChanging,
+      isChanging: x.isChanging,
       change: handleUserListChange(x.playlistId),
     })),
   }
@@ -183,7 +181,7 @@ const AlbumListsActions = (props: AlbumListsActionsProps) => {
           <AlbumActionCheckbox
             key={userList.playlistId}
             isOn={userList.isOn}
-            isChanging={userList.isChaging}
+            isChanging={userList.isChanging}
             change={userList.change}
             label={userList.name}
           />
