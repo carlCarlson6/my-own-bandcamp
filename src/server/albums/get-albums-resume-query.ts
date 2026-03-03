@@ -11,6 +11,7 @@ export const getAlumbsResumeQuery = protectedProcedure
     const favorites = await getFavoritesAlbums(db, userId);
     const listened = await getListenedAlbums(db, userId);
 
+    // TODO - include user lists here
     return [
       {
         title: "Pending",
