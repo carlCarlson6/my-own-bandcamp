@@ -1,22 +1,29 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc";
-import { buildPendingAlbumId, pendingAlbumsTable } from "./pendingAlbums.schema";
-import { eq } from "drizzle-orm";
+import { pendingAlbumsTable } from "./pendingAlbums.schema";
+import { and, eq } from "drizzle-orm";
 
 export const removeAlbumFromPendingMutation = protectedProcedure
-  .input(z.object({ albumId: z.string() }))
+  .input(z.object({ id: z.string() }))
   .mutation(async (
-    { input: { albumId }, ctx: { db, userId } }
+    { input: { id }, ctx: { db, userId } }
   ) => {
     const existing = await db
       .select()
       .from(pendingAlbumsTable)
       .where(
-        eq(pendingAlbumsTable.id, buildPendingAlbumId(albumId, userId)));
-    if (existing.length === 0) return;
+        and(
+        eq(pendingAlbumsTable.id, id),
+        eq(pendingAlbumsTable.userId, userId)));
+    if (existing.length === 0) {
+      console.log(`Album with id ${id} not found in pending list for user ${userId}`);
+      return;
+    }
 
     await db
       .delete(pendingAlbumsTable)
       .where(
-        eq(pendingAlbumsTable.id, buildPendingAlbumId(albumId, userId)));
+        and(
+          eq(pendingAlbumsTable.id, id),
+          eq(pendingAlbumsTable.userId, userId)));
   });
