@@ -2,41 +2,37 @@ import { api } from "~/utils/trpc/server";
 import Link from "next/link";
 import PickRandomPendingAlbumBtn from "./pending/PickRandomAlbumBtn";
 import { SmallAlbumPlayer } from "./albums/_components/player/SmallAlbumPlayer";
-import { DeleteListBtn } from "./DeleteListBtn";
 
 const DisplayUserLists = async () => {
   const resume = await api.albums.getResume();
   return (
     <>
     {resume.map((x) => (
-      <div
+      <Link
         key={x.href}
-        className="relative rounded-lg border p-4 transition-shadow hover:shadow-2xl"
+        href={x.href}
+        className="rounded-lg border p-4 transition-shadow hover:shadow-2xl"
+        prefetch={false}
       >
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-lg font-semibold">{x.title}</h3>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">
-              {x.count} {x.count === 1 ? "album" : "albums"}
-            </span>
-            <DeleteListBtn href={x.href} />
-          </div>
+          <span className="text-sm text-gray-600">
+            {x.count} {x.count === 1 ? "album" : "albums"}
+          </span>
         </div>
 
-        <Link href={x.href} prefetch={false}>
-          {x.albums.length === 0 ? (
-            <p className="text-sm text-gray-500">No albums yet.</p>
-          ) : (
-            <div className="grid grid-cols-3 gap-2">
-              {x.albums.map((album) => (
-                <div key={album.id} className="overflow-hidden rounded-md border">
-                  <SmallAlbumPlayer albumId={album.id} />
-                </div>
-              ))}
-            </div>
-          )}
-        </Link>
-      </div>
+        {x.albums.length === 0 ? (
+          <p className="text-sm text-gray-500">No albums yet.</p>
+        ) : (
+          <div className="grid grid-cols-3 gap-2">
+            {x.albums.map((album) => (
+              <div key={album.id} className="overflow-hidden rounded-md border">
+                <SmallAlbumPlayer albumId={album.id} />
+              </div>
+            ))}
+          </div>
+        )}
+      </Link>
     ))}
     </>
   );
