@@ -13,14 +13,20 @@ export const saveToFavoritesMutation = protectedProcedure
       .from(favoritesAlbumsTable)
       .where(
         eq(favoritesAlbumsTable.id, buildFavoriteAlbumId(id, userId)));
-    if (existing.length > 0) return;
+    if (existing.length > 0) {
+      console.log(`Album ${id} is already on favorites for user ${userId}`);
+      return existing.at(0)?.id;
+    };
 
-    await db
+    const result = await db
       .insert(favoritesAlbumsTable)
       .values({
         id:       buildFavoriteAlbumId(id, userId),
         albumId:  id,
         albumUrl: url,
         userId:   userId
-      });
+      })
+      .returning();
+
+    return result.at(0)?.id;
   });

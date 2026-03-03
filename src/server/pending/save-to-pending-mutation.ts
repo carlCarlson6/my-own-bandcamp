@@ -14,14 +14,16 @@ export const saveToPendingMutation = protectedProcedure
       .from(pendingAlbumsTable)
       .where(
         eq(pendingAlbumsTable.id, buildPendingAlbumId(album.id, userId)));
-    if (existing.length > 0) return;
+    if (existing.length > 0) return undefined;
 
-    await db
+    const result = await db
       .insert(pendingAlbumsTable)
       .values({
         id:       buildPendingAlbumId(album.id, userId),
         albumId:  album.id,
         albumUrl: album.url,
         userId:   userId
-      });
+      })
+      .returning();
+    return result.at(0)?.id;
   });

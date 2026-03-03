@@ -1,7 +1,7 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc";
 import { buildPendingAlbumId, pendingAlbumsTable } from "../pending/pendingAlbums.schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, is } from "drizzle-orm";
 import { buildFavoriteAlbumId, favoritesAlbumsTable } from "../favorites/favoritesAlbums.schema";
 import { buildListenedAlbumId, listenedAlbumsTable } from "../listened/listenedAlbums.schema";
 import { playlistAlbumsTable, userPlaylistsTable } from "../playlists/playlists.schema";
@@ -52,9 +52,18 @@ const getAlbumsLists = async (albumId: string, userId: string, db: Db) => {
       
   return {
     id:           albumId,
-    onPending:    Boolean(albumOnPending),
-    onFavorites:  Boolean(albumOnFavorites),
-    onListened:   Boolean(albumOnListened),
+    onPending:    {
+      isOn: Boolean(albumOnPending),
+      id:   albumOnPending?.id
+    },
+    onFavorites:  {
+      isOn: Boolean(albumOnFavorites),
+      id:   albumOnFavorites?.id
+    },
+    onListened:   {
+      isOn: Boolean(albumOnListened),
+      id:   albumOnListened?.id
+    },
     onUserLists
   };
 }
