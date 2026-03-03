@@ -6,10 +6,10 @@ export default async function FavoritesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Favorite Albums</h1>
+      <h1 className="text-2xl font-bold text-cyber-text">Favorite Albums</h1>
 
       {albums.length === 0 ? (
-        <div className="rounded-md bg-gray-50 p-8 text-center text-gray-600">
+        <div className="rounded-md border border-cyber-border bg-cyber-surface p-8 text-center text-cyber-muted">
           No favorite albums yet. Start adding albums from the search page!
         </div>
       ) : (

@@ -14,12 +14,12 @@ export default async function PlaylistPage({
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
-        <h1 className="text-2xl font-bold">{playlist.name}</h1>
+        <h1 className="text-2xl font-bold text-cyber-text">{playlist.name}</h1>
         <UpdatePlaylistNameButton playlistId={playlist.id} currentName={playlist.name} />
       </div>
 
       {playlist.items.length === 0 ? (
-        <div className="rounded-md bg-gray-50 p-8 text-center text-gray-600">
+        <div className="rounded-md border border-cyber-border bg-cyber-surface p-8 text-center text-cyber-muted">
           No albums in this playlist yet.
         </div>
       ) : (
@@ -36,7 +36,7 @@ const PlaylistAlbumsList = ({
 }) => {
   return (
     <div>
-      <p className="mb-6 text-sm font-medium text-gray-600">
+      <p className="mb-6 text-sm font-medium text-cyber-muted">
         {playlist.items.length} album{playlist.items.length !== 1 ? "s" : ""}
       </p>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -60,7 +60,7 @@ const PlaylistAlbumCard = ({
   albumUrl: string;
 }) => {
   return (
-    <div className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl">
+    <div className="overflow-hidden rounded-lg border border-cyber-border bg-cyber-surface transition-shadow hover:shadow-[0_0_15px_var(--color-cyber-cyan)]">
       <SmallAlbumPlayer albumId={albumId} />
       <div className="flex flex-col gap-2 p-4">
         <div className="flex items-center justify-between">

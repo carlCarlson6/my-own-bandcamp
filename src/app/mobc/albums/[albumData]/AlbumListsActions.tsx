@@ -154,8 +154,8 @@ const AlbumListsActions = (props: AlbumListsActionsProps) => {
   } = useAlbumListsActions(props);
 
   return (
-    <aside className="w-full max-w-sm rounded-lg border p-4">
-      <h2 className="mb-4 text-lg font-semibold">Album lists</h2>
+    <aside className="w-full max-w-sm rounded-lg border border-cyber-border bg-cyber-surface p-4">
+      <h2 className="mb-4 text-lg font-semibold text-cyber-text">Album lists</h2>
       <div className="space-y-3">
 
         <AlbumActionCheckbox
@@ -202,7 +202,7 @@ const AlbumActionCheckbox = ({
   return (
     <div className="flex items-center justify-between">
       {isChanging ? (
-        <div className="flex items-center gap-2 text-sm text-gray-700">
+        <div className="flex items-center gap-2 text-sm text-cyber-muted">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -217,7 +217,7 @@ const AlbumActionCheckbox = ({
           {label}
         </div>
       ) : (
-        <label className="flex items-center gap-2 text-sm text-gray-700">
+        <label className="flex items-center gap-2 text-sm text-cyber-text">
           <input
             type="checkbox"
             checked={isOn}

@@ -8,13 +8,15 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-8 p-8">
-      <h1 className="text-4xl font-bold">My Own Bandcamp</h1>
+      <h1 className="text-4xl font-bold tracking-wider text-cyber-cyan drop-shadow-[0_0_10px_var(--color-cyber-cyan)]">
+        My Own Bandcamp
+      </h1>
 
       <div className="flex items-center gap-3">
         <SignInButton mode="modal" forceRedirectUrl={"/mobc"}>
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-md bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:ring-offset-2"
+            className="inline-flex items-center justify-center rounded-md border border-cyber-cyan bg-cyber-cyan/10 px-5 py-2.5 text-sm font-medium text-cyber-cyan transition hover:bg-cyber-cyan/20 hover:shadow-[0_0_15px_var(--color-cyber-cyan)] focus:outline-none focus:ring-2 focus:ring-cyber-cyan"
           >
             Sign in
           </button>

@@ -59,29 +59,29 @@ const UpdatePlaylistNameButton = ({
       <button
         type="button"
         onClick={handleOpen}
-        className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+        className="rounded-md border border-cyber-border px-4 py-2 text-sm text-cyber-muted hover:bg-cyber-cyan/10 hover:text-cyber-cyan"
       >
         Edit Name
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-cyber-bg/60 backdrop-blur-md">
           <div
-            className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg"
+            className="w-full max-w-md rounded-lg border border-cyber-border bg-cyber-surface p-6 shadow-[0_0_20px_var(--color-cyber-cyan)]"
             role="dialog"
             aria-modal="true"
             aria-labelledby="update-playlist-name-title"
           >
             <h2
               id="update-playlist-name-title"
-              className="mb-4 text-xl font-semibold"
+              className="mb-4 text-xl font-semibold text-cyber-text"
             >
               Update Playlist Name
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="newName" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="newName" className="block text-sm font-medium text-cyber-muted">
                   Playlist Name
                 </label>
                 <input
@@ -92,20 +92,20 @@ const UpdatePlaylistNameButton = ({
                     setName(e.target.value);
                     setError("");
                   }}
-                  className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                  className="mt-1 w-full rounded-md border border-cyber-border bg-cyber-bg px-3 py-2 text-cyber-text focus:border-cyber-cyan focus:shadow-[0_0_8px_var(--color-cyber-cyan)] focus:outline-none"
                   disabled={mutation.isPending}
                   autoFocus
                   maxLength={1000}
                 />
               </div>
 
-              {error && <p className="text-sm text-red-600">{error}</p>}
+              {error && <p className="text-sm text-cyber-magenta">{error}</p>}
 
               <div className="flex gap-2">
                 <button
                   type="submit"
                   disabled={mutation.isPending || !name.trim()}
-                  className="flex-1 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex-1 rounded-md border border-cyber-cyan/50 bg-cyber-cyan/10 px-4 py-2 text-cyber-cyan hover:bg-cyber-cyan/20 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {mutation.isPending ? "Saving..." : "Save"}
                 </button>
@@ -113,7 +113,7 @@ const UpdatePlaylistNameButton = ({
                   type="button"
                   onClick={handleClose}
                   disabled={mutation.isPending}
-                  className="flex-1 rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex-1 rounded-md border border-cyber-border px-4 py-2 text-cyber-muted hover:bg-cyber-border/30 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   Cancel
                 </button>

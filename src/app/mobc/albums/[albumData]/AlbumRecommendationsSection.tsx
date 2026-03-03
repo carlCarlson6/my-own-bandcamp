@@ -22,8 +22,8 @@ const AlbumRecommendationsSection = ({
   }
 
   return (
-    <aside className="w-full rounded-lg border p-4">
-      <h2 className="mb-4 text-lg font-semibold">Recommendations</h2>
+    <aside className="w-full rounded-lg border border-cyber-border bg-cyber-surface p-4">
+      <h2 className="mb-4 text-lg font-semibold text-cyber-text">Recommendations</h2>
       <div className="grid grid-cols-2 gap-3">
         {recommendations.map((recommendation) => (
           <RecommendationCard
@@ -45,7 +45,7 @@ const RecommendationCard = ({
   url: string;
 }) => {
   return (
-    <div className="overflow-hidden rounded-lg border transition-shadow hover:shadow-lg">
+    <div className="overflow-hidden rounded-lg border border-cyber-border bg-cyber-surface transition-shadow hover:shadow-[0_0_10px_var(--color-cyber-purple)]">
       <SmallAlbumPlayer albumId={albumId} />
       <div className="p-2 flex flex-col items-center gap-1">
         <SaveRecommendationBtn albumId={albumId} url={url} />
@@ -76,7 +76,7 @@ const SaveRecommendationBtn = ({ albumId, url }: { albumId: string, url: string 
 
   return (
     <button
-      className="flex items-center justify-center gap-1 rounded-md px-3 py-2 text-sm hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+      className="flex items-center justify-center gap-1 rounded-md px-3 py-2 text-sm text-cyber-muted hover:bg-cyber-cyan/10 hover:text-cyber-cyan disabled:cursor-not-allowed disabled:opacity-60"
       aria-label={isSaved ? "Album saved" : "Add album to pending list"}
       aria-busy={isPending}
       onClick={execute}

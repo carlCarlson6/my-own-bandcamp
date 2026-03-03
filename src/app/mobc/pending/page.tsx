@@ -8,12 +8,12 @@ export default async function PendingAlbumsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
-        <h1 className="text-2xl font-bold">Pending Albums</h1>
+        <h1 className="text-2xl font-bold text-cyber-text">Pending Albums</h1>
         <PickRandomPendingAlbumBtn />
       </div>
       
       {albums.length === 0 ? (
-        <div className="rounded-md bg-gray-50 p-8 text-center text-gray-600">
+        <div className="rounded-md border border-cyber-border bg-cyber-surface p-8 text-center text-cyber-muted">
           No pending albums yet. Start adding albums from the search page!
         </div>
       ) : (

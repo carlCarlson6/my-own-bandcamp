@@ -12,17 +12,19 @@ export default async function MainUserLayout({
 
   return (
     <>
-      <header className="fixed top-0 right-0 left-0 z-50 border-b bg-white/70 backdrop-blur">
+      <header className="fixed top-0 right-0 left-0 z-50 border-b border-cyber-border bg-cyber-bg/80 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
           <a href="/mobc">
-            <h1 className="text-2xl font-bold">My Own Bandcamp</h1>
+            <h1 className="text-2xl font-bold tracking-wider text-cyber-cyan drop-shadow-[0_0_8px_var(--color-cyber-cyan)]">
+              My Own Bandcamp
+            </h1>
           </a>
           <UserButton />
         </div>
       </header>
 
       <div className="mx-auto flex min-h-screen w-full max-w-6xl pt-16">
-        <aside className="sticky top-16 h-[calc(100vh-4rem)] w-64 border-r p-6">
+        <aside className="sticky top-16 h-[calc(100vh-4rem)] w-64 border-r border-cyber-border p-6">
           <nav className="flex flex-col gap-2">
             <NavLink href="/mobc" text="Your albums" />
             <NavLink href="/mobc/search" text="Search albums" />

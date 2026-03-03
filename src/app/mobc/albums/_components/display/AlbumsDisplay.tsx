@@ -18,7 +18,7 @@ export const AlbumsListDisplay = ({
   albums: Album[]
 }) => (
   <div>
-    <p className="mb-6 text-sm font-medium text-gray-600">
+    <p className="mb-6 text-sm font-medium text-cyber-muted">
       {albums.length} album{albums.length !== 1 ? "s" : ""}
     </p>
     <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
@@ -35,7 +35,7 @@ export const AlbumsListDisplay = ({
 const AlbumCard = (
   { album }: { album: Album }
 ) => (
-  <div className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl">
+  <div className="overflow-hidden rounded-lg border border-cyber-border bg-cyber-surface transition-shadow hover:shadow-[0_0_15px_var(--color-cyber-cyan)]">
     <SmallAlbumPlayer albumId={album.bcId} />
 
     <div className="p-4 flex flex-col gap-2">
@@ -79,7 +79,7 @@ const DeleteAlbumBtn = (
   return (
     <button
       type="button"
-      className="rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-60"
+      className="rounded-md p-2 text-cyber-muted hover:bg-cyber-magenta/10 hover:text-cyber-magenta disabled:cursor-not-allowed disabled:opacity-60"
       aria-label="Delete album"
       aria-busy={isPending}
       onClick={execute}

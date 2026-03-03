@@ -3,7 +3,7 @@ const GoToAlbumBtn = (album: { albumId: string, albumUrl: string }) => {
   return (
     <a
       href={`/mobc/albums/${encodedData}`}
-      className="rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700"
+      className="rounded-md border border-cyber-cyan/50 bg-cyber-cyan/10 px-3 py-2 text-sm text-cyber-cyan hover:bg-cyber-cyan/20 hover:shadow-[0_0_10px_var(--color-cyber-cyan)]"
     >
       Go to album
     </a>

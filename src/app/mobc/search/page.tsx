@@ -27,7 +27,7 @@ export default function SearchAlbumsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <label htmlFor="search" className="block text-sm font-medium">
+        <label htmlFor="search" className="block text-sm font-medium text-cyber-text">
           Search Albums
         </label>
         <input
@@ -36,23 +36,23 @@ export default function SearchAlbumsPage() {
           placeholder="Enter album name, artist or paste a bandcamp album URL..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="mt-2 w-full rounded-md border px-4 py-2 outline-none focus:border-blue-500"
+          className="mt-2 w-full rounded-md border border-cyber-border bg-cyber-surface px-4 py-2 text-cyber-text placeholder-cyber-muted outline-none focus:border-cyber-cyan focus:shadow-[0_0_8px_var(--color-cyber-cyan)]"
         />
       </div>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-4 text-red-800">
+        <div className="rounded-md border border-cyber-magenta/50 bg-cyber-magenta/10 p-4 text-cyber-magenta">
           Error: {error.message}
         </div>
       )}
 
       {isLoading && searchTerm.length > 0 && (
-        <div className="text-center text-gray-500">Loading...</div>
+        <div className="text-center text-cyber-muted">Loading...</div>
       )}
 
       {results?.dataOrigin === "from-search" && results.albums.length > 0 ? (
         <div>
-          <p className="mb-6 text-sm font-medium text-gray-600">
+          <p className="mb-6 text-sm font-medium text-cyber-muted">
             Found {results.albums.length} result{results.albums.length !== 1 ? "s" : ""}
           </p>
           <div className="grid gap-6 grid-cols-2 lg:grid-cols-3">
@@ -67,7 +67,7 @@ export default function SearchAlbumsPage() {
       ) : (
         searchTerm.length > 0 &&
         !isLoading && (
-          <div className="text-center text-gray-500">No albums found.</div>
+          <div className="text-center text-cyber-muted">No albums found.</div>
         )
       )}
     </div>
@@ -82,7 +82,7 @@ type AlbumSearchResult = {
 const AlbumResultCard = ({ album }: { album: AlbumSearchResult  }) => { 
   return (
     <div
-      className="overflow-hidden rounded-lg border transition-shadow hover:shadow-2xl"
+      className="overflow-hidden rounded-lg border border-cyber-border bg-cyber-surface transition-shadow hover:shadow-[0_0_15px_var(--color-cyber-cyan)]"
     >
       <SmallAlbumPlayer albumId={album.id} />
       <div className="p-4">
@@ -110,7 +110,7 @@ const SaveAlbumResultBtn = ({ album: { id, url } }: { album: AlbumSearchResult  
   
   return (
     <button
-      className="mt-3 flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+      className="mt-3 flex items-center gap-2 rounded-md px-3 py-2 text-sm text-cyber-muted hover:bg-cyber-cyan/10 hover:text-cyber-cyan disabled:cursor-not-allowed disabled:opacity-60"
       aria-label={isSaved ? "Album saved" : "Add album to pending list"}
       aria-busy={isPending}
       onClick={execute}

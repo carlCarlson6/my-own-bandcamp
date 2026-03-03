@@ -14,7 +14,9 @@ export default function NavLink(
       href={href}
       className={
         "rounded-md px-3 py-2 text-left transition-colors " +
-        (isActive ? "bg-black/10 font-semibold" : "hover:bg-black/5")
+        (isActive
+          ? "border border-cyber-cyan/50 bg-cyber-cyan/10 font-semibold text-cyber-cyan shadow-[0_0_8px_var(--color-cyber-cyan)]"
+          : "text-cyber-muted hover:bg-cyber-cyan/5 hover:text-cyber-text")
       }
       prefetch={false}
     >

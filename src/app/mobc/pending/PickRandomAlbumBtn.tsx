@@ -30,7 +30,7 @@ const PickRandomPendingAlbumBtn = () => {
     <div className="flex flex-col items-start gap-2">
       <button
         type="button"
-        className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-md border border-cyber-magenta/50 bg-cyber-magenta/10 px-3 py-2 text-sm text-cyber-magenta hover:bg-cyber-magenta/20 hover:shadow-[0_0_10px_var(--color-cyber-magenta)] disabled:cursor-not-allowed disabled:opacity-60"
         onClick={handleClick}
         disabled={isLoading}
         aria-busy={isLoading}
@@ -51,7 +51,7 @@ const PickRandomPendingAlbumBtn = () => {
         Pick random pending album
       </button>
       {noAlbum ? (
-        <p className="text-xs text-red-600">No albums on pending.</p>
+        <p className="text-xs text-cyber-magenta">No albums on pending.</p>
       ) : null}
     </div>
   );
