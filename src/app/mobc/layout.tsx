@@ -30,6 +30,7 @@ export default async function MainUserLayout({
             <NavLink href="/mobc/favorites" text="Favorite albums" />
             <NavLink href="/mobc/listened" text="Listened albums" />
             <NavLink href="/mobc/playlists" text="Your lists" />
+            <NavLink href="/mobc/import" text="Import from Bandcamp" />
           </nav>
         </aside>
 
