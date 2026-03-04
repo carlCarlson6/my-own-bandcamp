@@ -6,8 +6,8 @@ import { api } from "~/utils/trpc/react";
 export default function ImportPage() {
   const [username, setUsername] = useState("");
   const [result, setResult] = useState<{
-    ownedCount: number;
-    wishlistedCount: number;
+    ownedFound: number;
+    wishlistedFound: number;
   } | null>(null);
 
   const { mutate, isPending, error } =
@@ -73,12 +73,12 @@ export default function ImportPage() {
           <p className="font-semibold">Import complete!</p>
           <ul className="mt-2 list-inside list-disc text-sm">
             <li>
-              <strong>Owned</strong>: {result.ownedCount} album
-              {result.ownedCount !== 1 ? "s" : ""} imported
+              <strong>Owned</strong>: {result.ownedFound} album
+              {result.ownedFound !== 1 ? "s" : ""} found
             </li>
             <li>
-              <strong>Wishlisted</strong>: {result.wishlistedCount} album
-              {result.wishlistedCount !== 1 ? "s" : ""} imported
+              <strong>Wishlisted</strong>: {result.wishlistedFound} album
+              {result.wishlistedFound !== 1 ? "s" : ""} found
             </li>
           </ul>
         </div>
