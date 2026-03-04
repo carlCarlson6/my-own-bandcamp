@@ -8,5 +8,5 @@ export const pendingRouter = createTRPCRouter({
   save:       saveToPendingMutation,
   remove:     removeAlbumFromPendingMutation,
   getAll:     getPendingAlbumsQuery,
-  pickRandom: pickRandomPendingAlbumQuery
+  pickRandom: pickRandomPendingAlbumQuery,
 });
