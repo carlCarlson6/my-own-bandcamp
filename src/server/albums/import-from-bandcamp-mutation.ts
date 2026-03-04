@@ -286,11 +286,12 @@ export async function checkAlbumExists(albumUrl: string): Promise<boolean> {
     const url = new URL(albumUrl);
     if (url.hostname !== "bandcamp.com" && !url.hostname.endsWith(".bandcamp.com")) return false;
 
-    const signal = AbortSignal.timeout(10_000);
-    let response = await fetch(albumUrl, { method: "HEAD", redirect: "follow", signal });
+    const headSignal = AbortSignal.timeout(10_000);
+    let response = await fetch(albumUrl, { method: "HEAD", redirect: "follow", signal: headSignal });
     // Some servers reject HEAD — retry with GET if we get 405.
     if (response.status === 405) {
-      response = await fetch(albumUrl, { method: "GET", redirect: "follow", signal });
+      const getSignal = AbortSignal.timeout(10_000);
+      response = await fetch(albumUrl, { method: "GET", redirect: "follow", signal: getSignal });
     }
     return response.ok;
   } catch {
