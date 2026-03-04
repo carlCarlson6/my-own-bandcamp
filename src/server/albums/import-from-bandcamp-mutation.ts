@@ -210,8 +210,17 @@ export async function fetchFanItems(
         // Prefer album_id: it always refers to the parent album, even for
         // track purchases, which is what the embedded player needs.
         const albumId = item.album_id ?? item.item_id ?? item.tralbum_id ?? item.id;
+        const anyItem = item as any;
         const rawUrl: string | undefined =
-          item.tralbum_url ?? item.item_url ?? item.url ?? item.item_url_path;
+          (item.album_id
+            ? anyItem.album_tralbum_url ??
+              anyItem.album_item_url ??
+              anyItem.album_url
+            : undefined) ??
+          item.tralbum_url ??
+          item.item_url ??
+          item.url ??
+          item.item_url_path;
         const cleanUrl =
           typeof rawUrl === "string" ? rawUrl.split("?")[0] : undefined;
         return {
