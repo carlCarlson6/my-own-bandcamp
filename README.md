@@ -13,8 +13,6 @@ Planned improvements and work in progress:
 - Fix Vercel build errors on the import & artist-releases branch.
 - Import count shows albums *found*, not albums *actually inserted* — on re-import, the UI reports "X albums imported" even when zero new records were created (because of `onConflictDoNothing`). Either return actual inserted row count or change the label to "found".
 - Extract a shared `SaveAlbumBtn` component — `SaveReleaseBtn` (in `ArtistReleasesSection`) and `SaveRecommendationBtn` (in `AlbumRecommendationsSection`) are nearly identical. Deduplicate into a reusable component under `_components/`.
-- Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.
-- On the album detail page, show additional releases from the same artist.
 - Display errors on popup alert.
 
 ## Features

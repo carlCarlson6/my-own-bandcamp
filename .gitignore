@@ -43,4 +43,5 @@ yarn-error.log*
 *.tsbuildinfo
 
 # idea files
-.ideanode_modules/
+.idea
+node_modules/
