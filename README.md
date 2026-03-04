@@ -8,7 +8,8 @@ Planned improvements and work in progress:
 - ~~On a custom list, add delete album button~~
 - ~~On the album detail page, show additional releases from the same artist.~~
 - Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.
-- Review and validate the artist releases scraping — the `getArtistReleasesQuery` scrapes the artist's `/music` page using `#music-grid` and `data-item-id` selectors. Verify these selectors match actual Bandcamp page structure.
+- ~~Fix broken elements in "More from this artist" — `getArtistReleasesQuery` was including tracks (`data-item-id="track-…"`) in addition to albums, which broke the embedded player. Now only `album-` items are included.~~
+- Review and validate the artist releases scraping — verify that the `#music-grid` / `ol.music-grid` selectors and `data-item-id` attribute match actual Bandcamp page structure on a variety of artist pages.
 - Extract a shared `SaveAlbumBtn` component — `SaveReleaseBtn` (in `ArtistReleasesSection`) and `SaveRecommendationBtn` (in `AlbumRecommendationsSection`) are nearly identical. Deduplicate into a reusable component under `_components/`.
 - Display errors on popup alert.
 
