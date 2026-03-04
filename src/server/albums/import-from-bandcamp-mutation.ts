@@ -1,6 +1,5 @@
 import z from "zod";
 import { protectedProcedure } from "../infrastructure/trpc";
-import * as cheerio from "cheerio";
 import { userPlaylistsTable, playlistAlbumsTable, buildPlaylistItemId } from "../playlists/playlists.schema";
 import { eq, and } from "drizzle-orm";
 
@@ -180,26 +179,4 @@ export const scrapeCollectionPage = async (url: string) => {
   }
 };
 
-export const parseCollectionAlbums = (html: string) => {
-  const $ = cheerio.load(html);
-  const albums: { id: string; url: string }[] = [];
 
-  $(".collection-item-container").each((_, element) => {
-    const $item = $(element);
-    const itemId = $item.attr("data-itemid");
-    const tralbumType = $item.attr("data-tralbumtype");
-    const href = $item.find(".collection-item-title a, .item-link, a.item-link").first().attr("href")
-      ?? $item.find("a").first().attr("href");
-
-    if (!itemId || !href || tralbumType !== "a") {
-      return;
-    }
-
-    const albumUrl = href.split("?").at(0);
-    if (!albumUrl) return;
-
-    albums.push({ id: itemId, url: albumUrl });
-  });
-
-  return albums;
-};
