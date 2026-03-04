@@ -1,4 +1,5 @@
 import z from "zod";
+import { TRPCError } from "@trpc/server";
 import { protectedProcedure } from "../infrastructure/trpc";
 import { userPlaylistsTable, playlistAlbumsTable, buildPlaylistItemId } from "../playlists/playlists.schema";
 import { eq, and } from "drizzle-orm";
@@ -10,12 +11,17 @@ export const importFromBandcampMutation = protectedProcedure
     }),
   )
   .mutation(async ({ input: { username }, ctx: { userId, db } }) => {
-    const collectionUrl = `https://bandcamp.com/${encodeURIComponent(username)}`;
-    const wishlistUrl = `https://bandcamp.com/${encodeURIComponent(username)}/wishlist`;
+    const fanId = await resolveFanId(username);
+    if (fanId === null) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: `Could not find Bandcamp user "${username}". Make sure the username is correct.`,
+      });
+    }
 
     const [collectionAlbums, wishlistAlbums] = await Promise.all([
-      scrapeCollectionPage(collectionUrl),
-      scrapeCollectionPage(wishlistUrl),
+      fetchFanItems(fanId, "collection_items"),
+      fetchFanItems(fanId, "wishlist_items"),
     ]);
 
     const ownedPlaylistId = crypto.randomUUID();
@@ -126,48 +132,80 @@ interface BandcampCollectionResponse {
   items?: BandcampCollectionItem[];
 }
 
-export const scrapeCollectionPage = async (url: string) => {
-  // Bandcamp loads collection items client-side; the initial HTML doesn't contain
-  // `.collection-item-container` elements. Use the public JSON API instead.
+/**
+ * Fetch the Bandcamp profile page for the given username and extract the
+ * numeric fan_id from the embedded page-data blob. Returns `null` when the
+ * user cannot be found or the page structure is unexpected.
+ */
+export async function resolveFanId(username: string): Promise<number | null> {
   try {
-    // Try to extract the username from the provided URL, e.g. "https://bandcamp.com/<username>"
-    const match = /bandcamp\.com\/([^/?#]+)/.exec(url);
-    const username = match?.[1];
+    const response = await fetch(
+      `https://bandcamp.com/${encodeURIComponent(username)}`,
+    );
+    if (!response.ok) return null;
 
-    if (!username) {
-      return [];
-    }
+    const html = await response.text();
 
-    const apiResponse = await fetch("https://bandcamp.com/api/fancollection/1/collection_items", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    // Bandcamp embeds a JSON blob in <div id="pagedata" data-blob="...">
+    // The attribute value is HTML-entity-encoded JSON.
+    const blobMatch =
+      /id="pagedata"[^>]*data-blob="([^"]*)"/.exec(html) ??
+      /id="pagedata"[^>]*data-blob='([^']*)'/.exec(html);
+    if (!blobMatch?.[1]) return null;
+
+    const decoded = blobMatch[1]
+      .replace(/&quot;/g, '"')
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, "&");
+
+    const blob = JSON.parse(decoded) as { fan_data?: { fan_id?: number } };
+    const fanId = blob?.fan_data?.fan_id;
+
+    return typeof fanId === "number" ? fanId : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch collection or wishlist items for a Bandcamp fan using the public
+ * JSON API. `endpoint` should be `"collection_items"` or `"wishlist_items"`.
+ */
+export async function fetchFanItems(
+  fanId: number,
+  endpoint: "collection_items" | "wishlist_items",
+): Promise<{ id: string; url: string }[]> {
+  try {
+    const apiResponse = await fetch(
+      `https://bandcamp.com/api/fancollection/1/${endpoint}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fan_id: fanId,
+          older_than_token: `${Math.floor(Date.now() / 1000)}::a:`,
+          count: 500,
+        }),
       },
-      // The exact API contract is determined by Bandcamp; here we use the username
-      // as the fan identifier and request a reasonable number of items.
-      body: JSON.stringify({
-        fan_id: username,
-        older_than_token: null,
-        count: 500,
-        sort_by: "date",
-      }),
-    });
+    );
 
-    if (!apiResponse.ok) {
-      return [];
-    }
+    if (!apiResponse.ok) return [];
 
     const data = (await apiResponse.json()) as BandcampCollectionResponse;
     const items = Array.isArray(data.items) ? data.items : [];
 
     return items
-      .filter((item) => item && (item.tralbum_type === "a" || item.item_type === "a"))
+      .filter(
+        (item) =>
+          item && (item.tralbum_type === "a" || item.item_type === "a"),
+      )
       .map((item) => {
-        // Prefer `tralbum_url` if present; fall back to any URL field that exists.
         const rawUrl: string | undefined =
           item.tralbum_url ?? item.item_url ?? item.url ?? item.item_url_path;
-        const cleanUrl = typeof rawUrl === "string" ? rawUrl.split("?")[0] : undefined;
-
+        const cleanUrl =
+          typeof rawUrl === "string" ? rawUrl.split("?")[0] : undefined;
         return {
           id: String(item.item_id ?? item.tralbum_id ?? item.id),
           url: cleanUrl ?? "",
@@ -177,6 +215,4 @@ export const scrapeCollectionPage = async (url: string) => {
   } catch {
     return [];
   }
-};
-
-
+}

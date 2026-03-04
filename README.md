@@ -7,7 +7,7 @@ Planned improvements and work in progress:
 
 - ~~On a custom list, add delete album button~~
 - ~~Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.~~
-- Review and validate the Bandcamp collection/wishlist import API approach — the `scrapeCollectionPage` function uses the `fancollection` API with the username as `fan_id`, but Bandcamp may expect a numeric fan ID instead. Needs testing against real Bandcamp profiles.
+- ~~Fix Bandcamp import: resolve numeric `fan_id` from profile page instead of passing username string; use correct `wishlist_items` endpoint for wishlisted albums.~~
 - Import count shows albums *found*, not albums *actually inserted* — on re-import, the UI reports "X albums imported" even when zero new records were created (because of `onConflictDoNothing`). Either return actual inserted row count or change the label to "found".
 - On the album detail page, show additional releases from the same artist.
 - Display errors on popup alert.
