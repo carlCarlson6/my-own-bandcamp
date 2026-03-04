@@ -4,11 +4,13 @@ import { getAlumbsResumeQuery } from "./get-albums-resume-query";
 import { searchAlbumsQuery } from "./search-albums-query";
 import { inspectAlbumQuery } from "./inspect-album-query";
 import { importFromBandcampMutation } from "./import-from-bandcamp-mutation";
+import { getArtistReleasesQuery } from "./get-artist-releases-query";
 
 export const albumsRouter = createTRPCRouter({
-  getLists:   getAlbumListsQuery,
-  getResume:  getAlumbsResumeQuery,
-  search:     searchAlbumsQuery,
-  inspect:    inspectAlbumQuery,
-  importFromBandcamp: importFromBandcampMutation,
+  getLists:             getAlbumListsQuery,
+  getResume:            getAlumbsResumeQuery,
+  search:               searchAlbumsQuery,
+  inspect:              inspectAlbumQuery,
+  importFromBandcamp:   importFromBandcampMutation,
+  getArtistReleases:    getArtistReleasesQuery,
 });
