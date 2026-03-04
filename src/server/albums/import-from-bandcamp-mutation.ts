@@ -111,12 +111,28 @@ export const importFromBandcampMutation = protectedProcedure
     };
   });
 
+interface BandcampCollectionItem {
+  tralbum_type?: string;
+  item_type?: string;
+  tralbum_url?: string;
+  item_url?: string;
+  url?: string;
+  item_url_path?: string;
+  item_id?: string | number;
+  tralbum_id?: string | number;
+  id?: string | number;
+}
+
+interface BandcampCollectionResponse {
+  items?: BandcampCollectionItem[];
+}
+
 export const scrapeCollectionPage = async (url: string) => {
   // Bandcamp loads collection items client-side; the initial HTML doesn't contain
   // `.collection-item-container` elements. Use the public JSON API instead.
   try {
     // Try to extract the username from the provided URL, e.g. "https://bandcamp.com/<username>"
-    const match = url.match(/bandcamp\.com\/([^/?#]+)/);
+    const match = /bandcamp\.com\/([^/?#]+)/.exec(url);
     const username = match?.[1];
 
     if (!username) {
@@ -142,8 +158,8 @@ export const scrapeCollectionPage = async (url: string) => {
       return [];
     }
 
-    const data: any = await apiResponse.json();
-    const items: any[] = Array.isArray(data.items) ? data.items : [];
+    const data = (await apiResponse.json()) as BandcampCollectionResponse;
+    const items = Array.isArray(data.items) ? data.items : [];
 
     return items
       .filter((item) => item && (item.tralbum_type === "a" || item.item_type === "a"))
