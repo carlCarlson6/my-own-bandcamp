@@ -119,6 +119,7 @@ export const importFromBandcampMutation = protectedProcedure
 interface BandcampCollectionItem {
   tralbum_type?: string;
   item_type?: string;
+  album_id?: number;
   tralbum_url?: string;
   item_url?: string;
   url?: string;
@@ -185,7 +186,7 @@ export async function fetchFanItems(
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           fan_id: fanId,
-          older_than_token: `${Math.floor(Date.now() / 1000)}::a:`,
+          older_than_token: `${Math.floor(Date.now() / 1000)}::a::`,
           count: 500,
         }),
       },
@@ -196,22 +197,36 @@ export async function fetchFanItems(
     const data = (await apiResponse.json()) as BandcampCollectionResponse;
     const items = Array.isArray(data.items) ? data.items : [];
 
+    const seen = new Set<string>();
     return items
-      .filter(
-        (item) =>
-          item && (item.tralbum_type === "a" || item.item_type === "a"),
-      )
+      .filter((item) => {
+        if (!item) return false;
+        // Bandcamp uses single-letter codes in tralbum_type ("a"/"t") and
+        // full words in item_type ("album"/"track"). Accept both forms.
+        const type = item.tralbum_type ?? item.item_type ?? "";
+        return type === "a" || type === "t" || type === "album" || type === "track";
+      })
       .map((item) => {
+        // Prefer album_id: it always refers to the parent album, even for
+        // track purchases, which is what the embedded player needs.
+        const albumId = item.album_id ?? item.item_id ?? item.tralbum_id ?? item.id;
         const rawUrl: string | undefined =
           item.tralbum_url ?? item.item_url ?? item.url ?? item.item_url_path;
         const cleanUrl =
           typeof rawUrl === "string" ? rawUrl.split("?")[0] : undefined;
         return {
-          id: String(item.item_id ?? item.tralbum_id ?? item.id),
+          id: String(albumId),
           url: cleanUrl ?? "",
         };
       })
-      .filter((album) => album.id && album.url);
+      .filter((album) => {
+        if (!album.id || album.id === "undefined" || !album.url) return false;
+        // De-duplicate by album ID (multiple track purchases from the same
+        // album should only appear once).
+        if (seen.has(album.id)) return false;
+        seen.add(album.id);
+        return true;
+      });
   } catch {
     return [];
   }
