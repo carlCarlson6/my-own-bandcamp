@@ -1,4 +1,5 @@
 import z from "zod";
+import { TRPCError } from "@trpc/server";
 import { publicProcedure } from "../infrastructure/trpc";
 import * as cheerio from "cheerio";
 
@@ -9,7 +10,14 @@ export const getArtistReleasesQuery = publicProcedure
     }),
   )
   .query(async ({ input: { albumUrl } }) => {
-    const artistBaseUrl = new URL(albumUrl).origin;
+    const parsedUrl = new URL(albumUrl);
+    if (!parsedUrl.hostname.endsWith("bandcamp.com")) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Only Bandcamp URLs are supported",
+      });
+    }
+    const artistBaseUrl = parsedUrl.origin;
     const musicPageUrl = `${artistBaseUrl}/music`;
     const response = await fetch(musicPageUrl);
     if (!response.ok) {
