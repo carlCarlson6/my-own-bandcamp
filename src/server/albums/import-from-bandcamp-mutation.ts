@@ -111,8 +111,8 @@ export const importFromBandcampMutation = protectedProcedure
     }
 
     return {
-      ownedCount: collectionAlbums.length,
-      wishlistedCount: wishlistAlbums.length,
+      ownedFound: collectionAlbums.length,
+      wishlistedFound: wishlistAlbums.length,
     };
   });
 
