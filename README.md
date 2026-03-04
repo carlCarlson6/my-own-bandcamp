@@ -12,6 +12,7 @@ Planned improvements and work in progress:
 - Review and validate the artist releases scraping — verify that the `#music-grid` / `ol.music-grid` selectors and `data-item-id` attribute match actual Bandcamp page structure on a variety of artist pages.
 - Extract a shared `SaveAlbumBtn` component — `SaveReleaseBtn` (in `ArtistReleasesSection`) and `SaveRecommendationBtn` (in `AlbumRecommendationsSection`) are nearly identical. Deduplicate into a reusable component under `_components/`.
 - Display errors on popup alert.
+- Check if album is on label or artist and display it for section "more from ...".
 
 ## Features
 
