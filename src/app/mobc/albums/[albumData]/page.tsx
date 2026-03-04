@@ -3,7 +3,6 @@ import BigAlbumPlayer from "../_components/player/BigAlbumPlayer";
 import AlbumListsActions from "./AlbumListsActions";
 import z from "zod";
 import AlbumRecommendationsSection from "./AlbumRecommendationsSection";
-import ArtistReleasesSection from "./ArtistReleasesSection";
 
 export default async function AlbumPage({
   params
@@ -16,11 +15,8 @@ export default async function AlbumPage({
     albumUrl: z.string()
   }).parse(JSON.parse(Buffer.from(decodeURIComponent(albumData), 'base64').toString('utf-8')));
 
-  const [inspectResult, albumLists, artistReleases] = await Promise.all([
-    api.albums.inspect({ albumUrl }),
-    api.albums.getLists({ albumId }),
-    api.albums.getArtistReleases({ albumUrl }),
-  ]);
+  const inspectResult =  await api.albums.inspect({ albumUrl });
+  const albumLists = await api.albums.getLists({ albumId });
 
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
@@ -38,11 +34,8 @@ export default async function AlbumPage({
             isOn: Boolean(x.isOn)
           }))}
         />
-        {artistReleases && artistReleases.length > 0 && (
-          <ArtistReleasesSection releases={artistReleases} />
-        )}
         {inspectResult.recomendations && inspectResult.recomendations.length > 0 && (
-          <AlbumRecommendationsSection recommendations={inspectResult.recomendations} />
+          <AlbumRecommendationsSection recommendations={inspectResult.recomendations} /> // TODO - create a section with other releases form the artist
         )}
       </div>
     </div>
