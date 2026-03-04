@@ -9,9 +9,7 @@ Planned improvements and work in progress:
 - ~~Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.~~
 - ~~Fix Bandcamp import: resolve numeric `fan_id` from profile page instead of passing username string; use correct `wishlist_items` endpoint for wishlisted albums.~~
 - Import count shows albums *found*, not albums *actually inserted* — on re-import, the UI reports "X albums imported" even when zero new records were created (because of `onConflictDoNothing`). Either return actual inserted row count or change the label to "found".
-- On the album detail page, show additional releases from the same artist.
 - ~~On the album detail page, show additional releases from the same artist.~~
-- Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.
 - ~~Fix broken elements in "More from this artist" — `getArtistReleasesQuery` was including tracks (`data-item-id="track-…"`) in addition to albums, which broke the embedded player. Now only `album-` items are included.~~
 - Review and validate the artist releases scraping — verify that the `#music-grid` / `ol.music-grid` selectors and `data-item-id` attribute match actual Bandcamp page structure on a variety of artist pages.
 - Extract a shared `SaveAlbumBtn` component — `SaveReleaseBtn` (in `ArtistReleasesSection`) and `SaveRecommendationBtn` (in `AlbumRecommendationsSection`) are nearly identical. Deduplicate into a reusable component under `_components/`.
