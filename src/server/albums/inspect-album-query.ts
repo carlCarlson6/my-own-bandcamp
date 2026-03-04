@@ -37,8 +37,15 @@ export const inspectAlbum = (html: string) => {
 
   console.log(recomendations);
 
+  // Detect if album is on a label page vs artist page.
+  // On label pages, the artist link in #name-section points to an absolute URL
+  // (e.g. https://artist.bandcamp.com), while on artist pages it's a relative link.
+  const artistLinkHref = $('#name-section a').first().attr('href');
+  const isLabelPage = !!artistLinkHref && /^https?:\/\//.test(artistLinkHref);
+
   return {
     albumId: `${pcPageProperties.item_id}`,
-    recomendations
+    recomendations,
+    isLabelPage,
   };
 }

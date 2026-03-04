@@ -12,16 +12,17 @@ type Release = {
 
 type ArtistReleasesSectionProps = {
   releases: Release[];
+  isLabelPage: boolean;
 };
 
-const ArtistReleasesSection = ({ releases }: ArtistReleasesSectionProps) => {
+const ArtistReleasesSection = ({ releases, isLabelPage }: ArtistReleasesSectionProps) => {
   if (releases.length === 0) {
     return null;
   }
 
   return (
     <aside className="w-full rounded-lg border p-4">
-      <h2 className="mb-4 text-lg font-semibold">More from this artist</h2>
+      <h2 className="mb-4 text-lg font-semibold">{isLabelPage ? "More from this label" : "More from this artist"}</h2>
       <div className="grid grid-cols-2 gap-3">
         {releases.map((release) => (
           <ArtistReleaseCard

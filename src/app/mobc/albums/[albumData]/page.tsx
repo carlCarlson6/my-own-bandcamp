@@ -39,7 +39,7 @@ export default async function AlbumPage({
           }))}
         />
         {artistReleases && artistReleases.length > 0 && (
-          <ArtistReleasesSection releases={artistReleases} />
+          <ArtistReleasesSection releases={artistReleases} isLabelPage={inspectResult.isLabelPage} />
         )}
         {inspectResult.recomendations && inspectResult.recomendations.length > 0 && (
           <AlbumRecommendationsSection recommendations={inspectResult.recomendations} />
