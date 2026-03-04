@@ -198,7 +198,7 @@ export async function fetchFanItems(
     const items = Array.isArray(data.items) ? data.items : [];
 
     const seen = new Set<string>();
-    return items
+    const candidates = items
       .filter((item) => {
         if (!item) return false;
         // Bandcamp uses single-letter codes in tralbum_type ("a"/"t") and
@@ -227,7 +227,64 @@ export async function fetchFanItems(
         seen.add(album.id);
         return true;
       });
+
+    // Validate that each album actually exists on Bandcamp before importing.
+    const validated = await validateAlbumsExist(candidates);
+    return validated;
   } catch {
     return [];
+  }
+}
+
+/**
+ * Check each album URL against Bandcamp. Albums whose URL does not resolve
+ * to a valid Bandcamp page (non-2xx response) are dropped.
+ * Requests are batched with a concurrency limit to avoid overwhelming
+ * the server.
+ */
+async function validateAlbumsExist(
+  albums: { id: string; url: string }[],
+): Promise<{ id: string; url: string }[]> {
+  const CONCURRENCY = 5;
+  const results: { id: string; url: string }[] = [];
+
+  for (let i = 0; i < albums.length; i += CONCURRENCY) {
+    const batch = albums.slice(i, i + CONCURRENCY);
+    const settled = await Promise.allSettled(
+      batch.map(async (album) => {
+        const exists = await checkAlbumExists(album.url);
+        return exists ? album : null;
+      }),
+    );
+    for (const outcome of settled) {
+      if (outcome.status === "fulfilled" && outcome.value) {
+        results.push(outcome.value);
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Return `true` when the given URL points to a live Bandcamp album page.
+ * Uses a HEAD request first (cheap) and falls back to GET when HEAD is
+ * not allowed. Returns `false` on any network error, timeout, or non-2xx
+ * status.
+ */
+export async function checkAlbumExists(albumUrl: string): Promise<boolean> {
+  try {
+    const url = new URL(albumUrl);
+    if (url.hostname !== "bandcamp.com" && !url.hostname.endsWith(".bandcamp.com")) return false;
+
+    const signal = AbortSignal.timeout(10_000);
+    let response = await fetch(albumUrl, { method: "HEAD", redirect: "follow", signal });
+    // Some servers reject HEAD — retry with GET if we get 405.
+    if (response.status === 405) {
+      response = await fetch(albumUrl, { method: "GET", redirect: "follow", signal });
+    }
+    return response.ok;
+  } catch {
+    return false;
   }
 }
