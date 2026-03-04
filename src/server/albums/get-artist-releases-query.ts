@@ -35,6 +35,11 @@ export const parseArtistReleases = (html: string, currentAlbumUrl: string) => {
       return;
     }
 
+    // Only include albums, skip tracks and other item types
+    if (!dataItemId.startsWith("album-")) {
+      return;
+    }
+
     const albumId = dataItemId.replace(/^album-/, "");
     const albumPath = href.split("?").at(0);
 
