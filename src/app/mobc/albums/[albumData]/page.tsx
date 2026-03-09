@@ -27,7 +27,7 @@ export default async function AlbumPage({
     <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
       <BigAlbumPlayer albumId={albumId} />
       <div className="flex flex-col gap-6 w-full lg:w-auto">
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           <PickRandomPendingAlbumBtn albumId={albumId} />
         </div>
         <AlbumListsActions
