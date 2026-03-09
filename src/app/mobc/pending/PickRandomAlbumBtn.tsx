@@ -5,7 +5,7 @@ import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 import { encodeAlbumData } from "../albums/GoToAlbumBtn";
 
-const PickRandomPendingAlbumBtn = () => {
+const PickRandomPendingAlbumBtn = ({ albumId }: { albumId?: string } = {}) => {
   const router = useRouter();
   const [noAlbum, setNoAlbum] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -20,7 +20,7 @@ const PickRandomPendingAlbumBtn = () => {
 
     if (!result.data || result.data === "no-pending-albums") {
       setNoAlbum(true);
-    } else {
+    } else if (result.data.id !== albumId) {
       setIsNavigating(true);
       router.push(`/mobc/albums/${encodeAlbumData({ albumId: result.data.id, albumUrl: result.data.url })}`);
     }
