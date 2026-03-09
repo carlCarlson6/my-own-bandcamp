@@ -5,7 +5,7 @@ import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 import { encodeAlbumData } from "../albums/GoToAlbumBtn";
 
-const PickRandomPendingAlbumBtn = ({ albumId }: { albumId?: string } = {}) => {
+const PickRandomPendingAlbumBtn = ({ albumId }: { albumId?: string }) => {
   const router = useRouter();
   const [noAlbum, setNoAlbum] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
