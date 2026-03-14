@@ -47,7 +47,7 @@ my-own-bandcamp/
 │   │       ├── favorites/page.tsx        # Favourite albums
 │   │       ├── listened/page.tsx         # Listened albums
 │   │       ├── albums/[albumData]/       # Album detail with embedded player
-│   │       └── playlists/[id]/           # Playlist detail & management
+│   │       └── playlists/[playlistId]/    # Playlist detail & management
 │   │
 │   ├── server/                           # Backend logic
 │   │   ├── infrastructure/
