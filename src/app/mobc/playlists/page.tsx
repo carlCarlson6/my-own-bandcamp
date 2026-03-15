@@ -24,8 +24,10 @@ export default async function PlaylistsPage() {
       ) : (
         <div className="grid gap-6 md:grid-cols-3">
           {resumeInfo.map((playlist) => (
-            <div
+            <Link
               key={playlist.id}
+              href={`/mobc/playlists/${playlist.id}`}
+              prefetch={false}
               className="rounded-lg border p-4 transition-shadow hover:shadow-2xl"
             >
               <div className="mb-3 flex items-center justify-between">
@@ -38,20 +40,18 @@ export default async function PlaylistsPage() {
                 </div>
               </div>
 
-              <Link href={`/mobc/playlists/${playlist.id}`} prefetch={false}>
-                {playlist.albums.length === 0 ? (
-                  <p className="text-sm text-gray-500">No albums yet.</p>
-                ) : (
-                  <div className="grid grid-cols-3 gap-2">
-                    {playlist.albums.map((album) => (
-                      <div key={album.id} className="overflow-hidden rounded-md border">
-                        <SmallAlbumPlayer albumId={album.albumId} />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </Link>
-            </div>
+              {playlist.albums.length === 0 ? (
+                <p className="text-sm text-gray-500">No albums yet.</p>
+              ) : (
+                <div className="grid grid-cols-3 gap-2">
+                  {playlist.albums.map((album) => (
+                    <div key={album.id} className="overflow-hidden rounded-md border">
+                      <SmallAlbumPlayer albumId={album.albumId} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Link>
           ))}
         </div>
       )}

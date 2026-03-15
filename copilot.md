@@ -188,6 +188,7 @@ Album data is scraped from Bandcamp using **Cheerio** (HTML parsing). The `inspe
 - **Server Components** are default; add `"use client"` only when interactivity (state, effects, event handlers) is needed.
 - **Tailwind CSS** for all styling; class names are auto-sorted by the Prettier plugin.
 - **Embedded Bandcamp players** use iframes (`SmallAlbumPlayer` for cards, `BigAlbumPlayer` for detail view).
+- **Clickable cards**: On the playlists list page (`/mobc/playlists`), the entire playlist card (title + album previews) is wrapped in a `<Link>` so the whole card is clickable and navigates to the playlist detail page. The `DeletePlaylistBtn` inside uses `e.stopPropagation()` to prevent navigation when deleting.
 - **Layouts**: `src/app/mobc/layout.tsx` provides a sticky header with `<UserButton>` and a sidebar with navigation links.
 - **Max width** container set to `6xl` for responsive design.
 
