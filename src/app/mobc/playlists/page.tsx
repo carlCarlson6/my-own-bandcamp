@@ -24,34 +24,49 @@ export default async function PlaylistsPage() {
       ) : (
         <div className="grid gap-6 md:grid-cols-3">
           {resumeInfo.map((playlist) => (
-            <Link
+            <div
               key={playlist.id}
-              href={`/mobc/playlists/${playlist.id}`}
-              prefetch={false}
               className="rounded-lg border p-4 transition-shadow hover:shadow-2xl"
             >
-              <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-lg font-semibold truncate">{playlist.name}</h3>
-                <div className="flex items-center gap-2">
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <Link
+                  href={`/mobc/playlists/${playlist.id}`}
+                  prefetch={false}
+                  className="flex min-w-0 flex-1 items-center justify-between gap-2"
+                >
+                  <h3 className="text-lg font-semibold truncate">
+                    {playlist.name}
+                  </h3>
                   <span className="text-sm text-gray-600 whitespace-nowrap">
                     {playlist.count} {playlist.count === 1 ? "album" : "albums"}
                   </span>
+                </Link>
+                <div className="flex-shrink-0">
                   <DeletePlaylistBtn playlistId={playlist.id} />
                 </div>
               </div>
 
-              {playlist.albums.length === 0 ? (
-                <p className="text-sm text-gray-500">No albums yet.</p>
-              ) : (
-                <div className="grid grid-cols-3 gap-2">
-                  {playlist.albums.map((album) => (
-                    <div key={album.id} className="overflow-hidden rounded-md border">
-                      <SmallAlbumPlayer albumId={album.albumId} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Link>
+              <Link
+                href={`/mobc/playlists/${playlist.id}`}
+                prefetch={false}
+                className="block"
+              >
+                {playlist.albums.length === 0 ? (
+                  <p className="text-sm text-gray-500">No albums yet.</p>
+                ) : (
+                  <div className="grid grid-cols-3 gap-2">
+                    {playlist.albums.map((album) => (
+                      <div
+                        key={album.id}
+                        className="overflow-hidden rounded-md border"
+                      >
+                        <SmallAlbumPlayer albumId={album.albumId} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Link>
+            </div>
           ))}
         </div>
       )}
