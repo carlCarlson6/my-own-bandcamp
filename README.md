@@ -7,6 +7,7 @@ Planned improvements and work in progress:
 
 - ~~On a custom list, add delete album button~~
 - ~~On the album detail page, show additional releases from the same artist.~~
+- ~~Make the whole playlist card (including the title) clickable and navigate to the given list, matching the behaviour of the albums page.~~
 - Add an import flow from Bandcamp that creates two user lists: **Owned** and **Wishlisted**.
 - ~~Fix broken elements in "More from this artist" — `getArtistReleasesQuery` was including tracks (`data-item-id="track-…"`) in addition to albums, which broke the embedded player. Now only `album-` items are included.~~
 - Review and validate the artist releases scraping — verify that the `#music-grid` / `ol.music-grid` selectors and `data-item-id` attribute match actual Bandcamp page structure on a variety of artist pages.
