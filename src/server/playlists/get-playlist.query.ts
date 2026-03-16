@@ -41,7 +41,7 @@ export const getPlaylistQuery = protectedProcedure
       id,
       name: maybePlaylist.name,
       items,
-      total: totalRow?.count ?? 0,
+      total: Number(totalRow?.count ?? 0),
       page,
       pageSize: PAGE_SIZE,
     };
