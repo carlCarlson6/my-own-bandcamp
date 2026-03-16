@@ -13,13 +13,15 @@ export type Album = {
 }
 
 export const AlbumsListDisplay = ({
-  albums
+  albums,
+  total,
 } : { 
-  albums: Album[]
+  albums: Album[];
+  total?: number;
 }) => (
   <div>
     <p className="mb-6 text-sm font-medium text-gray-600">
-      {albums.length} album{albums.length !== 1 ? "s" : ""}
+      {total ?? albums.length} album{(total ?? albums.length) !== 1 ? "s" : ""}
     </p>
     <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
       {albums.map((album) => (

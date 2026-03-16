@@ -64,8 +64,8 @@ export const ErrorAlertProvider = ({
 
       if (focusableElements.length === 0) return;
 
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
+      const firstElement = focusableElements[0]!;
+      const lastElement = focusableElements[focusableElements.length - 1]!;
       const current = document.activeElement as HTMLElement | null;
 
       if (!current || !dialog.contains(current)) {

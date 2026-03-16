@@ -21,7 +21,7 @@ export const getArtistReleasesQuery = publicProcedure
     const musicPageUrl = `${artistBaseUrl}/music`;
     const response = await fetch(musicPageUrl);
     if (!response.ok) {
-      return [];
+      return { releases: [], sourceType: "artist" as const };
     }
     const html = await response.text();
     return parseArtistReleases(html, albumUrl);
@@ -29,6 +29,12 @@ export const getArtistReleasesQuery = publicProcedure
 
 export const parseArtistReleases = (html: string, currentAlbumUrl: string) => {
   const $ = cheerio.load(html);
+
+  // Detect if this is a label page or an artist/band page.
+  // Bandcamp label pages have the "Labels" class on the body element.
+  const sourceType: "artist" | "label" = $("body").hasClass("Labels")
+    ? "label"
+    : "artist";
 
   const releases: { id: string; url: string }[] = [];
   const currentPath = new URL(currentAlbumUrl).pathname;
@@ -62,5 +68,5 @@ export const parseArtistReleases = (html: string, currentAlbumUrl: string) => {
     releases.push({ id: albumId, url: fullUrl });
   });
 
-  return releases;
+  return { releases, sourceType };
 };
