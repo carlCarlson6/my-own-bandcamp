@@ -25,5 +25,6 @@ export const getPendingAlbumsQuery = protectedProcedure
         .from(pendingAlbumsTable)
         .where(eq(pendingAlbumsTable.userId, userId)),
     ]);
-    return { items, total: totalRow?.count ?? 0, page, pageSize: PAGE_SIZE };
+    const total = Number(totalRow?.count ?? 0);
+    return { items, total, page, pageSize: PAGE_SIZE };
   });
