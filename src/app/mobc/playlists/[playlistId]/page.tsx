@@ -5,6 +5,7 @@ import { DeletePlaylistBtn } from "../DeletePlaylistBtn";
 import RemoveFromPlaylistButton from "./RemoveFromPlaylistButton";
 import UpdatePlaylistNameButton from "./UpdatePlaylistNameButton";
 import { Pagination } from "../../_components/Pagination";
+import { redirect } from "next/navigation";
 
 export default async function PlaylistPage({
   params,
@@ -17,6 +18,14 @@ export default async function PlaylistPage({
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
   const playlist = await api.playlists.get({ id: playlistId, page });
+  const totalPages = Math.max(
+    1,
+    Math.ceil(playlist.total / playlist.pageSize),
+  );
+
+  if (page > totalPages) {
+    redirect(`/mobc/playlists/${playlistId}?page=${totalPages}`);
+  }
 
   return (
     <div className="space-y-6">
