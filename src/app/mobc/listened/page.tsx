@@ -1,6 +1,7 @@
 import { api } from "~/utils/trpc/server";
 import { AlbumsListDisplay } from "../albums/_components/display/AlbumsDisplay";
 import { Pagination } from "../_components/Pagination";
+import { redirect } from "next/navigation";
 
 export default async function ListenedPage({
   searchParams,
@@ -10,6 +11,11 @@ export default async function ListenedPage({
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
   const { items, total, pageSize } = await api.listened.getAll({ page });
+
+  if (total > 0 && items.length === 0 && page > 1) {
+    const lastPage = Math.max(1, Math.ceil(total / pageSize));
+    redirect(`/mobc/listened?page=${lastPage}`);
+  }
 
   return (
     <div className="space-y-6">
