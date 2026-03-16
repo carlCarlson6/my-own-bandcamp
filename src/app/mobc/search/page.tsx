@@ -1,13 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "~/utils/trpc/react";
 import { SmallAlbumPlayer } from "../albums/_components/player/SmallAlbumPlayer";
 import GoToAlbumBtn, { encodeAlbumData } from "../albums/GoToAlbumBtn";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useErrorAlert } from "../_components/ErrorAlert";
 
 export default function SearchAlbumsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
   const {
     data: results,
@@ -20,10 +21,15 @@ export default function SearchAlbumsPage() {
     }
   );
 
-  if (results?.dataOrigin === "from-url") { 
-    const data = encodeAlbumData({ albumId: results.album.id, albumUrl: results.album.url });
-    redirect(`/mobc/albums/${data}`);
-  }
+  useEffect(() => {
+    if (results?.dataOrigin === "from-url") {
+      const data = encodeAlbumData({
+        albumId: results.album.id,
+        albumUrl: results.album.url,
+      });
+      router.replace(`/mobc/albums/${data}`);
+    }
+  }, [results, router]);
 
   return (
     <div className="space-y-6">
