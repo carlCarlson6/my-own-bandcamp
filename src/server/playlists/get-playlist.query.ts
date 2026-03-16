@@ -2,6 +2,7 @@ import z from "zod";
 import { count, eq, and } from "drizzle-orm";
 import { protectedProcedure } from "../infrastructure/trpc";
 import { playlistAlbumsTable, userPlaylistsTable } from "./playlists.schema";
+import { TRPCError } from "@trpc/server";
 
 const PAGE_SIZE = 20;
 
@@ -22,7 +23,12 @@ export const getPlaylistQuery = protectedProcedure
       ))
       .limit(1);
     const maybePlaylist = result.at(0);
-    if (!maybePlaylist) throw new Error("Playlist not found or access denied");
+    if (!maybePlaylist) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Playlist not found or access denied",
+      });
+    }
 
     const [items, [totalRow]] = await Promise.all([
       db.select()
