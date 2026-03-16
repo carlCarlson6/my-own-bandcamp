@@ -6,11 +6,15 @@ type ErrorAlertContextValue = {
   showError: (message: string) => void;
 };
 
-const ErrorAlertContext = createContext<ErrorAlertContextValue>({
-  showError: () => undefined,
-});
+const ErrorAlertContext = createContext<ErrorAlertContextValue | null>(null);
 
-export const useErrorAlert = () => useContext(ErrorAlertContext);
+export const useErrorAlert = () => {
+  const context = useContext(ErrorAlertContext);
+  if (!context) {
+    throw new Error("useErrorAlert must be used within an ErrorAlertProvider");
+  }
+  return context;
+};
 
 export const ErrorAlertProvider = ({
   children,
