@@ -25,5 +25,5 @@ export const getListenedAlbumsQuery = protectedProcedure
         .from(listenedAlbumsTable)
         .where(eq(listenedAlbumsTable.userId, userId)),
     ]);
-    return { items, total: totalRow?.count ?? 0, page, pageSize: PAGE_SIZE };
+    return { items, total: totalRow ? Number(totalRow.count) : 0, page, pageSize: PAGE_SIZE };
   });
