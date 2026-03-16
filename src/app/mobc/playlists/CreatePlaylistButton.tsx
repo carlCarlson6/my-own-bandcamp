@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "~/utils/trpc/react";
+import { useErrorAlert } from "../_components/ErrorAlert";
 
 const CreatePlaylistButton = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const { showError } = useErrorAlert();
 
   const mutation = api.playlists.create.useMutation({
     onSuccess() {
@@ -18,7 +20,7 @@ const CreatePlaylistButton = () => {
       router.refresh();
     },
     onError(err) {
-      setError(err.message || "Failed to create playlist");
+      showError(err.message || "Failed to create playlist");
     },
   });
 

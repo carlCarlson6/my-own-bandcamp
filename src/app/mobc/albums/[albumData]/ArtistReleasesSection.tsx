@@ -4,6 +4,7 @@ import { useState } from "react";
 import { api } from "~/utils/trpc/react";
 import { SmallAlbumPlayer } from "../_components/player/SmallAlbumPlayer";
 import GoToAlbumBtn from "../GoToAlbumBtn";
+import { useErrorAlert } from "../../_components/ErrorAlert";
 
 type Release = {
   id: string;
@@ -61,9 +62,13 @@ const SaveReleaseBtn = ({
   url: string;
 }) => {
   const [isSaved, setIsSaved] = useState(false);
-  const { mutate, isPending, isError } = api.pending.save.useMutation({
+  const { showError } = useErrorAlert();
+  const { mutate, isPending } = api.pending.save.useMutation({
     onSuccess() {
       setIsSaved(true);
+    },
+    onError(err) {
+      showError(err.message || "Failed to save album. Please try again.");
     },
   });
 
@@ -76,7 +81,6 @@ const SaveReleaseBtn = ({
     });
 
   return (
-    <>
     <button
       className="flex items-center justify-center gap-1 rounded-md px-3 py-2 text-sm hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
       aria-label={isSaved ? "Album saved" : "Add album to pending list"}
@@ -112,12 +116,6 @@ const SaveReleaseBtn = ({
       )}
       {isSaved ? "Saved" : "Add to pending"}
     </button>
-    {isError && (
-      <p className="mt-1 text-sm text-red-600" role="alert">
-        Failed to save album. Please try again.
-      </p>
-    )}
-    </>
   );
 };
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api } from "~/utils/trpc/react";
+import { useErrorAlert } from "../../_components/ErrorAlert";
 
 type AlbumListsActionsProps = {
   albumId: string;
@@ -23,6 +24,7 @@ const useAlbumListsActions = ({
   const [onFavorites, setOnFavorites] = useState(initialOnFavorites);
   const [onListened, setOnListened] = useState(initialOnListened);
   const [onUserLists, setOnUserLists] = useState(initialOnUserLists.map(x => ({ ...x, isChanging: false })));
+  const { showError } = useErrorAlert();
 
   const savePending = api.pending.save.useMutation({
     onSuccess: (data) => setOnPending(data),
@@ -33,11 +35,11 @@ const useAlbumListsActions = ({
   const handlePendingChange = () => {
     if (onPending) {
       setOnPending(undefined);
-      removePending.mutate({ id: onPending }, { onError: () => setOnPending(onPending) });
+      removePending.mutate({ id: onPending }, { onError: (err) => { setOnPending(onPending); showError(err.message || "Failed to remove album from pending"); } });
       return;
     }
     setOnPending("pending");
-    savePending.mutate({ album: { id: albumId, url } }, { onError: () => setOnPending(undefined) });
+    savePending.mutate({ album: { id: albumId, url } }, { onError: (err) => { setOnPending(undefined); showError(err.message || "Failed to add album to pending"); } });
   };
 
   const saveFavorites = api.favorites.save.useMutation({
@@ -49,12 +51,12 @@ const useAlbumListsActions = ({
   const handleFavoritesChange = (_checked: boolean) => {
     if (onFavorites) {
       setOnFavorites(undefined);
-      removeFavorites.mutate({ id: onFavorites }, { onError: () => setOnFavorites(onFavorites) });
+      removeFavorites.mutate({ id: onFavorites }, { onError: (err) => { setOnFavorites(onFavorites); showError(err.message || "Failed to remove album from favorites"); } });
       return;
     }
 
     setOnFavorites("favorites");
-    saveFavorites.mutate({ id: albumId, url }, { onError: () => setOnFavorites(undefined) });
+    saveFavorites.mutate({ id: albumId, url }, { onError: (err) => { setOnFavorites(undefined); showError(err.message || "Failed to add album to favorites"); } });
   };
 
   const saveListened = api.listened.save.useMutation({
@@ -66,12 +68,12 @@ const useAlbumListsActions = ({
   const handleListenedChange = () => {
     if (onListened) {
       setOnListened(undefined);
-      removeListened.mutate({ id: onListened }, { onError: () => setOnListened(onListened) });
+      removeListened.mutate({ id: onListened }, { onError: (err) => { setOnListened(onListened); showError(err.message || "Failed to remove album from listened"); } });
       return;
     }
 
     setOnListened("listened");
-    saveListened.mutate({ id: albumId, url }, { onError: () => setOnListened(undefined) });
+    saveListened.mutate({ id: albumId, url }, { onError: (err) => { setOnListened(undefined); showError(err.message || "Failed to add album to listened"); } });
   };
 
   const saveUserList = api.playlists.save.useMutation({
@@ -95,8 +97,9 @@ const useAlbumListsActions = ({
       saveUserList.mutate(
         { playlistId, album: { id: albumId, url } },
         { 
-          onError: () => {
+          onError: (err) => {
             setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isOn: false } : list));
+            showError(err.message || "Failed to add album to playlist");
           },
           onSettled: () => {            
             setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isChanging: false } : list));
@@ -109,8 +112,9 @@ const useAlbumListsActions = ({
     removeUserList.mutate(
       { playlistId, albumId: albumId },
       {
-        onError: () => {
+        onError: (err) => {
           setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isOn: true } : list));
+          showError(err.message || "Failed to remove album from playlist");
         },
         onSettled: () => {            
           setOnUserLists((prev) => prev.map((list) => list.playlistId === playlistId ? { ...list, isChanging: false } : list));
