@@ -4,14 +4,19 @@ import GoToAlbumBtn from "../../albums/GoToAlbumBtn";
 import { DeletePlaylistBtn } from "../DeletePlaylistBtn";
 import RemoveFromPlaylistButton from "./RemoveFromPlaylistButton";
 import UpdatePlaylistNameButton from "./UpdatePlaylistNameButton";
+import { Pagination } from "../../_components/Pagination";
 
 export default async function PlaylistPage({
-  params
+  params,
+  searchParams,
 }: {
   params: Promise<{ playlistId: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const { playlistId } = await params;
-  const playlist = await api.playlists.get({ id: playlistId });
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
+  const playlist = await api.playlists.get({ id: playlistId, page });
 
   return (
     <div className="space-y-6">
@@ -23,12 +28,20 @@ export default async function PlaylistPage({
         </div>
       </div>
 
-      {playlist.items.length === 0 ? (
+      {playlist.total === 0 ? (
         <div className="rounded-md bg-gray-50 p-8 text-center text-gray-600">
           No albums in this playlist yet.
         </div>
       ) : (
-        <PlaylistAlbumsList playlist={playlist} />
+        <>
+          <PlaylistAlbumsList playlist={playlist} />
+          <Pagination
+            page={page}
+            total={playlist.total}
+            pageSize={playlist.pageSize}
+            buildHref={(p) => `/mobc/playlists/${playlistId}?page=${p}`}
+          />
+        </>
       )}
     </div>
   );
@@ -42,7 +55,7 @@ const PlaylistAlbumsList = ({
   return (
     <div>
       <p className="mb-6 text-sm font-medium text-gray-600">
-        {playlist.items.length} album{playlist.items.length !== 1 ? "s" : ""}
+        {playlist.total} album{playlist.total !== 1 ? "s" : ""}
       </p>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {playlist.items.map((item) => (
