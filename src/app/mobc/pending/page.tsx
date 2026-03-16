@@ -9,8 +9,22 @@ export default async function PendingAlbumsPage({
   searchParams: Promise<{ page?: string }>;
 }) {
   const { page: pageParam } = await searchParams;
-  const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
-  const { items, total, pageSize } = await api.pending.getAll({ page });
+  const initialPage = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
+  let currentPage = initialPage;
+  let { items, total, pageSize } = await api.pending.getAll({ page: currentPage });
+
+  // Handle case where requested page is out of range: total > 0 but no items
+  if (total > 0 && items.length === 0 && currentPage > 1) {
+    const lastPage = Math.max(1, Math.ceil(total / pageSize));
+
+    if (lastPage !== currentPage) {
+      currentPage = lastPage;
+      const lastPageResult = await api.pending.getAll({ page: currentPage });
+      items = lastPageResult.items;
+      total = lastPageResult.total;
+      pageSize = lastPageResult.pageSize;
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -27,7 +41,7 @@ export default async function PendingAlbumsPage({
         <>
           <AlbumsListDisplay albums={items} total={total} />
           <Pagination
-            page={page}
+            page={currentPage}
             total={total}
             pageSize={pageSize}
             buildHref={(p) => `/mobc/pending?page=${p}`}
