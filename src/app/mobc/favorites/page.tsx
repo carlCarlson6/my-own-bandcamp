@@ -1,6 +1,7 @@
 import { api } from "~/utils/trpc/server";
 import { AlbumsListDisplay } from "../albums/_components/display/AlbumsDisplay";
 import { Pagination } from "../_components/Pagination";
+import { redirect } from "next/navigation";
 
 export default async function FavoritesPage({
   searchParams,
@@ -10,6 +11,11 @@ export default async function FavoritesPage({
   const { page: pageParam } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
   const { items, total, pageSize } = await api.favorites.getAll({ page });
+
+  if (page > 1 && items.length === 0 && total > 0) {
+    const lastPage = Math.max(1, Math.ceil(total / pageSize));
+    redirect(`/mobc/favorites?page=${lastPage}`);
+  }
 
   return (
     <div className="space-y-6">
