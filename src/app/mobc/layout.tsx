@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import NavLink from "./NavLink";
+import { ErrorAlertProvider } from "./_components/ErrorAlert";
 
 export default async function MainUserLayout({
   children,
@@ -11,7 +12,7 @@ export default async function MainUserLayout({
   if (!isAuthenticated) return redirect("/");
 
   return (
-    <>
+    <ErrorAlertProvider>
       <header className="fixed top-0 right-0 left-0 z-50 border-b bg-white/70 backdrop-blur">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
           <a href="/mobc">
@@ -35,6 +36,6 @@ export default async function MainUserLayout({
 
         <main className="flex min-h-screen flex-1 flex-col p-8">{children}</main>
       </div>
-    </>
+    </ErrorAlertProvider>
   );
 }
