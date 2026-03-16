@@ -22,6 +22,7 @@ const SaveAlbumBtn = ({ albumId, url }: { albumId: string; url: string }) => {
   return (
     <>
       <button
+        type="button"
         className="flex items-center justify-center gap-1 rounded-md px-3 py-2 text-sm hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
         aria-label={isSaved ? "Album saved" : "Add album to pending list"}
         aria-busy={isPending}
