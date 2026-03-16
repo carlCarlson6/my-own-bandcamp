@@ -11,16 +11,19 @@ type Release = {
 
 type ArtistReleasesSectionProps = {
   releases: Release[];
+  sourceType: "artist" | "label";
 };
 
-const ArtistReleasesSection = ({ releases }: ArtistReleasesSectionProps) => {
+const ArtistReleasesSection = ({ releases, sourceType }: ArtistReleasesSectionProps) => {
   if (releases.length === 0) {
     return null;
   }
 
+  const sectionTitle = sourceType === "label" ? "More from this label" : "More from this artist";
+
   return (
     <aside className="w-full rounded-lg border p-4">
-      <h2 className="mb-4 text-lg font-semibold">More from this artist</h2>
+      <h2 className="mb-4 text-lg font-semibold">{sectionTitle}</h2>
       <div className="grid grid-cols-2 gap-3">
         {releases.map((release) => (
           <ArtistReleaseCard

@@ -42,8 +42,8 @@ export default async function AlbumPage({
             isOn: Boolean(x.isOn)
           }))}
         />
-        {artistReleases && artistReleases.length > 0 && (
-          <ArtistReleasesSection releases={artistReleases} />
+        {artistReleases && artistReleases.releases.length > 0 && (
+          <ArtistReleasesSection releases={artistReleases.releases} sourceType={artistReleases.sourceType} />
         )}
         {inspectResult.recomendations && inspectResult.recomendations.length > 0 && (
           <AlbumRecommendationsSection recommendations={inspectResult.recomendations} />
