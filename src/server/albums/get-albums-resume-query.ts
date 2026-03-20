@@ -7,32 +7,37 @@ import type { Db } from "../infrastructure/db";
 import { playlistAlbumsTable, userPlaylistsTable } from "../playlists/playlists.schema";
 
 export const getAlumbsResumeQuery = protectedProcedure
-  .query(async ({ ctx: { userId, db } }) => {
-    const pending = await getPendingAlbums(db, userId);
-    const favorites = await getFavoritesAlbums(db, userId);
-    const listened = await getListenedAlbums(db, userId);
-    const playlists = await getPlaylists(db, userId);
-    return [
-      {
-        title: "Pending",
-        href: "/mobc/pending",
-        ...pending
-      },
-      {
-        title: "Favorites",
-        href: "/mobc/favorites",
-        ...favorites
-      },
-      {
-        title: "Listened",
-        href: "/mobc/listened",
-        ...listened
-      },
-      ...playlists
-    ];
-  });
+  .query(
+    ({ ctx }) => getAlbumsResume(ctx)
+  );
 
-export const getPendingAlbums = async (db: Db, userId: string) => {
+export const getAlbumsResume = async (ctx: { db: Db, userId: string }) => {
+  const { db, userId } = ctx;
+  const pending = await getPendingAlbums(db, userId);
+  const favorites = await getFavoritesAlbums(db, userId);
+  const listened = await getListenedAlbums(db, userId);
+  const playlists = await getPlaylists(db, userId);
+  return [
+    {
+      title: "Pending",
+      href: "/mobc/pending",
+      ...pending
+    },
+    {
+      title: "Favorites",
+      href: "/mobc/favorites",
+      ...favorites
+    },
+    {
+      title: "Listened",
+      href: "/mobc/listened",
+      ...listened
+    },
+    ...playlists
+  ];
+}
+
+const getPendingAlbums = async (db: Db, userId: string) => {
   const pendingAlbums = await db
     .select({
       id: pendingAlbumsTable.albumId,
@@ -54,7 +59,7 @@ export const getPendingAlbums = async (db: Db, userId: string) => {
   };
 }
 
-export const getFavoritesAlbums = async (db: Db, userId: string) => {
+const getFavoritesAlbums = async (db: Db, userId: string) => {
   const favoritesAlbums = await db
     .select({
       id: favoritesAlbumsTable.albumId,
@@ -76,7 +81,7 @@ export const getFavoritesAlbums = async (db: Db, userId: string) => {
   };
 }
 
-export const getListenedAlbums = async (db: Db, userId: string) => {
+const getListenedAlbums = async (db: Db, userId: string) => {
   const listenedAlbums = await db
     .select({
       id: listenedAlbumsTable.albumId,
@@ -98,7 +103,7 @@ export const getListenedAlbums = async (db: Db, userId: string) => {
   };
 }
 
-export const getPlaylists = async (db: Db, userId: string) => {
+const getPlaylists = async (db: Db, userId: string) => {
   const playlistInfo = [];
 
   const userLists = await db

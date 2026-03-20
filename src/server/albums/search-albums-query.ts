@@ -7,11 +7,16 @@ export const searchAlbumsQuery = publicProcedure
   .input(z.object({
     searchTerm: z.string().min(1),
   }))
-  .query(async ({ input: { searchTerm } }) => 
-    isbandCampUrl(searchTerm)
-      ? await readDataFromBandcamp(searchTerm)
-      : await searchDataOnBandcamp(searchTerm)
+  .query(
+    ({ input }) => searchAlbums(input)
   );
+
+export const searchAlbums = async (input: { searchTerm: string }) => {
+  const { searchTerm } = input;
+  return isbandCampUrl(searchTerm)
+    ? readDataFromBandcamp(searchTerm)
+    : searchDataOnBandcamp(searchTerm);
+}
 
 const isbandCampUrl = (searchInput: string) => {
   try {

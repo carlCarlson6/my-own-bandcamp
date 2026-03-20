@@ -8,7 +8,7 @@ import { getArtistReleasesQuery } from "./get-artist-releases-query";
 export const albumsRouter = createTRPCRouter({
   getLists:             getAlbumListsQuery,
   getResume:            getAlumbsResumeQuery,
-  search:               searchAlbumsQuery,
-  inspect:              inspectAlbumQuery,
-  getArtistReleases:    getArtistReleasesQuery,
+  search:               searchAlbumsQuery, // TODO refactor extract use case for testing
+  inspect:              inspectAlbumQuery, // TODO refactor extract use case for testing
+  getArtistReleases:    getArtistReleasesQuery, // TODO refactor extract use case for testing
 });

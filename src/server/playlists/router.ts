@@ -8,11 +8,11 @@ import { saveToPlaylistMutation } from "./save-to-playlist-mutation";
 import { updatePlaylistNameMutation } from "./update-playlist-name-mutation";
 
 export const playlistsRouter = createTRPCRouter({
-  create:     createPlaylistMutation,
-  delete:     deletePlaylistMutation,
-  getResume:  getPlaylistsResumeQuery,
-  get:        getPlaylistQuery,
-  save:       saveToPlaylistMutation,
-  remove:     removeFromPlaylistMutation,
-  updateName: updatePlaylistNameMutation,
+  create:     createPlaylistMutation, // TODO refactor extract use case for testing
+  delete:     deletePlaylistMutation, // TODO refactor extract use case for testing
+  getResume:  getPlaylistsResumeQuery, // TODO refactor extract use case for testing
+  get:        getPlaylistQuery, // TODO refactor extract use case for testing
+  save:       saveToPlaylistMutation, // TODO refactor extract use case for testing
+  remove:     removeFromPlaylistMutation, // TODO refactor extract use case for testing
+  updateName: updatePlaylistNameMutation, // TODO refactor extract use case for testing
 });

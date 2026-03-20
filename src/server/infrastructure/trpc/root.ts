@@ -5,7 +5,6 @@ import { albumsRouter } from "~/server/albums/router";
 import { listenedRouter } from "~/server/listened/router";
 import { playlistsRouter } from "~/server/playlists/router";
 
-
 /**
  * This is the primary router for your server.
  *
@@ -14,9 +13,9 @@ import { playlistsRouter } from "~/server/playlists/router";
 export const appRouter = createTRPCRouter({
   pending:    pendingRouter,
   favorites:  favoritesRouter,
-  albums:     albumsRouter,
-  listened:   listenedRouter,
-  playlists:  playlistsRouter,
+  albums:     albumsRouter, // TODO refactor extract use case for testing
+  listened:   listenedRouter, // TODO refactor extract use case for testing
+  playlists:  playlistsRouter, // TODO refactor extract use case for testing
 });
 
 // export type definition of API
